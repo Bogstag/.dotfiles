@@ -13,7 +13,7 @@ if ($null -eq $totalTimeMs) {
     $totalTimeMs = 0
 }
 . $env:dotfiles\PowerShell\Set-Secrets.ps1
-
+. $env:dotfiles\ScoopApps\ScoopAppCentral.ps1 -Command "enable-apps"
 . $env:dotfiles\PowerShell\Extended-Profile.ps1
 
 Write-Host "    ______________________________________        " -ForegroundColor Green

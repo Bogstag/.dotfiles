@@ -1,9 +1,12 @@
 # Name folder to scoop app name
-# Replace $App$ with folder name (CTRL+H)
+# CTRL + H $App$ -> Foldername
+if ($null -eq $app.Name) {
+    $app = Get-Item -Path $PSScriptRoot
+}
 
+$appName = $app.Name
 $bucket = "main"
-$app = "ScoopAppName"
-$verify = "Path to exe or something else that can tell its installed"
+$verify = "$HOME\scoop\apps\$appName\current\$appName.exe"
 $repo = "https://github.com/"
 
 function Clear-$App$ {
@@ -19,7 +22,10 @@ function Deploy-$App$Dotfiles {
 }
 
 function Enable-$App$ {
+    # Write-Host " ⏱️ $appName => " -NoNewline -ForegroundColor Green
     # Logic to run in profile to import, dotsource or invoke app
+    # $totalTimeMs = $totalTimeMs + $t.Milliseconds
+    # Write-Host $t.Milliseconds"ms" -ForegroundColor Green
 }
 
 function Install-$App$ {
@@ -29,7 +35,7 @@ function Install-$App$ {
     }
 
     if ($false -eq (Test-Path $verify -PathType Leaf)) {
-        scoop install $bucket/$app
+        scoop install $bucket/$appName
     }
 }
 
@@ -65,15 +71,15 @@ function Show-$App$Repo {
 
 function Reset-$App$ {
     # Logic to reset app
-    scoop reset $bucket/$app
+    scoop reset $bucket/$appName
 }
 
 function Uninstall-$App$ {
-    # Logic yo uninstall app
-    scoop uninstall $bucket/$app
+    # Logic to uninstall app
+    scoop uninstall $bucket/$appName
 }
 
 function Update-$App$ {
     # Logic to update app
-    scoop update $bucket/$app
+    scoop update $bucket/$appName
 }

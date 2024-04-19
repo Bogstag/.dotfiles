@@ -1,39 +1,41 @@
+if ($null -eq $app.Name) {
+    $app = Get-Item -Path $PSScriptRoot
+}
+
+$appName = $app.Name
 $bucket = "main"
-$app = "biome"
-$verify = "$HOME\scoop\apps\biome\current\biome.exe"
+$verify = "$HOME\scoop\apps\$appName\current\$appName.exe"
+$repo = "https://github.com/biomejs/biome"
 
 function Clear-Biome {
-    # Add cleaning logic here
+    # Logic to clean apps cache or other maintenance tasks.
 }
 
 function Compare-BiomeDotfiles {
-    # Add Compare logic here
+    # Logic to compare dotfiles with reference to see if something has changed.
 }
 
 function Deploy-BiomeDotfiles {
-    # Add setup logic for dotfiles here
+    # Logic to get dotfiles to the right location, by copying or symlink.
+}
+
+function Enable-Biome {
+    # Logic to run in profile to import, dotsource or invoke app
 }
 
 function Install-Biome {
+    # Logic to install app
     if ($false -eq (Test-Path $HOME\scoop\buckets\$bucket -PathType Container)) {
         scoop bucket add $bucket
     }
 
     if ($false -eq (Test-Path $verify -PathType Leaf)) {
-        scoop install $bucket/$app
+        scoop install $bucket/$appName
     }
 }
 
-function Open-BiomeDocs {
-    # Add open home logic here
-}
-
-function Open-BiomeRepo {
-    # Add open repo logic here
-}
-
-function Reset-Biome {
-    # Add Reset logic her$e
+function Invoke-Biome {
+    # Logic to run the app.
 }
 
 function Set-BiomeEnvironmentVariables {
@@ -44,6 +46,11 @@ function Set-BiomeEnvironmentVariables {
     if ($null -eq $env:BIOME_CONFIG_PATH) {
         [Environment]::SetEnvironmentVariable("BIOME_CONFIG_PATH", "$HOME\.config\biome\biome.json", [EnvironmentVariableTarget]::User)
     }
+}
+
+function Show-BiomeDocs {
+    # Logic to show app documentation
+    Start-Process "https://biomejs.dev/guides/getting-started/"
 }
 
 function Show-BiomeLogo {
@@ -63,8 +70,23 @@ function Show-BiomeLogo {
     Write-Host ""
 }
 
+function Show-BiomeReleases {
+    # Logic to show release notes or changelog
+    Start-Process "$repo/releases"
+}
+
+function Show-BiomeRepo {
+    # Logic to show app repository
+    Start-Process $repo
+}
+
+function Reset-Biome {
+    # Logic to reset app
+    scoop reset $bucket/$appName
+}
+
 function Uninstall-Biome {
-    scoop uninstall $app
+    scoop uninstall $bucket/$appName
 
     if ($null -eq $env:BIOME_BINARY) {
         [Environment]::SetEnvironmentVariable("BIOME_BINARY", $null, [EnvironmentVariableTarget]::User)
@@ -76,5 +98,6 @@ function Uninstall-Biome {
 }
 
 function Update-Biome {
-    scoop update $app
+    # Logic to update app
+    scoop update $bucket/$appName
 }
