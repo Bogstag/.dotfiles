@@ -9,4 +9,4 @@ if ($null -eq $totalTimeMs) {
 . $env:dotfiles\PowerShell\Set-Envs.ps1
 . $env:dotfiles\PowerShell\Set-Paths.ps1
 . $env:dotfiles\PowerShell\Set-Alias.ps1
-
+. $env:dotfiles\PowerShell\Add-Starship.ps1

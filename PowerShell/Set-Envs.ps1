@@ -17,11 +17,14 @@ $t = Measure-Command {
     if ($null -eq $env:dotfiles) {
         [Environment]::SetEnvironmentVariable("dotfiles", "$HOME\.dotfiles", [EnvironmentVariableTarget]::User)
     }
+    if ($null -eq $env:XDG_CACHE_HOME) {
+        [Environment]::SetEnvironmentVariable("XDG_CACHE_HOME", "$HOME\.cache", [EnvironmentVariableTarget]::User)
+    }
     if ($null -eq $env:XDG_CONFIG_HOME) {
         [Environment]::SetEnvironmentVariable("XDG_CONFIG_HOME", "$HOME\.config", [EnvironmentVariableTarget]::User)
     }
-    if ($null -eq $env:XDG_CACHE_HOME) {
-        [Environment]::SetEnvironmentVariable("XDG_CACHE_HOME", "$HOME\.cache", [EnvironmentVariableTarget]::User)
+    if ($null -eq $env:XDG_DOWNLOAD_DIR) {
+        [Environment]::SetEnvironmentVariable("XDG_DOWNLOAD_DIR", "$HOME\Downloads", [EnvironmentVariableTarget]::User)
     }
     if ($null -eq $env:PNPM_HOME) {
         [Environment]::SetEnvironmentVariable("PNPM_HOME", "$ENV:LOCALAPPDATA\pnpm", [EnvironmentVariableTarget]::User)

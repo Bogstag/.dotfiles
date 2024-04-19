@@ -1,0 +1,127 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "properties": {
+        "$schema": {
+            "description": "A field for the JSON schema specification",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "Website": {
+            "description": "Website to get color information, use the same for consistent names and colors.",
+            "$ref": "#/definitions/Website"
+        },
+        "Colors": {
+            "type": "array",
+            "description": "Colors without connections to other colors",
+            "items": {
+                "$ref": "#/definitions/Color"
+            }
+        },
+        "Palettes": {
+            "type": "object",
+            "description": "A palette of colors",
+            "$ref": "#/definitions/Palette"
+        }
+    },
+    "definitions": {
+        "Color": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "Hex": {
+                    "type": "string"
+                },
+                "Dec": {
+                    "type": "integer"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "Usage": {
+                    "type": "string"
+                },
+                "ContrastWhite": {
+                    "$ref": "#/definitions/ContrastWhite"
+                },
+                "ContrastBlack": {
+                    "$ref": "#/definitions/ContrastBlack"
+                },
+                "Order": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "ContrastBlack",
+                "ContrastWhite",
+                "Dec",
+                "Hex",
+                "Name"
+            ],
+            "title": "Color"
+        },
+        "Palette": {
+            "type": "object",
+            "additionalProperties": false,
+            "patternProperties": {
+                "^[a-zA-Z0-9]*$": {
+                    "$ref": "#/definitions/PaletteColor"
+                }
+            },
+            "required": [
+                "Template"
+            ]
+        },
+        "PaletteColor": {
+            "type": "array",
+            "additionalProperties": false,
+            "items": {
+                "$ref": "#/definitions/Color"
+            }
+        },
+        "Website": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "HomePage": {
+                    "type": "string",
+                    "format": "uri",
+                    "qt-uri-protocols": [
+                        "https"
+                    ]
+                },
+                "SingleColor": {
+                    "type": "string",
+                    "format": "uri",
+                    "qt-uri-protocols": [
+                        "https"
+                    ]
+                }
+            },
+            "required": [
+                "HomePage",
+                "SingleColor"
+            ],
+            "title": "Website"
+        },
+        "ContrastBlack": {
+            "$ref": "#/definitions/ContrastEnums",
+            "title": "ContrastBlack"
+        },
+        "ContrastWhite": {
+            "$ref": "#/definitions/ContrastEnums",
+            "title": "ContrastWhite"
+        },
+        "ContrastEnums": {
+            "type": "string",
+            "uniqueItems": true,
+            "enum": [
+                "Fail",
+                "Ok",
+                "Good",
+                "Perfect"
+            ]
+        }
+    }
+}

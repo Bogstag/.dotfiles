@@ -24,7 +24,7 @@ function Install-Biome {
     }
 }
 
-function Open-BiomeHomepage {
+function Open-BiomeDocs {
     # Add open home logic here
 }
 
@@ -42,29 +42,39 @@ function Set-BiomeEnvironmentVariables {
     }
 
     if ($null -eq $env:BIOME_CONFIG_PATH) {
-        [Environment]::SetEnvironmentVariable("BIOME_CONFIG_PATH", "$HOME\scoop\persist\biome", [EnvironmentVariableTarget]::User)
+        [Environment]::SetEnvironmentVariable("BIOME_CONFIG_PATH", "$HOME\.config\biome\biome.json", [EnvironmentVariableTarget]::User)
     }
 }
 
 function Show-BiomeLogo {
+    $widthLogo = 80
+    $space = " " * (($host.ui.RawUI.WindowSize.Width - $widthLogo) / 2)
     Write-Host ""
-    Write-Host "          -=" -ForegroundColor Blue
-    Write-Host "         -**=              ......      .." -ForegroundColor Blue
-    Write-Host "       .+****+.           +@@%%%%%#:  =%%." -ForegroundColor Blue
-    Write-Host "       =====+++:          +@@.   #@@  -*+    :+++=:   :=-:++=: -++=:    .=+++-" -ForegroundColor Blue
-    Write-Host "      ..:::. -**-         +@@%##%@@*  +@@. =%@#**@@#. +@@%*#@@@#*#@@+  *@%+=*@%-" -ForegroundColor Blue
-    Write-Host "   :=+*****. +*+*=        +@@=---+@%- +@@ .@@=    %@# =@@.  *@%   #@% =@@#***%@@" -ForegroundColor Blue
-    Write-Host " .+**+-.... -*+*+*=       +@@.   -@@+ +@@  %@#: .-@@+ +@@.  *@%   #@# :@@*-:-+=:" -ForegroundColor Blue
-    Write-Host ".**+- :=+++=+****+*+.     +@%%%%%%#=  =@%. .+%@%%@#-  =@%.  +@%   *@#  :*%%%%%+" -ForegroundColor Blue
-    Write-Host "+*+*++************+**:        .               ...                         ..." -ForegroundColor Blue
-    Write-Host "Formatter, linter, bundler, and more for JavaScript, TypeScript, JSON, HTML, Markdown, and CSS." -ForegroundColor Blue
+    Write-Host $space"          -=" -ForegroundColor Blue
+    Write-Host $space"         -**=              ......      .." -ForegroundColor Blue
+    Write-Host $space"       .+****+.           +@@%%%%%#:  =%%." -ForegroundColor Blue
+    Write-Host $space"       =====+++:          +@@.   #@@  -*+    :+++=:   :=-:++=: -++=:    .=+++-" -ForegroundColor Blue
+    Write-Host $space"      ..:::. -**-         +@@%##%@@*  +@@. =%@#**@@#. +@@%*#@@@#*#@@+  *@%+=*@%-" -ForegroundColor Blue
+    Write-Host $space"   :=+*****. +*+*=        +@@=---+@%- +@@ .@@=    %@# =@@.  *@%   #@% =@@#***%@@" -ForegroundColor Blue
+    Write-Host $space" .+**+-.... -*+*+*=       +@@.   -@@+ +@@  %@#: .-@@+ +@@.  *@%   #@# :@@*-:-+=:" -ForegroundColor Blue
+    Write-Host $space".**+- :=+++=+****+*+.     +@%%%%%%#=  =@%. .+%@%%@#-  =@%.  +@%   *@#  :*%%%%%+" -ForegroundColor Blue
+    Write-Host $space"+*+*++************+**:        .               ...                         ..." -ForegroundColor Blue
+    Write-Host $space"Formatter, linter, bundler, and more for JavaScript, TypeScript, JSON, HTML, Markdown, and CSS." -ForegroundColor Blue
     Write-Host ""
 }
 
 function Uninstall-Biome {
-    # Add Uninstall logic here
+    scoop uninstall $app
+
+    if ($null -eq $env:BIOME_BINARY) {
+        [Environment]::SetEnvironmentVariable("BIOME_BINARY", $null, [EnvironmentVariableTarget]::User)
+    }
+
+    if ($null -eq $env:BIOME_CONFIG_PATH) {
+        [Environment]::SetEnvironmentVariable("BIOME_CONFIG_PATH", $null, [EnvironmentVariableTarget]::User)
+    }
 }
 
 function Update-Biome {
-    # Add Update logic here
+    scoop update $app
 }

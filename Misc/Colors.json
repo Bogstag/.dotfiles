@@ -1,0 +1,331 @@
+{
+    "$schema": "ColorsSchema.json",
+    "Website": {
+        "HomePage": "https://colorkit.co/",
+        "SingleColor": "https://colorkit.co/color/$HEXNr/"
+    },
+    "Colors": [
+        {
+            "Hex": "#E500C1",
+            "Dec": 15007937,
+            "Name": "Ferocious Flamingo",
+            "ContrastWhite": "Ok",
+            "ContrastBlack": "Good",
+            "Usage": "Windows Accent Color"
+        },
+        {
+            "Hex": "#0BFF00",
+            "Dec": 786176,
+            "Name": "Fluorescent Green",
+            "ContrastWhite": "Fail",
+            "ContrastBlack": "Perfect"
+        },
+        {
+            "Hex": "#ff000b",
+            "Dec": 16711691,
+            "Name": "Bright Red",
+            "ContrastWhite": "Ok",
+            "ContrastBlack": "Good"
+        }
+    ],
+    "Palettes": {
+        "Template": [
+            {
+                "Order": 0,
+                "Hex": "#",
+                "Dec": 0,
+                "Name": "",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Fail"
+            }
+        ],
+        "PastelRainbowExtended": [
+            {
+                "Order": 1,
+                "Hex": "#FFADAD",
+                "Dec": 16756141,
+                "Name": "Apricot Haze",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 2,
+                "Hex": "#ffd6a5",
+                "Dec": 16766629,
+                "Name": "Tuscan",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 3,
+                "Hex": "#fdffb6",
+                "Dec": 16646070,
+                "Name": "Parchment",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 4,
+                "Hex": "#caffbf",
+                "Dec": 13303743,
+                "Name": "Frosted Mint Hills",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 5,
+                "Hex": "#9bf6ff",
+                "Dec": 9890047,
+                "Name": "Eternal Winter",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 6,
+                "Hex": "#96e8ff",
+                "Dec": 9890047,
+                "Name": "Alpine Expedition",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 7,
+                "Hex": "#a0c4ff",
+                "Dec": 10536191,
+                "Name": "Pastel Blue",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 8,
+                "Hex": "#bdb2ff",
+                "Dec": 12432127,
+                "Name": "Purple Illusion",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 9,
+                "Hex": "#debcff",
+                "Dec": 14597375,
+                "Name": "Neon Boneyard",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 10,
+                "Hex": "#ffc6ff",
+                "Dec": 16762623,
+                "Name": "Sugar Chic",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 11,
+                "Hex": "#ffa7dc",
+                "Dec": 16754652,
+                "Name": "Fresh Gum",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            }
+        ],
+        "PastelRainbow": [
+            {
+                "Order": 1,
+                "Hex": "#FFADAD",
+                "Dec": 16756141,
+                "Name": "Apricot Haze",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 2,
+                "Hex": "#ffd6a5",
+                "Dec": 16766629,
+                "Name": "Tuscan",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 3,
+                "Hex": "#fdffb6",
+                "Dec": 16646070,
+                "Name": "Parchment",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 4,
+                "Hex": "#caffbf",
+                "Dec": 13303743,
+                "Name": "Frosted Mint Hills",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 5,
+                "Hex": "#9bf6ff",
+                "Dec": 9890047,
+                "Name": "Eternal Winter",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 6,
+                "Hex": "#a0c4ff",
+                "Dec": 10536191,
+                "Name": "Pastel Blue",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 7,
+                "Hex": "#bdb2ff",
+                "Dec": 12432127,
+                "Name": "Purple Illusion",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 8,
+                "Hex": "#ffc6ff",
+                "Dec": 16762623,
+                "Name": "Sugar Chic",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            }
+        ],
+        "MysteryOrder": [
+            {
+                "Order": 1,
+                "Hex": "#d663ff",
+                "Dec": 14050303,
+                "Name": "Flaming Flamingo",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 2,
+                "Hex": "#caffbf",
+                "Dec": 13303743,
+                "Name": "Frosted Mint Hills",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 3,
+                "Hex": "#FF5B86",
+                "Dec": 16735110,
+                "Name": "Stellar Strawberry",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 4,
+                "Hex": "#0aff99",
+                "Dec": 720793,
+                "Name": "Medium Spring Green",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 5,
+                "Hex": "#ff4cc0",
+                "Dec": 16731328,
+                "Name": "Drunken Flamingo",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 6,
+                "Hex": "#0aefff",
+                "Dec": 716799,
+                "Name": "Brain Freeze",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 7,
+                "Hex": "#a880ff",
+                "Dec": 11043071,
+                "Name": "Periwinkle",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 8,
+                "Hex": "#ff3be8",
+                "Dec": 16727016,
+                "Name": "Purple Pizzazz",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            }
+        ],
+        "ColorfulPastelRainbow": [
+            {
+                "Order": 1,
+                "Hex": "#FF6056",
+                "Dec": 16736342,
+                "Name": "Sunset Orange",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 2,
+                "Hex": "#F8FF00",
+                "Dec": 16318208,
+                "Name": "Electric Banana",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 3,
+                "Hex": "#FF8B00",
+                "Dec": 16747264,
+                "Name": "Dark Orange",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 4,
+                "Hex": "#2CFF00",
+                "Dec": 2948864,
+                "Name": "Signal Green",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 5,
+                "Hex": "#A77DFF",
+                "Dec": 10976767,
+                "Name": "Periwinkle",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 6,
+                "Hex": "#5394FF",
+                "Dec": 5477631,
+                "Name": "Sky Dancer",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 7,
+                "Hex": "#00E8FF",
+                "Dec": 59647,
+                "Name": "Brain Freeze",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            },
+            {
+                "Order": 8,
+                "Hex": "#FF29FF",
+                "Dec": 16722431,
+                "Name": "Magenta Fizz",
+                "ContrastWhite": "Fail",
+                "ContrastBlack": "Perfect"
+            }
+        ]
+    }
+}

@@ -4,7 +4,7 @@ Write-Host "Running $fileName"
 $jsonSystemState = "$env:dotfiles\SystemState.json"
 # Ensure the JSON file exists
 if (-Not (Test-Path $jsonSystemState)) {
-    # If the file does not exist, create it with a default date of '1900-01-01' (or any past date)
+    # If the file does not exist, create it with a default date of '1900-01-01'
     @{ LastLoginDate = '1900-01-01' } | ConvertTo-Json | Set-Content -Path $jsonSystemState
 }
 
@@ -18,8 +18,6 @@ if ($null -eq $totalTimeMs) {
 
 Write-Host "    ______________________________________        " -ForegroundColor Green
 Write-Host "    Loading personal profile took $totalTimeMs ms." -ForegroundColor Green
-
-@{ LastLoginDate = [DateTime]::Now.ToString("yyyy-MM-dd") } | ConvertTo-Json | Set-Content -Path $jsonSystemState
 
 # $suaJob = Start-ThreadJob -ScriptBlock { Scoop Update * }
 # Write-Host "sua job is running: Receive-Job -Job $suaJob"
