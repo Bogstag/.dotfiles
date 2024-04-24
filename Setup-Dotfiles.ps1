@@ -1,6 +1,6 @@
 function isAdmin {
     if (!(isElevated)) {
-        Write-Host 'You need to be an Admin to run this script.'
+        Write-Error 'You need to be an Admin to run this script.'
         exit
     }
 }
@@ -15,11 +15,21 @@ function isElevated {
 
 function Install-Scoop {
     Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-    Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+    & Invoke-RestMethod -Uri https://get.scoop.sh
 }
 
 function clone($repo, $directory) {
     git clone $repo $directory
+}
+
+if ($null -eq $Env:SCOOP) {
+    $Env:SCOOP = "$HOME\scoop"
+}
+if ($null -eq $Env:dotfiles) {
+    $Env:DOTFILES = "$HOME\.dotfiles"
+}
+if ($null -eq $Env:XDG_CONFIG_HOME) {
+    $Env:XDG_CONFIG_HOME = "$HOME\.config"
 }
 
 $repo = "https://github.com/Bogstag/.dotfiles.git"
@@ -27,8 +37,8 @@ $repo = "https://github.com/Bogstag/.dotfiles.git"
 Write-Host "This will try to install your .dotfiles (Yes, it is not my anymore. I take no responsibility)" -ForegroundColor "Blue"
 
 # Create a .dotfiles SymbolicLink in USERPROFILE
-New-Item -ItemType "SymbolicLink" -Path "$env:USERPROFILE\.dotfiles" -Target "$PSScriptRoot"
+New-Item -ItemType "SymbolicLink" -Path "$Env:USERPROFILE\.dotfiles" -Target "$PSScriptRoot"
 
-# Invoke-Expression "$env:DOTFILES_PATH\Dotfiles.ps1";
+# Invoke-Expression "$Env:DOTFILES_PATH\Dotfiles.ps1";
 
 Write-Host "Installation and configuration complete, please restart your device if needed and 🙏." -ForegroundColor "Blue"

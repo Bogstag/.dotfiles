@@ -1,29 +1,67 @@
+using module DotfilesModule
+# $ErrorActionPreference = "Continue"
+# $DebugPreference = 'Continue'
+# $ErrorActionPreference = "Stop"
+# $ErrorActionPreference = "SilentlyContinue"
+# $VerbosePreference = 'SilentlyContinue'
+# $DebugPreference = 'SilentlyContinue'
+
+
 $fileName = Split-Path -Leaf $PSCommandPath
 Write-Host "Running $fileName"
 
-$jsonSystemState = "$env:dotfiles\SystemState.json"
-# Ensure the JSON file exists
-if (-Not (Test-Path $jsonSystemState)) {
-    # If the file does not exist, create it with a default date of '1900-01-01'
-    @{ LastLoginDate = '1900-01-01' } | ConvertTo-Json | Set-Content -Path $jsonSystemState
+$SecretScript = "$Env:dotfiles\PowerShell\Set-Secrets.ps1"
+if (Test-Path $SecretScript) {
+    . $SecretScript
+} else {
+    Write-Error "Unable to find SecretScript script at $SecretScript"
 }
 
-if ($null -eq $totalTimeMs) {
-    # Init a variable that holds total execution time in ms.
-    $totalTimeMs = 0
+$AppCentralScript = "$Env:dotfiles\Apps\AppCentral.ps1"
+if (Test-Path $AppCentralScript) {
+    . $AppCentralScript -Command "enable-apps"
+} else {
+    Write-Error "Unable to find AppCentralScript script at $AppCentralScript"
 }
-. $env:dotfiles\PowerShell\Set-Secrets.ps1
-. $env:dotfiles\ScoopApps\ScoopAppCentral.ps1 -Command "enable-apps"
-. $env:dotfiles\PowerShell\Extended-Profile.ps1
+
+$ExtProfileScript = "$Env:dotfiles\PowerShell\Extended-Profile.ps1"
+if (Test-Path $ExtProfileScript) {
+    . $ExtProfileScript
+} else {
+    Write-Error "Unable to find ExtProfileScript script at $ExtProfileScript"
+}
 
 Write-Host "    ______________________________________        " -ForegroundColor Green
-Write-Host "    Loading personal profile took $totalTimeMs ms." -ForegroundColor Green
+Write-Host "    Loading personal profile took $($ProfileLoadTime.Milliseconds) ms." -ForegroundColor Green
 
+# Log measurements
+$logEntry = @{
+    Timestamp    = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    Milliseconds = $ProfileLoadTime.Milliseconds
+    Measurements = $ProfileLoadTime.Measurements
+}
+$logFilePath = "$Env:dotfiles\ProfileLoadTime-$Env:COMPUTERNAME.csv"
+try {
+    # Check if the file exists and has content
+    if (-Not (Test-Path $logFilePath)) {
+        $logEntry | Export-Csv -Path $logFilePath -NoTypeInformation -UseQuotes AsNeeded -Encoding utf8BOM
+    } else {
+        $logEntry | Export-Csv -Path $logFilePath -Append -NoTypeInformation -UseQuotes AsNeeded -Encoding utf8BOM
+    }
+} catch {
+    Write-Error "Failed to write log entry: $_"
+}
+
+$SystemState.SaveState()
+# $SaveSystemStateJob = Start-ThreadJob -ScriptBlock {
+#     $SystemState = $using:SystemState
+#     $SystemState.SaveState()
+# }
 # $suaJob = Start-ThreadJob -ScriptBlock { Scoop Update * }
 # Write-Host "sua job is running: Receive-Job -Job $suaJob"
 
 
-# . $env:dotfiles\PowerShell\prompt.ps1
+# . $Env:dotfiles\PowerShell\prompt.ps1
 
 # Template for measure
 # Write-Host " ⏱️ X => " -NoNewline -ForegroundColor Green
