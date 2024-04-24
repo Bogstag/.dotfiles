@@ -45,8 +45,12 @@ class SystemState {
         if ($null -eq $appInstance) {
             $this.AppData[$appName] = $data
         } else {
+            # Iterate over all properties of the app instance except 'Logo'
             $appInstance.GetType().GetProperties() | ForEach-Object {
-                $data[$_.Name] = $_.GetValue($appInstance)
+                # Check if the property name is 'Logo', skip it if true
+                if ($_.Name -ne 'Logo') {
+                    $data[$_.Name] = $_.GetValue($appInstance)
+                }
             }
 
             if ($null -eq $this.AppData) {
@@ -54,9 +58,9 @@ class SystemState {
             }
 
             $this.AppData[$appName] = $data
-            # $this.SaveState()
         }
     }
+
 
     [bool] HasRunToday() {
         if ($this.LastProfileRunDate -and ([DateTime]::Parse($this.LastProfileRunDate).Date -eq [DateTime]::Now.Date)) {

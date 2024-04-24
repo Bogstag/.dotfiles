@@ -1,2 +1,5 @@
 **/*Secrets*
 SystemState.json
+.vscode/tasks.json
+ProfileLoadTime-TUF.csv
+SystemState-TUF.json
