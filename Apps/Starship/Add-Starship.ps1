@@ -1,5 +1,5 @@
 # 99% of all code here is from https://github.com/giggio/poshfiles
-Write-Host " ⏱️ Loading Beautiful Prompt => " -NoNewline -ForegroundColor Green
+Write-Host " ⏱️ Starship => " -NoNewline -ForegroundColor Green
 $t = Measure-Command {
     function Add-Starship {
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingInvokeExpression', "", Scope = 'function', Justification = 'This is how you setup starship')]

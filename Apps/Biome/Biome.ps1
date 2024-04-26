@@ -1,17 +1,21 @@
 ﻿using module DotfilesModule
 
 class Biome : App {
+    [string] $Cache
+    [string] $AppFolder
     [string] $Logo
 
-    Biome() : base(
-        "Biome",
-        "main",
-        "$Env:SCOOP\apps\biome\current\biome.exe",
-        "https://github.com/biomejs/biome",
-        "https://biomejs.dev/guides/getting-started/",
-        "$Env:XDG_CONFIG_HOME\biome",
-        "biome.json"
-    ) {
+    Biome() : base(@{
+            Name         = "Biome"
+            Store        = "main"
+            VerifyFile   = "$Env:SCOOP\apps\biome\current\biome.exe"
+            Repo         = "https://github.com/biomejs/biome"
+            Docs         = "https://biomejs.dev/guides/getting-started/"
+            ConfigFolder = "$Env:XDG_CONFIG_HOME\biome"
+            ConfigFile   = "biome.json"
+        }) {
+        $this.Cache = $null
+        $this.AppFolder = $PSScriptRoot
         $this.Logo = @"
           -=
          -**=              ......      ..
@@ -34,9 +38,10 @@ Formatter, linter, bundler for JavaScript, JSON, HTML, Markdown, and CSS.
     #     # Logic to compare dotfiles with reference to see if something has changed.
     # }
 
-    # [void] DeployDotfiles() {
-    #     # Logicc to deploy dotfile
-    # }
+    [void] DeployDotfiles() {
+        # Logic to get dotfiles to the right location, by copying or symlink.
+        $this.AppDeployDotfiles($this.AppFolder)
+    }
 
     # [void] Enable() {
     #     # Logic to run in profile to import, dotsource or invoke app
@@ -80,13 +85,13 @@ Formatter, linter, bundler for JavaScript, JSON, HTML, Markdown, and CSS.
     # }
 
     [void] Uninstall() {
-        scoop uninstall "$($this.Bucket)/$($this.Name)"
+        scoop uninstall "$($this.Store)/$($this.Name)"
 
-        if ($null -eq $Env:BIOME_BINARY) {
+        if ($null -ne $Env:BIOME_BINARY) {
             [Environment]::SetEnvironmentVariable("BIOME_BINARY", $null, [EnvironmentVariableTarget]::User)
         }
 
-        if ($null -eq $Env:BIOME_CONFIG_PATH) {
+        if ($null -ne $Env:BIOME_CONFIG_PATH) {
             [Environment]::SetEnvironmentVariable("BIOME_CONFIG_PATH", $null, [EnvironmentVariableTarget]::User)
         }
     }

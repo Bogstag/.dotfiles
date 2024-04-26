@@ -1,0 +1,23 @@
+[core]
+	symlinks = true
+[init]
+  defaultBranch = main
+[user]
+	name = Bogstag
+	email = 8104765+Bogstag@users.noreply.github.com
+# INCLUDES
+# --------
+# Local/Private config goes in the include
+[include]
+  path = ~/.gitconfig.local
+[credential]
+	helper = manager
+[credential "helperselector"]
+	selected = manager
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[pull]
+	ff = only

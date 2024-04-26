@@ -42,39 +42,11 @@ function New-App {
     [OutputType([App])]
     param(
         [Parameter(Mandatory = $true)]
-        [string] $Name,
-
-        [Parameter(Mandatory = $true)]
-        [string] $Logo,
-
-        [Parameter(Mandatory = $true)]
-        [string] $Store,
-
-        [Parameter(Mandatory = $true)]
-        [string] $VerifyFile,
-
-        [Parameter(Mandatory = $true)]
-        [string] $Repo,
-
-        [Parameter(Mandatory = $true)]
-        [string] $Docs,
-
-        [Parameter(Mandatory = $true)]
-        [string] $ConfigFolder,
-
-        [Parameter(Mandatory = $true)]
-        [string] $ConfigFile
+        [hashtable] $Props
     )
 
     return [App]::new(
-        $Name,
-        $Logo,
-        $Store,
-        $VerifyFile,
-        $Repo,
-        $Docs,
-        $ConfigFolder,
-        $ConfigFile
+        $Props
     )
 }
 

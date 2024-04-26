@@ -1,0 +1,184 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+# SOURCES
+# https://starship.rs/config
+# https://starship.rs/advanced-config/
+# https://starship.rs/presets/nerd-font.html#configuration
+
+# DEBUG
+# starship explain
+# STARSHIP_LOG=trace
+
+
+add_newline = true
+
+# nf-ple icons
+#               
+# [](#9A348E)\
+format = """
+[┌](fg:#00ff00)\
+[](fg:#FF6056)\
+$os\
+[](fg:#F8FF00 bg:#FF6056)\
+$username\
+[](fg:#FF8B00 bg:#F8FF00)\
+$directory\
+[](fg:#2CFF00 bg:#FF8B00)\
+$dotnet\
+$nodejs\
+$perl\
+$php\
+$python\
+[](fg:#A77DFF bg:#2CFF00)\
+$git_branch\
+$git_status\
+[](fg:#5394ff bg:#A77DFF)\
+$docker_context\
+$terraform\
+[](fg:#00E8FF bg:#5394ff)\
+$jobs\
+[](fg:#ff29ff bg:#00E8FF)\
+$time\
+[](fg:#ff29ff)\
+$line_break\
+[└](fg:#00ff00)\
+
+$character"""
+#
+continuation_prompt = " ➕ "
+
+# $git_commit\
+# $git_state\
+
+# nf-ple and nf-pl icons
+#                
+
+[character]
+success_symbol = "[](fg:#0bff00)"
+error_symbol = "[](fg:#ff000b)"
+
+# 1 FF6056
+[os]
+style = "fg:black bg:#FF6056"
+disabled = false
+format = '[ $symbol]($style)'
+
+# 2 FF8B00
+[username]
+show_always = false
+style_user = "fg:black bg:#F8FF00"
+style_root = "fg:#ff000b bg:#F8FF00"
+format = '[ $user ]($style)'
+disabled = false
+
+# 3 FF8B00
+[directory]
+style = "black bg:#FF8B00"
+format = "[ $path ]($style)[$read_only]($read_only_style)"
+truncate_to_repo = false
+truncation_length = 12
+truncation_symbol = "…/"
+
+[directory.substitutions]
+# "~" = "🏠"
+"repos" = ""
+# "Documents" = "󰈙 "
+"Documents" = "📄"
+"Downloads" = "󰇚"
+"Music" = "󰎇"
+"Pictures" = "🖼️"
+"Desktop" = ""
+"PowerShellRepos" = ""
+"Python" = "󰌠"
+# Keep in mind that the order matters. For example:
+# "Important Documents" = " 󰈙 "
+# will not be replaced, because "Documents" was already substituted before.
+# So either put "Important Documents" before "Documents" or use the substituted version:
+# "Important 󰈙 " = " 󰈙 "
+
+# 4 2CFF00
+[dotnet]
+symbol = " "
+format = "[ $symbol($version )(with $tfm )]($style)"
+style = "black bg:#2CFF00"
+
+[nodejs]
+symbol = ""
+style = "black bg:#2CFF00"
+format = '[ $symbol ($version) ]($style)'
+version_format = 'v${major}.${minor}'
+
+[perl]
+style = "black bg:#2CFF00"
+format = '[ $symbol ($version) ]($style)'
+
+[php]
+style = "black bg:#2CFF00"
+format = '[ $symbol ($version) ]($style)'
+version_format = 'v${major}.${minor}'
+
+[python]
+symbol = " "
+style = "black bg:#2CFF00"
+format = '[ ${symbol} ${pyenv_prefix} (${version}) (\($virtualenv\)) ]($style)'
+version_format = 'v${major}.${minor}'
+
+# 5 A77DFF
+[git_branch]
+only_attached = true
+symbol = ""
+# format = '[ $symbol $branch ]($style)'
+format = '[ $symbol $branch(:$remote_branch) ]($style)'
+style = "black bg:#A77DFF"
+
+[git_commit]
+# commit_hash_length = 4
+format = '[ \\($hash $tag\\) ]($style)'
+style = "black bg:#A77DFF"
+
+[git_state]
+format = ' \([$state( $progress_current/$progress_total) ]($style)\)'
+style = "black bg:#A77DFF"
+
+[git_status]
+format = '[ $all_status$ahead_behind ]($style)'
+style = "black bg:#A77DFF"
+# windows_starship = '/mnt/c/Users/username/scoop/apps/starship/current/starship.exe'
+ahead = "⇡${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+behind = "⇣${count}"
+untracked = "🤷 ${count}"
+modified = "📝 ${count}"
+deleted = " ${count}"
+staged = "➕ ${count}"
+
+# 6 5394ff
+[docker_context]
+symbol = " "
+style = "black bg:#5394ff"
+format = '[ $symbol $context ]($style)'
+
+[terraform]
+format = '[ $symbol $workspace ]($style)'
+style = "black bg:#5394ff"
+version_format = 'v${major}.${minor}'
+
+# 7 00E8FF
+[jobs]
+symbol = '󰒓'
+number_threshold = 0
+symbol_threshold = 0
+style = "black bg:#00E8FF"
+format = '[ $symbol $number ]($style)'
+
+# 8 ff29ff
+[time]
+disabled = false
+time_format = "%R"           # Hour:Minute Format
+style = "black bg:#ff29ff"
+format = '[ $time ]($style)'
+
+# [status]
+# disabled = false
+# style = "black bg:#33658A"
+# format = '[ $symbol $status ]($style)'
+# success_symbol = '✅'

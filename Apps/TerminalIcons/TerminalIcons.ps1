@@ -1,17 +1,21 @@
 using module DotfilesModule
 
 class TerminalIcons : App {
+    [string] $Cache
+    [string] $AppFolder
     [string] $Logo
 
-    TerminalIcons() : base(
-        "Terminal-Icons",
-        "extras",
-        "$Env:SCOOP\modules\Terminal-Icons\Terminal-Icons.psd1",
-        "https://github.com/devblackops/Terminal-Icons",
-        "https://github.com/devblackops/Terminal-Icons",
-        $null,
-        $null
-    ) {
+    TerminalIcons() : base(@{
+            Name       = "Terminal-Icons"
+            Store      = "extras"
+            VerifyFile = "$Env:SCOOP\modules\Terminal-Icons\Terminal-Icons.psd1"
+            Repo       = "https://github.com/devblackops/Terminal-Icons"
+            Docs       = "https://github.com/devblackops/Terminal-Icons"
+            # ConfigFolder =
+            # ConfigFile =
+        }) {
+        $this.Cache = $null
+        $this.AppFolder = $PSScriptRoot
         $this.Logo = @"
 ░▀█▀░█▀▀░█▀▄░█▄█░▀█▀░█▀█░█▀█░█░░░░░░░▀█▀░█▀▀░█▀█░█▀█░█▀▀
 ░░█░░█▀▀░█▀▄░█░█░░█░░█░█░█▀█░█░░░▄▄▄░░█░░█░░░█░█░█░█░▀▀█

@@ -1,27 +1,35 @@
-
 # class App {
 #     [string] $Name
-#     [string] $Store
-#     [string] $VerifyFile
-#     [string] $Repo
-#     [string] $Docs
+#     [string] $Store # Stores in Scoop
+#     [string] $VerifyFile # File that exist if installed, recommended is exe file.
+#     [string] $Repo # URL to Repo
+#     [string] $Docs # URL to Docs
 #     [string] $ConfigFolder
 #     [string] $ConfigFile
+#     [string] $Version
+#     [datetime] $AppLastUpdate
 
-#     App([string] $Name,
-#         [string] $Store,
-#         [string] $VerifyFile,
-#         [string] $Repo,
-#         [string] $Docs,
-#         [string] $ConfigFolder,
-#         [string] $ConfigFile) {
-#         $this.Name = $Name
-#         $this.Store = $Store # Buckets in Scoop
-#         $this.VerifyFile = $VerifyFile # File that exist if installed, recommended is exe file.
-#         $this.Repo = $Repo # URL to Repo
-#         $this.Docs = $Docs # URL to Docs
-#         $this.ConfigFolder = $ConfigFolder
-#         $this.ConfigFile = $ConfigFile
+#     App() {
+#         $this.Init(@{})
+#     }
+
+#     App([hashtable]$Properties) {
+#         $this.Init($Properties)
+#     }
+
+#     App([string]$Name, [string]$Store, [string]$VerifyFile) {
+#         $this.Init(@{Name = $Name; Store = $Store; VerifyFile = $VerifyFile })
+#     }
+
+#     App([string]$Name, [string]$Store, [string]$VerifyFile, [string]$Repo, [string]$Docs) {
+#         $this.Init(@{Name = $Name; Store = $Store; VerifyFile = $VerifyFile; Repo = $Repo; Docs = $Docs })
+#     }
+
+#     # Shared initializer method
+#     [void] Init([hashtable]$Properties) {
+#         foreach ($Property in $Properties.Keys) {
+#             $this.$Property = $Properties.$Property
+#         }
 #     }
 
 #     # [void] Clear() {
@@ -32,8 +40,7 @@
 #     #     # Logic to compare dotfiles with reference to see if something has changed.
 #     # }
 
-#     [void] DeployDotfiles() {
-#         # $HOME\.config\biome\biome.json
+#     [void] AppDeployDotfiles([string] $AppFolder) {
 #         if (-Not (Test-Path $($this.ConfigFolder) -PathType Container)) {
 #             New-Item -Path $($this.ConfigFolder) -ItemType "Directory"
 #         } else {
@@ -43,7 +50,7 @@
 #             Rename-Item -Path "$($this.ConfigFolder)\$($this.ConfigFile)" -NewName "$($this.ConfigFile).old" -Force -ErrorAction SilentlyContinue
 #         }
 
-#         New-Item -ItemType SymbolicLink -Path $($this.ConfigFolder)\$($this.ConfigFile) -Target $PSScriptRoot\$($this.ConfigFile)
+#         New-Item -ItemType SymbolicLink -Path "$($this.ConfigFolder)\$($this.ConfigFile)" -Target "$($AppFolder)\$($this.ConfigFile)"
 #     }
 
 #     # [void] Enable() {
@@ -53,7 +60,7 @@
 #     [void] Install() {
 #         # Logic to install app
 #         if (-Not (Test-Path "$Env:SCOOP\buckets\$($this.Store)" -PathType Container)) {
-#             scoop bucket add -Name "$($this.Store)"
+#             scoop Store add -Name "$($this.Store)"
 #         }
 #         if (-Not (Test-Path $this.VerifyFile -PathType Leaf)) {
 #             scoop install "$($this.Store)/$($this.Name)"
@@ -79,20 +86,20 @@
 #         Start-Process "$($this.Docs)"
 #     }
 
-#     [void] ShowLogo([int] $windowWidth, [string] $logo) {
-#         # Set logo first in file for a nice experience
-#         if (-not $windowWidth) {
-#             $windowWidth = 120
-#         }
+#     [void] ShowLogo() {
+#         # Set Logo first in file for a nice experience
+#         # -ForegroundColor Black, DarkBlue, DarkGreen, DarkCyan, DarkRed, DarkMagenta, DarkYellow, Gray, DarkGray, Blue, Green, Cyan, Red, Magenta, Yellow, White
+#         # -BackgroundColor Black, DarkBlue, DarkGreen, DarkCyan, DarkRed, DarkMagenta, DarkYellow, Gray, DarkGray, Blue, Green, Cyan, Red, Magenta, Yellow, White
+#         $windowWidth = $Script:windowWidth
 
 #         # Determine the maximum width of any line in the logo
-#         $maxWidth = ($logo -split "`n" | Measure-Object -Property Length -Maximum).Maximum
+#         $maxWidth = ($this.Logo -split "`n" | Measure-Object -Property Length -Maximum).Maximum
 
 #         # Calculate the left padding based on the window width
 #         $space = " " * (($windowWidth - $maxWidth) / 2)
 
 #         # Split logo into lines and write each one with proper alignment
-#         $logo -split "`n" | ForEach-Object {
+#         $this.Logo -split "`n" | ForEach-Object {
 #             Write-Host $space$_ -ForegroundColor Blue
 #         }
 #     }
@@ -109,16 +116,21 @@
 
 #     [void] Reset() {
 #         # Logic to reset app
-#         scoop reset "$($this.Bucket)/$($this.Name)"
+#         scoop reset "$($this.Store)/$($this.Name)"
 #     }
 
 #     [void] Uninstall() {
-#         scoop uninstall "$($this.Bucket)/$($this.Name)"
+#         scoop uninstall "$($this.Store)/$($this.Name)"
 #     }
 
 #     [void] Update() {
 #         # Logic to update app
-#         scoop update "$($this.Bucket)/$($this.Name)"
+#         scoop update "$($this.Store)/$($this.Name)"
+#     }
+
+#     [void] UpdateVersion([string] $Version) {
+#         # Logic to update app
+#         $this.Version = $Version
 #     }
 
 #     [void] UpdateSystemState([SystemState] $SystemState) {

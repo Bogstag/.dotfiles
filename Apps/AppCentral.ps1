@@ -2,7 +2,7 @@ using module DotfilesModule
 param (
     [string]$Command
 )
-
+# $DebugPreference = 'Continue'
 $appsPath = "$Env:dotfiles\Apps"
 $appsFolder = Get-ChildItem -Path $appsPath -Directory
 $instances = @{}
@@ -13,6 +13,7 @@ foreach ($appFolder in $appsFolder) {
     Write-Debug "scriptPath: $scriptPath"
     if (Test-Path $scriptPath) {
         . $scriptPath
+        Write-Debug "appFolder.Name: $($appFolder.Name)"
         $instances[$appFolder.Name] = New-Object -TypeName $($appFolder.Name)
         $SystemState.UpdateAppData([string] $($appFolder.Name), [object] $instances[$appFolder.Name])
     } else {

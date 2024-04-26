@@ -1,0 +1,7 @@
+MiddleClickAction=extend
+RightClickAction=paste
+ThemeFile=dracula
+Font=CaskaydiaCove NFM
+FontHeight=12
+Locale=sv_SE
+Charset=UTF-8
