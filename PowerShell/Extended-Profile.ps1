@@ -12,6 +12,13 @@ Exit-IfAlreadyRunToday
 $fileName = Split-Path -Leaf $PSCommandPath
 Write-Host "Running $fileName"
 
+$AppCentralScript = "$Env:dotfiles\Apps\AppCentral.ps1"
+if (Test-Path $AppCentralScript) {
+    . $AppCentralScript -Command "set-apps-environmentvariables"
+} else {
+    Write-Error "Unable to find AppCentralScript script at $AppCentralScript"
+}
+
 # Host specific setup
 if (Test-Path $Env:dotfiles\Host\$Env:COMPUTERNAME.ps1 -PathType Leaf) {
     Write-Host " ⏱️ $Env:COMPUTERNAME => " -NoNewline -ForegroundColor Green

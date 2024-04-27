@@ -1,5 +1,7 @@
 # .dotfiles
 
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
+
 Trying to get me, Windows, apps and dotfiles in order.
 
 Mainly a way for me to learn more about PowerShell. That is why some parts are way more complicated then they should be.

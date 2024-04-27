@@ -129,7 +129,7 @@ class App {
         $this.UpdateSystemState()
     }
 
-    [void] UpdateSystemState([SystemState] $SystemState) {
-        $SystemState.UpdateAppData($this.Name, $this)
+    [void] UpdateSystemState() {
+        [SystemState]::UpdateAppData($this.Name, $this)
     }
 }

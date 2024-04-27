@@ -44,7 +44,7 @@ api keys, and tokens in git repos.
 
     [void] Clear() {
         # Logic to clean app's cache or other maintenance tasks.
-        Remove-Item -Path "$($this.ConfigFolder)\$($this.ConfigFile).old" -Force -ErrorAction SilentlyContinue
+        # Remove-Item -Path "$($this.ConfigFolder)\$($this.ConfigFile).old" -Force -ErrorAction SilentlyContinue
         Remove-Item -Path "$($Env:dotfiles)\$($this.ConfigFile).old" -Force -ErrorAction SilentlyContinue
     }
 
@@ -54,7 +54,7 @@ api keys, and tokens in git repos.
 
     [void] DeployDotfiles() {
         # Logic to get dotfiles to the right location, by copying or symlink.
-        $this.AppDeployDotfiles($this.AppFolder)
+        # $this.AppDeployDotfiles($this.AppFolder)
 
         Remove-Item -Path "$($Env:dotfiles)\$($this.ConfigFile).old" -Force -ErrorAction SilentlyContinue
         Rename-Item -Path "$($Env:dotfiles)\$($this.ConfigFile)" -NewName "$($this.ConfigFile).old" -Force -ErrorAction SilentlyContinue
@@ -78,9 +78,8 @@ api keys, and tokens in git repos.
 
         # Add gitleaks to git pre-commit
         pre-commit install
-        # pre-commit installed at $this.dotfiles\.git\hooks\pre-commit
 
-        $this.SetEnvironmentVariables()
+        # $this.SetEnvironmentVariables()
     }
 
     # [void] Invoke() {
@@ -89,9 +88,9 @@ api keys, and tokens in git repos.
 
     [void] SetEnvironmentVariables() {
         # Logic to set app env variables
-        if (($null -eq $Env:GITLEAKS_CONFIG) -or ($this.ConfigFolder -ne $Env:GITLEAKS_CONFIG)) {
-            [Environment]::SetEnvironmentVariable("GITLEAKS_CONFIG", "$($this.ConfigFolder)", [EnvironmentVariableTarget]::User)
-        }
+        # if (($null -eq $Env:GITLEAKS_CONFIG) -or ($this.ConfigFolder -ne $Env:GITLEAKS_CONFIG)) {
+        #     [Environment]::SetEnvironmentVariable("GITLEAKS_CONFIG", "$($this.ConfigFolder)", [EnvironmentVariableTarget]::User)
+        # }
     }
 
     # [void] ShowDocs() {
@@ -119,16 +118,16 @@ api keys, and tokens in git repos.
         scoop uninstall "$($this.Store)/$($this.Name)"
 
         # Logic to unset env variables
-        if ($null -ne $Env:GITLEAKS_CONFIG) {
-            [Environment]::SetEnvironmentVariable("GITLEAKS_CONFIG", $null, [EnvironmentVariableTarget]::User)
-        }
+        # if ($null -ne $Env:GITLEAKS_CONFIG) {
+        #     [Environment]::SetEnvironmentVariable("GITLEAKS_CONFIG", $null, [EnvironmentVariableTarget]::User)
+        # }
 
         # Logic to remove dotfiles
         Remove-Item -Path "$($Env:dotfiles)\$($this.ConfigFile).old" -Force -ErrorAction SilentlyContinue
-        Rename-Item -Path "$($Env:dotfiles)\$($this.ConfigFile)" -NewName "$($this.ConfigFile).old" -Force -ErrorAction SilentlyContinue
+        Remove-Item -Path "$($Env:dotfiles)\$($this.ConfigFile)" -Force -ErrorAction SilentlyContinue
 
-        Remove-Item -Path "$($this.ConfigFolder)\$($this.ConfigFile)" -Force -ErrorAction SilentlyContinue
-        Remove-Item -Path "$($this.ConfigFolder)\$($this.ConfigFile)" -Force -ErrorAction SilentlyContinue
+        # Remove-Item -Path "$($this.ConfigFolder)\$($this.ConfigFile).old" -Force -ErrorAction SilentlyContinue
+        # Remove-Item -Path "$($this.ConfigFolder)\$($this.ConfigFile)" -Force -ErrorAction SilentlyContinue
     }
 
     # [void] Update() {
