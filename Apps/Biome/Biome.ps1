@@ -56,12 +56,14 @@ Formatter, linter, bundler for JavaScript, JSON, HTML, Markdown, and CSS.
     # }
 
     [void] SetEnvironmentVariables() {
-        if ($null -eq $Env:BIOME_BINARY) {
-            [Environment]::SetEnvironmentVariable("BIOME_BINARY", $($this.VerifyFile), [EnvironmentVariableTarget]::User)
+        $Value1 = "$($this.VerifyFile)"
+        if (($null -eq $Env:BIOME_BINARY) -or ($Value1 -ne $Env:BIOME_BINARY)) {
+            [Environment]::SetEnvironmentVariable("BIOME_BINARY", "$Value1", [EnvironmentVariableTarget]::User)
         }
 
-        if ($null -eq $Env:BIOME_CONFIG_PATH) {
-            [Environment]::SetEnvironmentVariable("BIOME_CONFIG_PATH", "$Env:XDG_CONFIG_HOME\biome\biome.json", [EnvironmentVariableTarget]::User)
+        $Value2 = "$Env:XDG_CONFIG_HOME\biome\biome.json"
+        if (($null -eq $Env:BIOME_CONFIG_PATH) -or ($Value2 -ne $Env:BIOME_CONFIG_PATH)) {
+            [Environment]::SetEnvironmentVariable("BIOME_CONFIG_PATH", "$Value2", [EnvironmentVariableTarget]::User)
         }
     }
 

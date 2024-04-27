@@ -40,7 +40,7 @@ foreach ($appFolder in $appsFolder) {
 
         'enable-apps' {
             if ($instances[$appFolder.Name].GetType().GetMethod('Enable')) {
-                Write-Host " ⏱️ $($instances[$appFolder.Name].Name) => " -NoNewline -ForegroundColor Green
+                Write-Host " ⏱️ Enable $($instances[$appFolder.Name].Name) => " -NoNewline -ForegroundColor Green
                 $t = Measure-Command {
                     $instances[$appFolder.Name].Enable()
                 }
@@ -59,7 +59,15 @@ foreach ($appFolder in $appsFolder) {
         }
 
         'set-apps-environmentvariables' {
-            $instances[$appFolder.Name].SetEnvironmentVariables()
+            if ($instances[$appFolder.Name].GetType().GetMethod('SetEnvironmentVariables')) {
+                Write-Host " ⏱️ Set Env Vars $($instances[$appFolder.Name].Name) => " -NoNewline -ForegroundColor Green
+                $t = Measure-Command {
+                    $instances[$appFolder.Name].SetEnvironmentVariables()
+                }
+                $ProfileLoadTime.Milliseconds += $t.Milliseconds
+                $ProfileLoadTime.Measurements += 1
+                Write-Host $t.Milliseconds"ms" -ForegroundColor Green
+            }
         }
 
         'show-apps-docs' {

@@ -77,12 +77,14 @@ and extremely customizable prompt!
 
     [void] SetEnvironmentVariables() {
         # Logic to set app env variables
-        if ($null -eq $Env:STARSHIP_CONFIG) {
-            [Environment]::SetEnvironmentVariable("STARSHIP_CONFIG", "$($this.ConfigFolder)\$($this.ConfigFile)", [EnvironmentVariableTarget]::User)
+        $Value1 = "$($this.ConfigFolder)\$($this.ConfigFile)"
+        if (($null -eq $Env:STARSHIP_CONFIG) -or ($Value1 -ne $Env:STARSHIP_CONFIG)) {
+            [Environment]::SetEnvironmentVariable("STARSHIP_CONFIG", "$Value1", [EnvironmentVariableTarget]::User)
         }
 
-        if ($null -eq $Env:STARSHIP_CACHE) {
-            [Environment]::SetEnvironmentVariable("STARSHIP_CACHE", "$($this.Cache)", [EnvironmentVariableTarget]::User)
+        $Value2 = "$($this.Cache)"
+        if (($null -eq $Env:STARSHIP_CACHE) -or ($Value2 -ne $Env:STARSHIP_CACHE)) {
+            [Environment]::SetEnvironmentVariable("STARSHIP_CACHE", "$Value2", [EnvironmentVariableTarget]::User)
         }
     }
 

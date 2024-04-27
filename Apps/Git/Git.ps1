@@ -78,8 +78,9 @@ class Git : App {
     # }
 
     [void] SetEnvironmentVariables() {
-        if ($null -eq $Env:GIT_INSTALL_ROOT) {
-            [Environment]::SetEnvironmentVariable("GIT_INSTALL_ROOT", "$Env:SCOOP\apps\git\current", [EnvironmentVariableTarget]::User)
+        $Value = "$Env:SCOOP\apps\git\current"
+        if (($null -eq $Env:GIT_INSTALL_ROOT) -or ($Value -ne $Env:GIT_INSTALL_ROOT)) {
+            [Environment]::SetEnvironmentVariable("GIT_INSTALL_ROOT", "$Value ", [EnvironmentVariableTarget]::User)
         }
     }
 

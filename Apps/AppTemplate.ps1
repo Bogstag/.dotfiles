@@ -15,7 +15,7 @@ class Template : App {
             ConfigFolder = "$Env:XDG_CONFIG_HOME\Template"
             ConfigFile   = "Template.json"
         }) {
-        $this.Cache = $null
+        $this.Cache = "$Env:XDG_CACHE_HOME\Template"
         $this.AppFolder = $PSScriptRoot
         $this.Logo = @"
 ░▀█▀░█▀▀░█▄█░█▀█░█░░░█▀█░▀█▀░█▀▀
@@ -51,8 +51,9 @@ class Template : App {
 
     # [void] SetEnvironmentVariables() {
     #     # Logic to set app env variables
-    #     if ($null -eq $Env:$app_ENV_VAR) {
-    #         [Environment]::SetEnvironmentVariable("$app_ENV_VAR", "ENV_VAR_VALUE",[EnvironmentVariableTarget]::User)
+    #     $Value = ""
+    #     if (($null -eq $Env:app_ENV_VAR) -or ($Value -ne $Env:app_ENV_VAR)) {
+    #         [Environment]::SetEnvironmentVariable("app_ENV_VAR", "$Value", [EnvironmentVariableTarget]::User)
     #     }
     # }
 
