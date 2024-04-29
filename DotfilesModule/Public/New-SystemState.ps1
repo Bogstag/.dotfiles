@@ -2,5 +2,5 @@ function New-SystemState {
     [cmdletbinding()]
     [OutputType([SystemState])]
     param()
-    return [SystemState]::new($Script:SystemStateJsonFile)
+    return [SystemState]::new()
 }

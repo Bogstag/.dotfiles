@@ -7,29 +7,15 @@ The New-App function constructs a new instance of the App class by accepting con
 file verification path, repository URL, documentation URL, configuration folder, and configuration file path.
 This function is used to initialize new applications with specific attributes defined at runtime.
 
-.PARAMETER Name
-The name of the application.
+.PARAMETER Props
+Hashtable with properties
 
-.PARAMETER Store
-The name of the store or location where the application is available.
+.PARAMETER Type
+App type
 
-.PARAMETER VerifyFile
-The file path used to verify the installation of the application.
-
-.PARAMETER Repo
-The URL of the application's source code repository.
-
-.PARAMETER Docs
-The URL of the application's documentation.
-
-.PARAMETER ConfigFolder
-The directory path where the application's configuration files are stored.
-
-.PARAMETER ConfigFile
-The path of the specific configuration file for the application.
 
 .EXAMPLE
-PS > $app = New-App -Name "ExampleApp" -Store "Main" -VerifyFile "C:\Apps\ExampleApp\app.exe" -Repo "https://github.com/example/app" -Docs "https://example.com/docs" -ConfigFolder "C:\Apps\ExampleApp\Config" -ConfigFile "config.json"
+PS > $app = New-App -Name "ExampleApp" -Store "Main" -VerifyFile "C:\Apps\ExampleApp\app.exe" -Repo "https://github.com/example/app" -Docs "https://example.com/docs" -DotfilesFolder "C:\Apps\ExampleApp\Config" -Dotfiles "config.json"
 This example creates a new application object for 'ExampleApp' with specified paths and URLs for its configuration and documentation.
 
 .OUTPUTS
@@ -42,11 +28,16 @@ function New-App {
     [OutputType([App])]
     param(
         [Parameter(Mandatory = $true)]
-        [hashtable] $Props
+        [hashtable] $Props,
+
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Scoop')]
+        [AppType] $Type
     )
 
     return [App]::new(
-        $Props
+        $Props,
+        $Type
     )
 }
 

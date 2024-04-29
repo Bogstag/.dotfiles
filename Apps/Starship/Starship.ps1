@@ -1,23 +1,9 @@
 ﻿using module DotfilesModule
 
-# Define a class for app-specific operations
 class Starship : App {
-    [string] $Cache
-    [string] $AppFolder
-    [string] $Logo
 
     Starship() : base(@{
-            Name         = "Starship"
-            Store        = "main"
-            VerifyFile   = "$Env:SCOOP\apps\starship\current\starship.exe"
-            Repo         = "https://github.com/starship/starship"
-            Docs         = "https://starship.rs/config/"
-            ConfigFolder = "$Env:XDG_CONFIG_HOME"
-            ConfigFile   = "Starship.toml"
-        }) {
-        $this.Cache = "$Env:XDG_CACHE_HOME\starship"
-        $this.AppFolder = $PSScriptRoot
-        $this.Logo = @"
+            Logo            = @"
              .:::::--:::::.
          .::----------------::.
       .:------------------------:.
@@ -41,103 +27,62 @@ class Starship : App {
 The minimal, blazing fast,
 and extremely customizable prompt!
 "@
+            Name            = "Starship"
+            Store           = "main"
+            VerifyFile      = "$Env:SCOOP\apps\starship\current\starship.exe"
+            GithubOwnerRepo = "starship/starship"
+            Docs            = "https://starship.rs/config/"
+            DotfilesFolder  = "$Env:XDG_CONFIG_HOME"
+            Dotfiles        = @(
+                "$Env:XDG_CONFIG_HOME\Starship.toml"
+            )
+            CacheFolder     = "$Env:XDG_CACHE_HOME\starship"
+            AppFolder       = "$PSScriptRoot"
+        }) {
     }
 
-    # [void] Clear() {
-    #     # Logic to clean app's cache or other maintenance tasks.
-    # }
+    # [void] Clear() {}
 
-    # [void] CompareDotfiles() {
-    #     # Logic to compare dotfiles with reference to see if something has changed.
-    # }
+    # [void] DeployDotfiles() {}
 
-    [void] DeployDotfiles() {
-        # Logic to get dotfiles to the right location, by copying or symlink.
-        $this.AppDeployDotfiles($this.AppFolder)
-    }
+    # [void] Enable() {}
 
-    # [void] Enable() {
-    #     # Logic to run in profile to import, dotsource or invoke app
-    #     # Import-Module "$Env:SCOOP\modules\$($this.Name)"
-    # }
+    # [uri] GetRepoUri([string]$Switch) {}
 
-    [void] Install() {
-        # Logic to install app
-        if (-Not (Test-Path "$Env:SCOOP\buckets\$($this.Store)" -PathType Container)) {
-            scoop Store add -Name "$($this.Store)"
-        }
-        if (-Not (Test-Path $this.VerifyFile -PathType Leaf)) {
-            scoop install "$($this.Store)/$($this.Name)"
-        }
-    }
+    # [void] Install() {}
 
-    [void] Invoke() {
-        # Logic to run the app.
-    }
+    # [void] Invoke() {}
+
+    # [void] RemoveDotfiles() {}
+
+    # [void] Reset() {}
 
     [void] SetEnvironmentVariables() {
         # Logic to set app env variables
-        $Value1 = "$($this.ConfigFolder)\$($this.ConfigFile)"
+        $Value1 = "$($this.Dotfiles.FullName)"
         if (($null -eq $Env:STARSHIP_CONFIG) -or ($Value1 -ne $Env:STARSHIP_CONFIG)) {
             [Environment]::SetEnvironmentVariable("STARSHIP_CONFIG", "$Value1", [EnvironmentVariableTarget]::User)
         }
 
-        $Value2 = "$($this.Cache)"
+        $Value2 = "$($this.CacheFolder)"
         if (($null -eq $Env:STARSHIP_CACHE) -or ($Value2 -ne $Env:STARSHIP_CACHE)) {
             [Environment]::SetEnvironmentVariable("STARSHIP_CACHE", "$Value2", [EnvironmentVariableTarget]::User)
         }
     }
 
-    # [void] ShowDocs() {
-    #     # Logic to show app documentation
-    # }
+    # [void] ShowDocs() {}
 
-    # [void] ShowLogo() {
-    #     # Logic to show Logo
-    # }
+    # [void] ShowLogo() {}
 
-    # [void] ShowReleases() {
-    #     # Logic to show release notes or changelog
-    # }
+    # [void] ShowReleases() {}
 
-    # [void] ShowRepo() {
-    #     # Logic to show app repository
-    # }
+    # [void] ShowRepo() {}
 
-    # [void] Reset() {
-    #     # Logic to reset app
-    # }
+    # [void] Uninstall() {}
 
-    [void] Uninstall() {
+    # [void] Update() {}
 
-        scoop uninstall "$($this.Store)/$($this.Name)"
-
-        if ($null -ne $Env:STARSHIP_CONFIG) {
-            [Environment]::SetEnvironmentVariable("STARSHIP_CONFIG", $null, [EnvironmentVariableTarget]::User)
-        }
-
-        if ($null -ne $Env:STARSHIP_CACHE) {
-            [Environment]::SetEnvironmentVariable("STARSHIP_CACHE", $null, [EnvironmentVariableTarget]::User)
-        }
+    [void] UpdateSystemState([SystemState] $systemState) {
+        $systemState.UpdateAppData($this.Name, $this)
     }
-
-    # [void] Update() {
-    #     scoop update "$($this.Store)/$($this.Name)"
-    #     'install-context', 'uninstall-context', 'install-file-associations', 'uninstall-file-associations' | ForEach-Object {
-    #         $reg_file_in = "$Env:SCOOP\buckets\$($this.Store)\scripts\git\$_.reg"
-    #         $reg_file_out = "$dir\$_.reg"
-    #         $git_root = "$dir".Replace('\', '\\')
-    #         if (Test-Path $reg_file_in) {
-    #             $content = Get-Content $reg_file_in
-    #             $content = $content.Replace('$git_root', $git_root)
-    #             if ($global) {
-    #                 $content = $content.Replace('HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE')
-    #             }
-    #             Set-Content -Path $reg_file_out -Value $content -Encoding Ascii
-    #         }
-    #     }
-    # }
-
-    # [void] UpdateSystemState([SystemState] $systemState) {
-    # }
 }

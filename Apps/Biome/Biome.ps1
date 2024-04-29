@@ -1,22 +1,9 @@
 ﻿using module DotfilesModule
 
 class Biome : App {
-    [string] $Cache
-    [string] $AppFolder
-    [string] $Logo
 
     Biome() : base(@{
-            Name         = "Biome"
-            Store        = "main"
-            VerifyFile   = "$Env:SCOOP\apps\biome\current\biome.exe"
-            Repo         = "https://github.com/biomejs/biome"
-            Docs         = "https://biomejs.dev/guides/getting-started/"
-            ConfigFolder = "$Env:XDG_CONFIG_HOME\biome"
-            ConfigFile   = "biome.json"
-        }) {
-        $this.Cache = $null
-        $this.AppFolder = $PSScriptRoot
-        $this.Logo = @"
+            Logo            = @"
           -=
          -**=              ......      ..
        .+****+.           +@@%%%%%#:  =%%.
@@ -28,32 +15,34 @@ class Biome : App {
 +*+*++************+**:        .               ...                         ...
 Formatter, linter, bundler for JavaScript, JSON, HTML, Markdown, and CSS.
 "@
+            Name            = "Biome"
+            Store           = "main"
+            VerifyFile      = "$Env:SCOOP\apps\biome\current\biome.exe"
+            GithubOwnerRepo = "biomejs/biome"
+            Docs            = "https://biomejs.dev/guides/getting-started/"
+            DotfilesFolder  = "$Env:XDG_CONFIG_HOME\biome"
+            Dotfiles        = @(
+                "$Env:XDG_CONFIG_HOME\biome\biome.json"
+            )
+            AppFolder       = "$PSScriptRoot"
+        }) {
     }
 
-    # [void] Clear() {
-    #     # Logic to clean app's cache or other maintenance tasks.
-    # }
+    # [void] Clear() {}
 
-    # [void] CompareDotfiles() {
-    #     # Logic to compare dotfiles with reference to see if something has changed.
-    # }
+    # [void] DeployDotfiles() {}
 
-    [void] DeployDotfiles() {
-        # Logic to get dotfiles to the right location, by copying or symlink.
-        $this.AppDeployDotfiles($this.AppFolder)
-    }
+    # [void] Enable() {}
 
-    # [void] Enable() {
-    #     # Logic to run in profile to import, dotsource or invoke app
-    # }
+    # [uri] GetRepoUri([string]$Switch) {}
 
-    # [void] Install() {
-    #     # Logic to install app
-    # }
+    # [void] Install() {}
 
-    # [void] Invoke() {
-    #     # Logic to run the app.
-    # }
+    # [void] Invoke() {}
+
+    # [void] RemoveDotfiles() {}
+
+    # [void] Reset() {}
 
     [void] SetEnvironmentVariables() {
         $Value1 = "$($this.VerifyFile)"
@@ -67,41 +56,19 @@ Formatter, linter, bundler for JavaScript, JSON, HTML, Markdown, and CSS.
         }
     }
 
-    # [void] ShowDocs() {
-    #     # Logic to show app documentation
-    # }
+    # [void] ShowDocs() {}
 
-    # [void] ShowLogo() {
-    # }
+    # [void] ShowLogo() {}
 
-    # [void] ShowReleases() {
-    #     # Logic to show release notes or changelog
-    # }
+    # [void] ShowReleases() {}
 
-    # [void] ShowRepo() {
-    #     # Logic to show app repository
-    # }
+    # [void] ShowRepo() {}
 
-    # [void] Reset() {
-    #     # Logic to reset app
-    # }
+    # [void] Uninstall() {}
 
-    [void] Uninstall() {
-        scoop uninstall "$($this.Store)/$($this.Name)"
+    # [void] Update() {}
 
-        if ($null -ne $Env:BIOME_BINARY) {
-            [Environment]::SetEnvironmentVariable("BIOME_BINARY", $null, [EnvironmentVariableTarget]::User)
-        }
-
-        if ($null -ne $Env:BIOME_CONFIG_PATH) {
-            [Environment]::SetEnvironmentVariable("BIOME_CONFIG_PATH", $null, [EnvironmentVariableTarget]::User)
-        }
+    [void] UpdateSystemState([SystemState] $systemState) {
+        $systemState.UpdateAppData($this.Name, $this)
     }
-
-    # [void] Update() {
-    #     # Logic to update app
-    # }
-
-    # [void] UpdateSystemState([SystemState] $SystemState) {
-    # }
 }

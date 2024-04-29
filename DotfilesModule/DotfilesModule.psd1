@@ -66,7 +66,8 @@
     # FormatsToProcess = @()
 
     # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-    # NestedModules     = @('Classes\App.ps1', 'Classes\SystemState.ps1')
+    NestedModules     = @('DotfilesModule.App.psm1',
+        'DotfilesModule.AppCommander.psm1')
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = @('*')
@@ -87,11 +88,20 @@
     # ModuleList = @()
 
     # List of all files packaged with this module
-    FileList          = @('DotfilesModule.psd1', 'DotfilesModule.psm1', 'Apps\App.ps1',
-        'Apps\Biome.ps1', 'Classes\SystemState.ps1',
-        'Functions\AppFunctions.ps1', 'Functions\UtilityFunctions.ps1',
-        'Implementations\SpecificImplementations.ps1', 'Tasks\Build.ps1',
-        'Tasks\MaintenanceTasks.ps1')
+    FileList          = @('DotfilesModule.App.psm1',
+        'DotfilesModule.AppCommander.psm1',
+        'DotfilesModule.psd1',
+        'DotfilesModule.psm1',
+        'DotfilesModule.SystemState.psm1',
+        'Functions\Convert-ToPascalCase.ps1',
+        'Implementations\SpecificImplementations.ps1',
+        'Public\Get-AppConfig.ps1',
+        'Public\New-App.ps1',
+        'Public\New-AppFromConfig.ps1',
+        'Public\New-SystemState.ps1',
+        'Tasks\Build.ps1',
+        'Tasks\MaintenanceTasks.ps1'
+    )
 
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
     PrivateData       = @{

@@ -1,7 +1,9 @@
 using module DotfilesModule
 
-$ErrorActionPreference = "Stop"
-$DebugPreference = 'Stop'
+# Import-Module -Name DotfilesModule
+
+$ErrorActionPreference = "Continue"
+$DebugPreference = 'Continue'
 
 $fileName = Split-Path -Leaf $PSCommandPath
 Write-Host "Running $fileName"

@@ -1,25 +1,9 @@
 ﻿using module DotfilesModule
 
-# Define a class for app-specific operations
 class Git : App {
-    [string] $Cache
-    [string] $AppFolder
-    [string[]] $Dotfiles
-    [string] $Logo
 
     Git() : base(@{
-            Name         = "Git" # CTRL+H Git with your specific app name, same as folder name
-            Store        = "main"
-            VerifyFile   = "$Env:SCOOP\apps\Git\current\git-cmd.exe"
-            Repo         = "https://github.com/git-for-windows/git" # Replace RepoUrl with your specific repo URL
-            Docs         = "https://git-scm.com/docs" # Replace DocsUrl with your specific docs URL
-            ConfigFolder = $Env:USERPROFILE
-            # ConfigFile   =
-        }) {
-        $this.Cache = $null
-        $this.AppFolder = $PSScriptRoot
-        $this.Dotfiles = @(".bash_profile", ".bashrc", ".gitattributes", ".gitconfig", ".gitignore", ".minttyrc")
-        $this.Logo = @"
+            Logo            = @"
              .=***=.
             =*******=.
          .-..-********=.
@@ -37,26 +21,32 @@ class Git : App {
             =#@%%%@@#-
               =%%%*-
 "@
+            Name            = "Git"
+            Store           = "main"
+            VerifyFile      = "$Env:SCOOP\apps\Git\current\git-cmd.exe"
+            GithubOwnerRepo = "git-for-windows/git"
+            Docs            = "https://git-scm.com/docs" # Replace DocsUrl with your specific docs URL
+            DotfilesFolder  = "$Env:USERPROFILE"
+            Dotfiles        = @(
+                "$Env:USERPROFILE\.bash_profile",
+                "$Env:USERPROFILE\.bashrc",
+                "$Env:USERPROFILE\.gitattributes",
+                "$Env:USERPROFILE\.gitconfig",
+                "$Env:USERPROFILE\.gitignore",
+                "$Env:USERPROFILE\.minttyrc"
+            )
+            AppFolder       = "$PSScriptRoot"
+        }) {
+
     }
 
-    # [void] Clear() {
-    #     # Logic to clean app's cache or other maintenance tasks.
-    # }
+    # [void] Clear() {}
 
-    # [void] CompareDotfiles() {
-    #     # Logic to compare dotfiles with reference to see if something has changed.
-    # }
+    # [void] DeployDotfiles() {}
 
-    [void] DeployDotfiles() {
-        foreach ($Dotfile in $this.Dotfiles) {
-            $this.ConfigFile = $Dotfile
-            $this.AppDeployDotfiles($this.AppFolder)
-        }
-    }
+    # [void] Enable() {}
 
-    # [void] Enable() {
-    #     # Logic to run in profile to import, dotsource or invoke app
-    # }
+    # [uri] GetRepoUri([string]$Switch) {}
 
     [void] Install() {
         # Logic to install app
@@ -73,9 +63,11 @@ class Git : App {
         $this.DeployDotfiles()
     }
 
-    # [void] Invoke() {
-    #     # Logic to run the app.
-    # }
+    # [void] Invoke() {}
+
+    # [void] RemoveDotfiles() {}
+
+    # [void] Reset() {}
 
     [void] SetEnvironmentVariables() {
         $Value = "$Env:SCOOP\apps\git\current"
@@ -84,43 +76,17 @@ class Git : App {
         }
     }
 
-    # [void] ShowDocs() {
-    #     # Logic to show app documentation
-    # }
+    # [void] ShowDocs() {}
 
-    # [void] ShowLogo() {
-    #     # Logic to show Logo
-    # }
+    # [void] ShowLogo() {}
 
-    # [void] ShowReleases() {
-    #     # Logic to show release notes or changelog
-    # }
+    # [void] ShowReleases() {}
 
-    # [void] ShowRepo() {
-    #     # Logic to show app repository
-    # }
+    # [void] ShowRepo() {}
 
-    # [void] Reset() {
-    #     # Logic to reset app
-    # }
+    # [void] Uninstall() {}
 
-    [void] Uninstall() {
-        scoop uninstall "$($this.Store)/$($this.Name)"
+    # [void] Update() {}
 
-        if ($null -ne $Env:GIT_INSTALL_ROOT) {
-            [Environment]::SetEnvironmentVariable("GIT_INSTALL_ROOT", $null, [EnvironmentVariableTarget]::User)
-        }
-
-        foreach ($Dotfile in $this.Dotfiles) {
-            Remove-Item -Path "$($this.ConfigFolder)\$($Dotfile).old" -Force -ErrorAction SilentlyContinue
-            Remove-Item -Path "$($this.ConfigFolder)\$($Dotfile)" -Force -ErrorAction SilentlyContinue
-        }
-    }
-
-    # [void] Update() {
-    #     # Logic to update app
-    # }
-
-    # [void] UpdateSystemState([SystemState] $systemState) {
-    # }
+    # [void] UpdateSystemState([SystemState] $systemState) {}
 }

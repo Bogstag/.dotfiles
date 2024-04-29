@@ -3,3 +3,4 @@
 ProfileLoadTime-*.csv
 SystemState-*.json
 **/*.old
+AppState-TUF.json

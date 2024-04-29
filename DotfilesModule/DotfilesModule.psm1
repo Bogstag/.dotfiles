@@ -1,9 +1,8 @@
-using module ./DotfilesModule.SystemState.psm1
-using module ./DotfilesModule.App.psm1
+using module .\DotfilesModule.SystemState.psm1
+using module .\DotfilesModule.App.psm1
+# using module .\DotfilesModule.AppCommander.psm1
 
 # Define module-wide variable
-$Script:SystemStateJsonFile = "$Env:dotfiles\SystemState-$Env:COMPUTERNAME.json"
-$Script:windowWidth = $host.ui.RawUI.WindowSize.Width
 
 
 # Get-ChildItem -Path "$PSScriptRoot/Classes/*.ps1" | ForEach-Object {

@@ -39,8 +39,8 @@ function New-AppFromConfig {
             $config.AppData.$AppName.VerifyFile,
             $config.AppData.$AppName.Repo,
             $config.AppData.$AppName.Docs,
-            $config.AppData.$AppName.ConfigFolder,
-            $config.AppData.$AppName.ConfigFile
+            $config.AppData.$AppName.DotfilesFolder,
+            $config.AppData.$AppName.Dotfiles
         )
     }
 }

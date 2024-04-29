@@ -5,7 +5,7 @@ param (
 # $DebugPreference = 'Continue'
 $appsPath = "$Env:dotfiles\Apps"
 $appsFolder = Get-ChildItem -Path $appsPath -Directory
-$instances = @{}
+$MyApps = @{}
 Write-Debug "appsFolder: $appsFolder"
 
 foreach ($appFolder in $appsFolder) {
@@ -14,8 +14,8 @@ foreach ($appFolder in $appsFolder) {
     if (Test-Path $scriptPath) {
         . $scriptPath
         Write-Debug "appFolder.Name: $($appFolder.Name)"
-        $instances[$appFolder.Name] = New-Object -TypeName $($appFolder.Name)
-        $SystemState.UpdateAppData([string] $($appFolder.Name), [object] $instances[$appFolder.Name])
+        $MyApps[$appFolder.Name] = New-Object -TypeName $($appFolder.Name)
+        $SystemState.UpdateAppData([string] $($appFolder.Name), [object] $MyApps[$appFolder.Name])
     } else {
         Write-Warning "Script file for $($appFolder.Name) not found at $scriptPath"
         continue
@@ -27,22 +27,22 @@ foreach ($appFolder in $appsFolder) {
         }
 
         'clear-apps' {
-            $instances[$appFolder.Name].Clear()
+            $MyApps[$appFolder.Name].Clear()
         }
 
         'compare-apps-dotfiles' {
-            $instances[$appFolder.Name].CompareDotfiles()
+            $MyApps[$appFolder.Name].CompareDotfiles()
         }
 
         'deploy-apps-dotfiles' {
-            $instances[$appFolder.Name].DeployDotfiles()
+            $MyApps[$appFolder.Name].DeployDotfiles()
         }
 
         'enable-apps' {
-            if ($instances[$appFolder.Name].GetType().GetMethod('Enable')) {
-                Write-Host " ⏱️ Enable $($instances[$appFolder.Name].Name) => " -NoNewline -ForegroundColor Green
+            if ($MyApps[$appFolder.Name].GetType().GetMethod('Enable')) {
+                Write-Host " ⏱️ Enable $($MyApps[$appFolder.Name].Name) => " -NoNewline -ForegroundColor Green
                 $t = Measure-Command {
-                    $instances[$appFolder.Name].Enable()
+                    $MyApps[$appFolder.Name].Enable()
                 }
                 $ProfileLoadTime.Milliseconds += $t.Milliseconds
                 $ProfileLoadTime.Measurements += 1
@@ -51,18 +51,18 @@ foreach ($appFolder in $appsFolder) {
         }
 
         'install-apps' {
-            $instances[$appFolder.Name].Install()
+            $MyApps[$appFolder.Name].Install()
         }
 
         'invoke-apps' {
-            $instances[$appFolder.Name].Invoke()
+            $MyApps[$appFolder.Name].Invoke()
         }
 
         'set-apps-environmentvariables' {
-            if ($instances[$appFolder.Name].GetType().GetMethod('SetEnvironmentVariables')) {
-                Write-Host " ⏱️ Set Env Vars $($instances[$appFolder.Name].Name) => " -NoNewline -ForegroundColor Green
+            if ($MyApps[$appFolder.Name].GetType().GetMethod('SetEnvironmentVariables')) {
+                Write-Host " ⏱️ Set Env Vars $($MyApps[$appFolder.Name].Name) => " -NoNewline -ForegroundColor Green
                 $t = Measure-Command {
-                    $instances[$appFolder.Name].SetEnvironmentVariables()
+                    $MyApps[$appFolder.Name].SetEnvironmentVariables()
                 }
                 $ProfileLoadTime.Milliseconds += $t.Milliseconds
                 $ProfileLoadTime.Measurements += 1
@@ -71,36 +71,35 @@ foreach ($appFolder in $appsFolder) {
         }
 
         'show-apps-docs' {
-            Write-Warning "Really show all docs including $($instances[$appFolder.Name].Name)?" -BackgroundColor Red
-            # $instances[$appFolder.Name].ShowDocs()
+            Write-Warning "Really show all docs including $($MyApps[$appFolder.Name].Name)?" -BackgroundColor Red
+            # $MyApps[$appFolder.Name].ShowDocs()
         }
 
         'show-apps-logo' {
-            $windowWidth = $host.ui.RawUI.WindowSize.Width
-            $instances[$appFolder.Name].ShowLogo($windowWidth)
+            $MyApps[$appFolder.Name].ShowLogo()
         }
 
         'show-apps-releases' {
-            Write-Warning "Really show all releases including $($instances[$appFolder.Name].Name)?" -BackgroundColor Red
-            # $instances[$appFolder.Name].ShowReleases()
+            Write-Warning "Really show all releases including $($MyApps[$appFolder.Name].Name)?" -BackgroundColor Red
+            # $MyApps[$appFolder.Name].ShowReleases()
         }
 
         'show-apps-repo' {
-            Write-Warning "Really show all repos including $($instances[$appFolder.Name].Name)?" -BackgroundColor Red
-            # $instances[$appFolder.Name].ShowRepo()
+            Write-Warning "Really show all repos including $($MyApps[$appFolder.Name].Name)?" -BackgroundColor Red
+            # $MyApps[$appFolder.Name].ShowRepo()
         }
         'reset-apps' {
-            $instances[$appFolder.Name].Reset()
+            $MyApps[$appFolder.Name].Reset()
         }
 
         'uninstall-apps' {
-            Write-Warning "Really uninstall  all app including $($instances[$appFolder.Name].Name)?" -BackgroundColor Red
+            Write-Warning "Really uninstall  all app including $($MyApps[$appFolder.Name].Name)?" -BackgroundColor Red
             # To proceed, uncomment the line below
-            # $instances[$appFolder.Name].Uninstall()
+            # $MyApps[$appFolder.Name].Uninstall()
         }
 
         'update-apps' {
-            $instances[$appFolder.Name].Update()
+            $MyApps[$appFolder.Name].Update()
         }
 
         default {

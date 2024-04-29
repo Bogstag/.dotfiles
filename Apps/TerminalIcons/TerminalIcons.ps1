@@ -1,86 +1,62 @@
 using module DotfilesModule
 
 class TerminalIcons : App {
-    [string] $Cache
-    [string] $AppFolder
-    [string] $Logo
 
     TerminalIcons() : base(@{
-            Name       = "Terminal-Icons"
-            Store      = "extras"
-            VerifyFile = "$Env:SCOOP\modules\Terminal-Icons\Terminal-Icons.psd1"
-            Repo       = "https://github.com/devblackops/Terminal-Icons"
-            Docs       = "https://github.com/devblackops/Terminal-Icons"
-            # ConfigFolder =
-            # ConfigFile =
-        }) {
-        $this.Cache = $null
-        $this.AppFolder = $PSScriptRoot
-        $this.Logo = @"
+            Logo            = @"
 ░▀█▀░█▀▀░█▀▄░█▄█░▀█▀░█▀█░█▀█░█░░░░░░░▀█▀░█▀▀░█▀█░█▀█░█▀▀
 ░░█░░█▀▀░█▀▄░█░█░░█░░█░█░█▀█░█░░░▄▄▄░░█░░█░░░█░█░█░█░▀▀█
 ░░▀░░▀▀▀░▀░▀░▀░▀░▀▀▀░▀░▀░▀░▀░▀▀▀░░░░░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀▀▀
 "@
+
+            Name            = "Terminal-Icons"
+            Store           = "extras"
+            VerifyFile      = "$Env:SCOOP\modules\Terminal-Icons\Terminal-Icons.psd1"
+            GithubOwnerRepo = "devblackops/Terminal-Icons"
+            Docs            = "https://github.com/devblackops/Terminal-Icons"
+            AppFolder       = "$PSScriptRoot"
+        }) {
     }
 
-    # [void] Clear() {
-    #     # Logic to clean app's cache or other maintenance tasks.
-    # }
+    # [void] Clear() {}
 
-    # [void] CompareDotfiles() {
-    #     # Logic to compare dotfiles with reference to see if something has changed.
-    # }
-
-    # [void] DeployDotfiles() {
-    #     # Logic to get dotfiles to the right location, by copying or symlink.
-    # }
+    # [void] DeployDotfiles() {}
 
     [void] Enable() {
         Import-Module "$Env:SCOOP\modules\Terminal-Icons"
     }
 
-    # [void] Install() {
-    #     # Logic to install app
-    # }
+    # [uri] GetRepoUri([string]$Switch) {}
 
-    # [void] Invoke() {
-    #     # Logic to run the app.
-    # }
+    # [void] Install() {}
+
+    # [void] Invoke() {}
+
+    # [void] RemoveDotfiles() {}
+
+    # [void] Reset() {}
 
     # [void] SetEnvironmentVariables() {
     #     # Logic to set app env variables
-    #     # if ($null -eq $Env:$app_ENV_VAR) {
-    #     #     [Environment]::SetEnvironmentVariable("$app_ENV_VAR", "ENV_VAR_VALUE",[EnvironmentVariableTarget]::User)
-    #     # }
+    #     $Value = ""
+    #     if (($null -eq $Env:app_ENV_VAR) -or ($Value -ne $Env:app_ENV_VAR)) {
+    #         [Environment]::SetEnvironmentVariable("app_ENV_VAR", "$Value", [EnvironmentVariableTarget]::User)
+    #     }
     # }
 
-    # [void] ShowDocs() {
-    #     # Logic to show app documentation
-    # }
+    # [void] ShowDocs() {}
 
-    # [void] ShowLogo() {
-    # }
+    # [void] ShowLogo() {}
 
-    # [void] ShowReleases() {
-    #     # Logic to show release notes or changelog
-    # }
+    # [void] ShowReleases() {}
 
-    # [void] ShowRepo() {
-    #     # Logic to show app repository
-    # }
+    # [void] ShowRepo() {}
 
-    # [void] Reset() {
-    #     # Logic to reset app
-    # }
+    # [void] Uninstall() {}
 
-    # [void] Uninstall() {
-    #     # Logic to uninstall app
-    # }
+    # [void] Update() {}
 
-    # [void] Update() {
-    #     # Logic to update app
-    # }
-
-    # [void] UpdateSystemState([SystemState] $systemState) {
-    # }
+    [void] UpdateSystemState([SystemState] $systemState) {
+        $systemState.UpdateAppData($this.Name, $this)
+    }
 }

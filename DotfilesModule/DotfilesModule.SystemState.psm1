@@ -1,38 +1,80 @@
 class SystemState {
-    [string] $SystemStateJsonFile
+    [string] $SystemStateJsonFile = "$($Env:dotfiles)\SystemState-$($Env:COMPUTERNAME).json"
+    [string] $AppStateJsonFile = "$($Env:dotfiles)\AppState-$($Env:COMPUTERNAME).json"
     [Hashtable] $AppData = @{}
-    [string] $LastProfileRunDate = '1900-01-01'
+    [Hashtable] $SystemData = @{}
 
-    SystemState([string] $SystemStateJsonFile) {
-        $this.SystemStateJsonFile = $SystemStateJsonFile
+    SystemState() {
+        $this.LoadSystemState()
+        $this.LoadAppState()
+    }
 
-        if (Test-Path $this.SystemStateJsonFile) {
+    [void] LoadSystemState() {
+        $JsonFile = [IO.FileInfo]::new("$($this.SystemStateJsonFile)")
+        if ($JsonFile.Exists) {
             try {
-                $jsonData = Get-Content -Path $this.SystemStateJsonFile | ConvertFrom-Json
-                $this.AppData = New-Object System.Collections.Hashtable
-                foreach ($key in $jsonData.AppData.PSObject.Properties.Name) {
-                    $this.AppData[$key] = $jsonData.AppData.$key
-                }
-                $this.LastProfileRunDate = $jsonData.LastProfileRunDate
+                $this.SystemData = $this.LoadJsonFile($JsonFile)
+                # $this.SystemData["SystemStateJsonFile"] = $this.SystemStateJsonFile
             } catch {
-                Write-Warning "Failed to parse the system state JSON file. ($($this.SystemStateJsonFile))"
-                Write-Warning "Error: $_"
-                $this.InitializeDefaults()
+                Write-Error "Failed to parse the system state JSON file. ($($JsonFile))"
+                Write-Error "$_"
+                $this.InitializeSystemStateDefaults()
             }
         } else {
-            Write-Warning "System state JSON file does not exist. Initializing with default values."
-            $this.InitializeDefaults()
+            Write-Warning "System state JSON file does not exist. Creating file and initializing with default values."
+            $JsonFile.Create()
+            $this.InitializeSystemStateDefaults()
         }
     }
 
-    [void] InitializeDefaults() {
-        $this.AppData = @{}
-        $this.LastProfileRunDate = '1900-01-01'
+    [void] LoadAppState() {
+        $JsonFile = [IO.FileInfo]::new("$($this.AppStateJsonFile)")
+        if ($JsonFile.Exists) {
+            try {
+                $this.AppData = $this.LoadJsonFile($JsonFile)
+            } catch {
+                Write-Error "Failed to parse the system state JSON file. ($($JsonFile))"
+                Write-Error "$_"
+                $this.InitializeAppDataDefaults()
+            }
+        } else {
+            Write-Warning "App state JSON file does not exist. Creating file and initializing with default values."
+            $JsonFile.Create()
+            $this.InitializeAppDataDefaults()
+        }
     }
 
-    [void] SaveState() {
-        $json = $this | ConvertTo-Json -Depth 5
-        Set-Content -Path $this.SystemStateJsonFile -Value $json
+    [Hashtable] LoadJsonFile([IO.FileInfo] $JsonFile) {
+        $Hashtable = (Get-Content -Raw $JsonFile) | ConvertFrom-Json -AsHashtable -DateKind Local
+
+        return $Hashtable
+    }
+
+    [void] InitializeSystemStateDefaults() {
+        $this.SystemData["LastProfileRunDate"] = (Get-Date -Date '1900-01-01').ToShortDateString()
+        $this.SystemData["SystemStateJsonFile"] = $this.SystemStateJsonFile
+    }
+
+    [void] InitializeAppDataDefaults() {
+        # $this.AppData["LastProfileRunDate"] = $this.LastProfileRunDate
+        # $this.AppData["AppStateJsonFile"] = $this.AppStateJsonFile
+    }
+
+    [void] SaveAllState() {
+        $this.SaveState('System')
+        $this.SaveState('App')
+    }
+
+    [void] SaveState([string] $State) {
+        if ('System' -eq $State) {
+            $json = $this.SystemData | ConvertTo-Json -Depth 10
+            Set-Content -Path "$($this.SystemStateJsonFile)" -Value $json
+        } elseif ('App' -eq $State) {
+            $json = $this.AppData | ConvertTo-Json -Depth 10
+            Set-Content -Path "$($this.AppStateJsonFile)" -Value $json
+        } else {
+            Write-Error -Message "State must be App or System"
+        }
     }
 
     [void] UpdateAppData([string] $appName, [object] $appInstance) {
@@ -48,17 +90,12 @@ class SystemState {
                 }
             }
 
-            if ($null -eq $this.AppData) {
-                $this.AppData[$appName] = @{}
-            }
-
             $this.AppData[$appName] = $data
         }
     }
 
-
     [bool] HasRunToday() {
-        if ($this.LastProfileRunDate -and ([DateTime]::Parse($this.LastProfileRunDate).Date -eq [DateTime]::Now.Date)) {
+        if ($this.SystemData["LastProfileRunDate"] -and ([DateTime]::Parse($this.SystemData["LastProfileRunDate"]).Date -eq [DateTime]::Now.Date)) {
             return $true
         } else {
             return $false
@@ -66,6 +103,6 @@ class SystemState {
     }
 
     [void] UpdateLastRunDate() {
-        $this.LastProfileRunDate = [DateTime]::Now.ToString("yyyy-MM-dd")
+        $this.SystemData["LastProfileRunDate"] = (Get-Date).ToShortDateString()
     }
 }

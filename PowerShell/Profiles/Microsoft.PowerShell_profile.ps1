@@ -6,7 +6,6 @@ using module DotfilesModule
 # $VerbosePreference = 'SilentlyContinue'
 # $DebugPreference = 'SilentlyContinue'
 
-
 $fileName = Split-Path -Leaf $PSCommandPath
 Write-Host "Running $fileName"
 
@@ -52,7 +51,7 @@ try {
     Write-Error "Failed to write log entry: $_"
 }
 
-$SystemState.SaveState()
+$SystemState.SaveAllState()
 # $SaveSystemStateJob = Start-ThreadJob -ScriptBlock {
 #     $SystemState = $using:SystemState
 #     $SystemState.SaveState()
