@@ -1,16 +1,22 @@
 using module DotfilesModule
 
-# To use with sfsu
-scoop update --quiet
-$scoopStatus = (scoop status --json) | ConvertFrom-Json
-
-foreach ($appStatus in $scoopStatus.packages) {
-    Write-Host "Check: $($appStatus.Name)"
-
-    if ($null -eq $MyApps[$appStatus.Name]) {
-        continue
+function AppClassFromScoopName($ScoopName) {
+    $Class = $MyApps.Values | Where-Object { $_.Name -eq $ScoopName }
+    Write-Debug -Message "    Class: $($Class)"
+    if ($Class) {
+        return $Class.GetType()
     }
 
+    return $null
+    # return "ScoopUnmanaged"
+}
+
+# To use with sfsu
+scoop update --quiet
+$scoopStatus = scoop status --json | ConvertFrom-Json
+
+foreach ($appStatus in $scoopStatus.packages) {
+    Write-Host "Checking: $($appStatus.Name)" -NoNewline
     if (0 -ne $appStatus.missing_dependencies.Count) {
         Write-Warning -Message "$($appStatus.Name) needs to be handles manually it have dependencies."
         continue
@@ -21,23 +27,30 @@ foreach ($appStatus in $scoopStatus.packages) {
         continue
     }
 
-    if ($appStatus.current -ne $appStatus.available) {
+    # Translate Scoop name to Class
+    $ClassName = AppClassFromScoopName($appStatus.Name)
 
-        if ($MyApps[$appFolder.Name].GetType().GetMethod('ShowLogo')) {
-            $MyApps[$appStatus.Name].ShowLogo()
-        }
+    if ($null -eq $ClassName) {
+        Write-Host " ❌"
+        # $MySystemState.AppData.ScoopUnmanaged.AppsList += $appStatus.Name
+        continue
+    }
 
-        if ($MyApps[$appFolder.Name].GetType().GetMethod('ShowReleases')) {
-            $MyApps[$appStatus.Name].ShowReleases() # TODO: Add more smartness then just loading releases
-        }
+    Write-Host " ✅"
+    if ($MyApps["$ClassName"].GetType().GetMethod('ShowLogo')) {
+        $MyApps["$ClassName"].ShowLogo()
+    }
 
-        if ($MyApps[$appFolder.Name].GetType().GetMethod('Update')) {
-            $MyApps[$appStatus.Name].Update($appStatus.available)
-        }
+    if ($MyApps["$ClassName"].GetType().GetMethod('ShowReleases')) {
+        $MyApps["$ClassName"].ShowReleases()
+    }
 
+    Write-Debug -Message "    Updating $($ClassName): $($appStatus.current) -> $($appStatus.available)"
+    if ($MyApps["$ClassName"].GetType().GetMethod('Update')) {
+        $MyApps["$ClassName"].Update($appStatus.available)
     }
 }
-$SystemState.SaveState('App')
+$MySystemState.SaveState('App')
 
 # To use with Default Scoop
 # $scoopStatus = scoop status --local
@@ -47,9 +60,9 @@ $SystemState.SaveState('App')
 #     if ($appStatus."Installed Version" -ne $appStatus."Latest Version") {
 #         if ($null -ne $MyApps[$appStatus.Name]) {
 #             $MyApps["$($appStatus.Name)"].ShowLogo()
-#             $MyApps["$($appStatus.Name)"].ShowReleases() # TODO: Add more smartness then just loading releases
+#             $MyApps["$($appStatus.Name)"].ShowReleases()
 #             $MyApps["$($appStatus.Name)"].Update($appStatus."Latest Version")
 #         }
 #     }
 # }
-# $SystemState.SaveState()
+# $MySystemState.SaveState()

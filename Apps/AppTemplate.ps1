@@ -3,40 +3,39 @@
 class Template : App {
 
     Template() : base(@{
-            Logo            = @"
+            Logo               = @"
 ░▀█▀░█▀▀░█▄█░█▀█░█░░░█▀█░▀█▀░█▀▀
 ░░█░░█▀▀░█░█░█▀▀░█░░░█▀█░░█░░█▀▀
 ░░▀░░▀▀▀░▀░▀░▀░░░▀▀▀░▀░▀░░▀░░▀▀▀
 "@
-            Name            = "Template" # CTRL+H Template with your specific app name, same as folder name
-            Store           = "main"
-            VerifyFile      = "$Env:SCOOP\apps\Template\current\Template.exe"
-            GithubOwnerRepo = "OWNER/REPO"
-            Repo            = "https://github.com/RepoUrl" # Unset if GithubOwnerRepo is set.
-            Docs            = "https://github.com/DocsUrl" # Replace DocsUrl with your specific docs URL
-            DotfilesFolder  = [IO.DirectoryInfo]::new("$Env:XDG_CONFIG_HOME\Template")
-            Dotfiles        = @(
-                [IO.FileInfo]::new("$Env:XDG_CONFIG_HOME\Template\Template.json")
+            Name               = "Template" # CTRL+H Template with your specific app name, same as folder name
+            Store              = "main"
+            VerifyFile         = "$Env:SCOOP\apps\Template\current\Template.exe"
+            GithubOwnerRepo    = "OWNER/REPO"
+            Repo               = "https://github.com/RepoUrl" # Unset if GithubOwnerRepo is set.
+            Docs               = "https://github.com/DocsUrl" # Replace DocsUrl with your specific docs URL
+            DotfilesSourcePath = "$PSScriptRoot"
+            Dotfiles           = @(
+                "$Env:XDG_CONFIG_HOME\Template\Template.json"
             )
-            CacheFolder     = [IO.DirectoryInfo]::new("$Env:XDG_CACHE_HOME\Template")
-            AppFolder       = [IO.DirectoryInfo]::new("$PSScriptRoot")
+            CacheFolder        = "$Env:XDG_CACHE_HOME\Template"
+            AppFolder          = "$PSScriptRoot"
         }) {
+        # [IO.DirectoryInfo]::new("$this.CacheFolder")
+        # [IO.FileInfo]::new("$this.Dotfiles[0]")
     }
 
     # [void] Clear() {}
-
+    # [void] CompareDotfiles() {}
+    # [void] DeployDotfile() {}
     # [void] DeployDotfiles() {}
-
+    # [void] DotfilesSwitch() {}
     # [void] Enable() {}
-
-    # [uri] GetRepoUri([string]$Switch) {}
-
+    # [void] GetRepoUri() {}
     # [void] Install() {}
-
     # [void] Invoke() {}
-
+    # [void] RemoveDotfile() {}
     # [void] RemoveDotfiles() {}
-
     # [void] Reset() {}
 
     # [void] SetEnvironmentVariables() {
@@ -48,20 +47,11 @@ class Template : App {
     # }
 
     # [void] ShowDocs() {}
-
     # [void] ShowLogo() {}
-
     # [void] ShowReleases() {}
-
     # [void] ShowRepo() {}
-
     # [void] Uninstall() {}
-
     # [void] Update() {}
-
-    [void] UpdateSystemState([SystemState] $systemState) {
-        $systemState.UpdateAppData($this.Name, $this)
-    }
-
-    # [void] UpdateSystemState([SystemState] $systemState) {}
+    # [void] UpdateScoopUnmanaged() {}
+    # [void] UpdateSystemState() {}
 }

@@ -20,8 +20,6 @@ class TerminalIcons : App {
 
     # [void] Clear() {}
 
-    # [void] DeployDotfiles() {}
-
     [void] Enable() {
         Import-Module "$Env:SCOOP\modules\Terminal-Icons"
     }
@@ -32,7 +30,7 @@ class TerminalIcons : App {
 
     # [void] Invoke() {}
 
-    # [void] RemoveDotfiles() {}
+
 
     # [void] Reset() {}
 
@@ -56,7 +54,7 @@ class TerminalIcons : App {
 
     # [void] Update() {}
 
-    [void] UpdateSystemState([SystemState] $systemState) {
-        $systemState.UpdateAppData($this.Name, $this)
+    [void] UpdateSystemState() {
+        [MySystemState].UpdateAppData($this.GetType(), $this)
     }
 }

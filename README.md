@@ -8,20 +8,37 @@ Mainly a way for me to learn more about PowerShell. That is why some parts are w
 
 ## Usage
 
-Just started, so no usage :) But hopfully some nice app and dotfiles management.
+Hopfully some nice app and dotfiles management and a way to handle custom things.
 
-## Apps nameing logic
+## Names
 
-I have rewritten this logic to many times so i will not update this section until it is more set in stone and not set in vapor.
+App Folder = Class Name
+App Name in Class = Scoop Name
 
-App name is from the name the app has in Scoop.
+## Nerd Fonts
 
-Should be used in:
+### Cascadia Code / CaskaydiaCove
 
-    - App folder name (Folder in Apps)
-    - App script file name (ps1 file in folder)
-    - App function names (functions in ps1 file)
-    - App object variable. (Variable containing the result of Create-AppObject)
+- Reserved Font Name: Cascadia Code
+  - This is a fun, new monospaced font that includes programming ligatures and is designed to enhance the modern look and feel of the Windows Terminal
+- NerdFont Name:
+  - CaskaydiaCove Nerd Font Mono
+  - CaskaydiaCove Nerd Font Propo
+- Usage:
+  - "CaskaydiaCove Nerd Font Mono"
+    - Windows Terminal
+  - "CaskaydiaCove NFP"
+    - OneCommander
+
+### Fira Code / FiraCode
+
+- Reserved Font Name: Fira Code
+  - Programming ligatures, extension of Fira Mono font, enlarged operators
+- NerdFont Name:
+  - FiraCode Nerd Font Mono
+- Usage:
+  - 'FiraCode Nerd Font Mono'
+    - VSCode
 
 ## Credits
 

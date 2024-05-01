@@ -1,10 +1,10 @@
-class SystemState {
-    [string] $SystemStateJsonFile = "$($Env:dotfiles)\SystemState-$($Env:COMPUTERNAME).json"
+class MySystemState {
+    [string] $SystemStateJsonFile = "$($Env:dotfiles)\MySystemState-$($Env:COMPUTERNAME).json"
     [string] $AppStateJsonFile = "$($Env:dotfiles)\AppState-$($Env:COMPUTERNAME).json"
     [Hashtable] $AppData = @{}
     [Hashtable] $SystemData = @{}
 
-    SystemState() {
+    MySystemState() {
         $this.LoadSystemState()
         $this.LoadAppState()
     }

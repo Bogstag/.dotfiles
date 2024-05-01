@@ -92,13 +92,13 @@
         'DotfilesModule.AppCommander.psm1',
         'DotfilesModule.psd1',
         'DotfilesModule.psm1',
-        'DotfilesModule.SystemState.psm1',
+        'DotfilesModule.MySystemState.psm1',
         'Functions\Convert-ToPascalCase.ps1',
         'Implementations\SpecificImplementations.ps1',
         'Public\Get-AppConfig.ps1',
         'Public\New-App.ps1',
         'Public\New-AppFromConfig.ps1',
-        'Public\New-SystemState.ps1',
+        'Public\New-MySystemState.ps1',
         'Tasks\Build.ps1',
         'Tasks\MaintenanceTasks.ps1'
     )

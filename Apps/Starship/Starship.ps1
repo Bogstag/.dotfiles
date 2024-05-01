@@ -3,7 +3,7 @@
 class Starship : App {
 
     Starship() : base(@{
-            Logo            = @"
+            Logo               = @"
              .:::::--:::::.
          .::----------------::.
       .:------------------------:.
@@ -27,23 +27,21 @@ class Starship : App {
 The minimal, blazing fast,
 and extremely customizable prompt!
 "@
-            Name            = "Starship"
-            Store           = "main"
-            VerifyFile      = "$Env:SCOOP\apps\starship\current\starship.exe"
-            GithubOwnerRepo = "starship/starship"
-            Docs            = "https://starship.rs/config/"
-            DotfilesFolder  = "$Env:XDG_CONFIG_HOME"
-            Dotfiles        = @(
+            Name               = "Starship"
+            Store              = "main"
+            VerifyFile         = "$Env:SCOOP\apps\starship\current\starship.exe"
+            GithubOwnerRepo    = "starship/starship"
+            Docs               = "https://starship.rs/config/"
+            DotfilesSourcePath = "$PSScriptRoot"
+            Dotfiles           = @(
                 "$Env:XDG_CONFIG_HOME\Starship.toml"
             )
-            CacheFolder     = "$Env:XDG_CACHE_HOME\starship"
-            AppFolder       = "$PSScriptRoot"
+            CacheFolder        = "$Env:XDG_CACHE_HOME\starship"
+            AppFolder          = "$PSScriptRoot"
         }) {
     }
 
     # [void] Clear() {}
-
-    # [void] DeployDotfiles() {}
 
     # [void] Enable() {}
 
@@ -53,7 +51,7 @@ and extremely customizable prompt!
 
     # [void] Invoke() {}
 
-    # [void] RemoveDotfiles() {}
+
 
     # [void] Reset() {}
 
@@ -82,7 +80,7 @@ and extremely customizable prompt!
 
     # [void] Update() {}
 
-    [void] UpdateSystemState([SystemState] $systemState) {
-        $systemState.UpdateAppData($this.Name, $this)
+    [void] UpdateSystemState() {
+        [MySystemState].UpdateAppData($this.GetType(), $this)
     }
 }

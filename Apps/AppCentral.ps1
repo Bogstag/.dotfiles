@@ -15,7 +15,7 @@ foreach ($appFolder in $appsFolder) {
         . $scriptPath
         Write-Debug "appFolder.Name: $($appFolder.Name)"
         $MyApps[$appFolder.Name] = New-Object -TypeName $($appFolder.Name)
-        $SystemState.UpdateAppData([string] $($appFolder.Name), [object] $MyApps[$appFolder.Name])
+        $MySystemState.UpdateAppData([string] $($appFolder.Name), [object] $MyApps[$appFolder.Name])
     } else {
         Write-Warning "Script file for $($appFolder.Name) not found at $scriptPath"
         continue
@@ -35,7 +35,7 @@ foreach ($appFolder in $appsFolder) {
         }
 
         'deploy-apps-dotfiles' {
-            $MyApps[$appFolder.Name].DeployDotfiles()
+            $MyApps[$appFolder.Name].DotfilesSwitch([DotfilesAction]'deploy')
         }
 
         'enable-apps' {
@@ -58,6 +58,15 @@ foreach ($appFolder in $appsFolder) {
             $MyApps[$appFolder.Name].Invoke()
         }
 
+        'remove-apps-dotfiles' {
+            Write-Warning "Not allowed" -BackgroundColor Red
+            # $MyApps[$appFolder.Name].DotfilesSwitch([DotfilesAction]'remove')
+        }
+
+        'reset-apps' {
+            $MyApps[$appFolder.Name].Reset()
+        }
+
         'set-apps-environmentvariables' {
             if ($MyApps[$appFolder.Name].GetType().GetMethod('SetEnvironmentVariables')) {
                 Write-Host " ⏱️ Set Env Vars $($MyApps[$appFolder.Name].Name) => " -NoNewline -ForegroundColor Green
@@ -71,7 +80,7 @@ foreach ($appFolder in $appsFolder) {
         }
 
         'show-apps-docs' {
-            Write-Warning "Really show all docs including $($MyApps[$appFolder.Name].Name)?" -BackgroundColor Red
+            Write-Warning "Not allowed" -BackgroundColor Red
             # $MyApps[$appFolder.Name].ShowDocs()
         }
 
@@ -80,21 +89,18 @@ foreach ($appFolder in $appsFolder) {
         }
 
         'show-apps-releases' {
-            Write-Warning "Really show all releases including $($MyApps[$appFolder.Name].Name)?" -BackgroundColor Red
+            Write-Warning "Not allowed" -BackgroundColor Red
             # $MyApps[$appFolder.Name].ShowReleases()
         }
 
         'show-apps-repo' {
-            Write-Warning "Really show all repos including $($MyApps[$appFolder.Name].Name)?" -BackgroundColor Red
+            Write-Warning "Not allowed" -BackgroundColor Red
             # $MyApps[$appFolder.Name].ShowRepo()
         }
-        'reset-apps' {
-            $MyApps[$appFolder.Name].Reset()
-        }
+
 
         'uninstall-apps' {
-            Write-Warning "Really uninstall  all app including $($MyApps[$appFolder.Name].Name)?" -BackgroundColor Red
-            # To proceed, uncomment the line below
+            Write-Warning "Not allowed" -BackgroundColor Red
             # $MyApps[$appFolder.Name].Uninstall()
         }
 

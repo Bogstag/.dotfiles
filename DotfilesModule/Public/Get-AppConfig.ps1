@@ -23,7 +23,6 @@ Ensure that the SystemStateJsonFile variable in the module scope is set to a val
 Errors in file path or content format will result in null being returned, accompanied by an error message.
 #>
 function Get-AppConfig {
-    # TODO: Rename to Get-SystemState
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipelineByPropertyName = $true)]

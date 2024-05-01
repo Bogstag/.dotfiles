@@ -1,6 +1,6 @@
-function New-SystemState {
+function New-MySystemState {
     [cmdletbinding()]
-    [OutputType([SystemState])]
+    [OutputType([MySystemState])]
     param()
-    return [SystemState]::new()
+    return [MySystemState]::new()
 }

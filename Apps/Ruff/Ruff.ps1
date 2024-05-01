@@ -38,8 +38,6 @@ An extremely fast Python linter.
 
     # [void] Clear() {}
 
-    # [void] DeployDotfiles() {}
-
     # [void] Enable() {}
 
     # [uri] GetRepoUri([string]$Switch) {}
@@ -48,7 +46,7 @@ An extremely fast Python linter.
 
     # [void] Invoke() {}
 
-    # [void] RemoveDotfiles() {}
+
 
     # [void] Reset() {}
 
@@ -72,7 +70,7 @@ An extremely fast Python linter.
 
     # [void] Update() {}
 
-    [void] UpdateSystemState([SystemState] $systemState) {
-        $systemState.UpdateAppData($this.Name, $this)
-    }
+    # [void] UpdateSystemState() {
+    #     [MySystemState].UpdateAppData($this.GetType(), $this)
+    # }
 }

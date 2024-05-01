@@ -1,10 +1,10 @@
 function Exit-IfAlreadyRunToday {
-    if ($systemState.HasRunToday()) {
+    if ($MySystemState.HasRunToday()) {
         # Exit if the last profile run date is today
         exit
     } else {
         # Update the JSON file with today's date if not exiting
-        $systemState.UpdateLastRunDate()
+        $MySystemState.UpdateLastRunDate()
     }
 }
 Exit-IfAlreadyRunToday

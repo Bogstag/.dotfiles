@@ -15,7 +15,7 @@ App type
 
 
 .EXAMPLE
-PS > $app = New-App -Name "ExampleApp" -Store "Main" -VerifyFile "C:\Apps\ExampleApp\app.exe" -Repo "https://github.com/example/app" -Docs "https://example.com/docs" -DotfilesFolder "C:\Apps\ExampleApp\Config" -Dotfiles "config.json"
+PS > $app = New-App -Name "ExampleApp" -Store "Main" -VerifyFile "C:\Apps\ExampleApp\app.exe" -Repo "https://github.com/example/app" -Docs "https://example.com/docs" -DotfilesSourcePath "C:\Apps\ExampleApp\Config" -Dotfiles "config.json"
 This example creates a new application object for 'ExampleApp' with specified paths and URLs for its configuration and documentation.
 
 .OUTPUTS

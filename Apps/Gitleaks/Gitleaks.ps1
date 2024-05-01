@@ -4,7 +4,7 @@ using module DotfilesModule
 class Gitleaks : App {
 
     Gitleaks() : base(@{
-            Logo            = @"
+            Logo               = @"
 SAST tool for detecting and preventing
 hardcoded secrets like passwords,
 api keys, and tokens in git repos.
@@ -27,23 +27,21 @@ api keys, and tokens in git repos.
 @@@@@@@@@@@@@|####|@@@@@@@@@@@@@@@@@@@@@
              |####|
 "@
-            Name            = "Gitleaks" # CTRL+H Gitleaks with your specific app name, same as folder name
-            Store           = "main"
-            VerifyFile      = "$Env:SCOOP\apps\Gitleaks\current\Gitleaks.exe"
-            GithubOwnerRepo = "gitleaks/gitleaks"
-            Docs            = "https://github.com/gitleaks/gitleaks#configuration" # Replace DocsUrl with your specific docs URL
-            DotfilesFolder  = "$Env:dotfiles"
-            Dotfiles        = @(
+            Name               = "Gitleaks" # CTRL+H Gitleaks with your specific app name, same as folder name
+            Store              = "main"
+            VerifyFile         = "$Env:SCOOP\apps\Gitleaks\current\Gitleaks.exe"
+            GithubOwnerRepo    = "gitleaks/gitleaks"
+            Docs               = "https://github.com/gitleaks/gitleaks#configuration" # Replace DocsUrl with your specific docs URL
+            DotfilesSourcePath = "$PSScriptRoot"
+            Dotfiles           = @(
                 "$Env:dotfiles\.pre-commit-config.yaml"
             )
-            CacheFolder     = "$Env:XDG_CACHE_HOME\Gitleaks"
-            AppFolder       = "$PSScriptRoot"
+            CacheFolder        = "$Env:XDG_CACHE_HOME\Gitleaks"
+            AppFolder          = "$PSScriptRoot"
         }) {
     }
 
     # [void] Clear() {}
-
-    # [void] DeployDotfiles() {}
 
     # [void] Enable() {}
 
@@ -58,7 +56,7 @@ api keys, and tokens in git repos.
         pre-commit autoupdate
 
         # Copy config to profile, This have no real purpose other then easy access to a starter config.
-        $this.DeployDotfiles()
+        $this.DotfilesSwitch('deploy')
 
         # Add gitleaks to git pre-commit
         pre-commit install
@@ -68,14 +66,14 @@ api keys, and tokens in git repos.
 
     # [void] Invoke() {}
 
-    # [void] RemoveDotfiles() {}
+
 
     # [void] Reset() {}
 
     [void] SetEnvironmentVariables() {
         # Logic to set app env variables
-        # if (($null -eq $Env:GITLEAKS_CONFIG) -or ($this.DotfilesFolder -ne $Env:GITLEAKS_CONFIG)) {
-        #     [Environment]::SetEnvironmentVariable("GITLEAKS_CONFIG", "$($this.DotfilesFolder)", [EnvironmentVariableTarget]::User)
+        # if (($null -eq $Env:GITLEAKS_CONFIG) -or ($this.DotfilesSourcePath -ne $Env:GITLEAKS_CONFIG)) {
+        #     [Environment]::SetEnvironmentVariable("GITLEAKS_CONFIG", "$($this.DotfilesSourcePath)", [EnvironmentVariableTarget]::User)
         # }
     }
 
@@ -91,7 +89,7 @@ api keys, and tokens in git repos.
 
     # [void] Update() {}
 
-    [void] UpdateSystemState([SystemState] $systemState) {
-        $systemState.UpdateAppData($this.Name, $this)
-    }
+    # [void] UpdateSystemState() {
+    #     [MySystemState].UpdateAppData($this.GetType(), $this)
+    # }
 }

@@ -56,7 +56,9 @@ $t = Measure-Command {
     # }
     # Set-Alias -Name "ss" -Value "Show-Status-Scoop" -Option ReadOnly -ErrorAction SilentlyContinue
 
-    Set-Alias -Name "oc" -Value $HOME\scoop\apps\onecommander\current\OneCommander.exe -ErrorAction SilentlyContinue
+    Set-Alias -Name oc -Value $HOME\scoop\apps\onecommander\current\OneCommander.exe
+
+    Set-Alias -Name appupdate -Value $Env:dotfiles\Apps\UpdateApps.ps1
 
     # https://github.com/PhMajerus/ANSI-art
     # function testtest1 {

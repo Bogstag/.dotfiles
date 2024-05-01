@@ -3,7 +3,7 @@
 class Git : App {
 
     Git() : base(@{
-            Logo            = @"
+            Logo               = @"
              .=***=.
             =*******=.
          .-..-********=.
@@ -21,13 +21,13 @@ class Git : App {
             =#@%%%@@#-
               =%%%*-
 "@
-            Name            = "Git"
-            Store           = "main"
-            VerifyFile      = "$Env:SCOOP\apps\Git\current\git-cmd.exe"
-            GithubOwnerRepo = "git-for-windows/git"
-            Docs            = "https://git-scm.com/docs" # Replace DocsUrl with your specific docs URL
-            DotfilesFolder  = "$Env:USERPROFILE"
-            Dotfiles        = @(
+            Name               = "Git"
+            Store              = "main"
+            VerifyFile         = "$Env:SCOOP\apps\Git\current\git-cmd.exe"
+            GithubOwnerRepo    = "git-for-windows/git"
+            Docs               = "https://git-scm.com/docs" # Replace DocsUrl with your specific docs URL
+            DotfilesSourcePath = "$PSScriptRoot"
+            Dotfiles           = @(
                 "$Env:USERPROFILE\.bash_profile",
                 "$Env:USERPROFILE\.bashrc",
                 "$Env:USERPROFILE\.gitattributes",
@@ -35,14 +35,12 @@ class Git : App {
                 "$Env:USERPROFILE\.gitignore",
                 "$Env:USERPROFILE\.minttyrc"
             )
-            AppFolder       = "$PSScriptRoot"
+            AppFolder          = "$PSScriptRoot"
         }) {
 
     }
 
     # [void] Clear() {}
-
-    # [void] DeployDotfiles() {}
 
     # [void] Enable() {}
 
@@ -50,22 +48,21 @@ class Git : App {
 
     [void] Install() {
         # Logic to install app
-        if (-Not (Test-Path "$Env:SCOOP\buckets\$($this.Store)" -PathType Container)) {
-            scoop Store add -Name "$($this.Store)"
-        }
+        # if (-Not (Test-Path "$Env:SCOOP\buckets\$($this.Store)" -PathType Container)) {
+        #     scoop Store add -Name "$($this.Store)"
+        # }
 
-        if (-Not (Test-Path $this.VerifyFile -PathType Leaf)) {
-            scoop install "$($this.Store)/$($this.Name)"
-        }
+        # if (-Not (Test-Path $this.VerifyFile -PathType Leaf)) {
+        #     scoop install "$($this.Store)/$($this.Name)"
+        #     $this.DotfilesSwitch()
+        # }
+        [App].Install() # TODO: verify this solution
 
         $this.SetEnvironmentVariables()
 
-        $this.DeployDotfiles()
     }
 
     # [void] Invoke() {}
-
-    # [void] RemoveDotfiles() {}
 
     # [void] Reset() {}
 
@@ -88,5 +85,7 @@ class Git : App {
 
     # [void] Update() {}
 
-    # [void] UpdateSystemState([SystemState] $systemState) {}
+    # [void] UpdateSystemState() {
+    #     [MySystemState].UpdateAppData($this.GetType(), $this)
+    # }
 }

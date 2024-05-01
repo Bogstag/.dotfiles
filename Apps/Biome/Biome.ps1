@@ -3,7 +3,7 @@
 class Biome : App {
 
     Biome() : base(@{
-            Logo            = @"
+            Logo               = @"
           -=
          -**=              ......      ..
        .+****+.           +@@%%%%%#:  =%%.
@@ -15,22 +15,20 @@ class Biome : App {
 +*+*++************+**:        .               ...                         ...
 Formatter, linter, bundler for JavaScript, JSON, HTML, Markdown, and CSS.
 "@
-            Name            = "Biome"
-            Store           = "main"
-            VerifyFile      = "$Env:SCOOP\apps\biome\current\biome.exe"
-            GithubOwnerRepo = "biomejs/biome"
-            Docs            = "https://biomejs.dev/guides/getting-started/"
-            DotfilesFolder  = "$Env:XDG_CONFIG_HOME\biome"
-            Dotfiles        = @(
+            Name               = "Biome"
+            Store              = "main"
+            VerifyFile         = "$Env:SCOOP\apps\biome\current\biome.exe"
+            GithubOwnerRepo    = "biomejs/biome"
+            Docs               = "https://biomejs.dev/guides/getting-started/"
+            DotfilesSourcePath = "$PSScriptRoot"
+            Dotfiles           = @(
                 "$Env:XDG_CONFIG_HOME\biome\biome.json"
             )
-            AppFolder       = "$PSScriptRoot"
+            AppFolder          = "$PSScriptRoot"
         }) {
     }
 
     # [void] Clear() {}
-
-    # [void] DeployDotfiles() {}
 
     # [void] Enable() {}
 
@@ -39,8 +37,6 @@ Formatter, linter, bundler for JavaScript, JSON, HTML, Markdown, and CSS.
     # [void] Install() {}
 
     # [void] Invoke() {}
-
-    # [void] RemoveDotfiles() {}
 
     # [void] Reset() {}
 
@@ -68,7 +64,7 @@ Formatter, linter, bundler for JavaScript, JSON, HTML, Markdown, and CSS.
 
     # [void] Update() {}
 
-    [void] UpdateSystemState([SystemState] $systemState) {
-        $systemState.UpdateAppData($this.Name, $this)
-    }
+    # [void] UpdateSystemState() {
+    #     [MySystemState].UpdateAppData($this.GetType(), $this)
+    # }
 }

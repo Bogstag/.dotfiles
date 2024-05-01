@@ -50,6 +50,10 @@ $t = Measure-Command {
     if ($null -eq $Env:GRAMPSHOME) {
         [Environment]::SetEnvironmentVariable("GRAMPSHOME", "$HOME\scoop\persist\gramps", [EnvironmentVariableTarget]::User)
     }
+    # New
+    if ($null -eq $Env:PSModuleAnalysisCachePath) {
+        [Environment]::SetEnvironmentVariable("PSModuleAnalysisCachePath", "$env:LOCALAPPDATA\Microsoft\PowerShell", [EnvironmentVariableTarget]::User)
+    }
 }
 $ProfileLoadTime.Milliseconds += $t.Milliseconds
 $ProfileLoadTime.Measurements += 1

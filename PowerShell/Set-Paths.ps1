@@ -45,19 +45,29 @@ $t = Measure-Command {
             $Env:Path = $newCleanPath
         } else {
             [Environment]::SetEnvironmentVariable($Path, $newCleanPath, [EnvironmentVariableTarget]::User)
-            # [Environment]::SetEnvironmentVariable($Path, $newPath, [EnvironmentVariableTarget]::User)
         }
     }
 
-    # Add to Path
-    Add-ToMyPath "$HOME\scoop\shims"
-    Add-ToMyPath "$HOME\.dotnet\tools"
+    Add-ToMyPath "$Env:dotfiles"
+    Add-ToMyPath "$Env:dotfiles" "PSModulePath"
+
+    Add-ToMyPath "$env:LOCALAPPDATA\Microsoft\PowerShell"
+    Add-ToMyPath "$env:LOCALAPPDATA\Microsoft\PowerShell" "PSModulePath"
     Add-ToMyPath "$ENV:LOCALAPPDATA\pnpm"
 
-    # Add to other Path
-    Add-ToMyPath "$Env:dotfiles" "PSModulePath"
+    Add-ToMyPath "$HOME\.dotnet\tools"
+    Add-ToMyPath "$HOME\Documents\PowerShell\Modules"
     Add-ToMyPath "$HOME\Documents\PowerShell\Modules" "PSModulePath"
-    # Add-ToMyPath "C:\Program Files\Microsoft Azure AD Connect Authentication Agent\Modules\" "PSModulePath"
+    Add-ToMyPath "$HOME\scoop\shims"
+    Add-ToMyPath "$HOME\scoop\apps\vscode-insiders\current"
+
+    Add-ToMyPath "$PSHOME\Modules"
+    Add-ToMyPath "$PSHOME\Modules" "PSModulePath"
+
+    Add-ToMyPath "C:\Program Files\PackageManagement\ProviderAssemblies"
+    Add-ToMyPath "C:\Program Files\PackageManagement\ProviderAssemblies" "PSModulePath"
+
+    Add-ToMyPath "C:\Windows\System32"
 }
 $ProfileLoadTime.Milliseconds += $t.Milliseconds
 $ProfileLoadTime.Measurements += 1

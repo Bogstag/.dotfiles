@@ -1,9 +1,9 @@
-using module .\DotfilesModule.SystemState.psm1
+using module .\DotfilesModule.MySystemState.psm1
 using module .\DotfilesModule.App.psm1
 # using module .\DotfilesModule.AppCommander.psm1
 
 # Define module-wide variable
-
+# $Script:SystemStateJsonFile
 
 # Get-ChildItem -Path "$PSScriptRoot/Classes/*.ps1" | ForEach-Object {
 #     . $_.FullName
@@ -19,7 +19,7 @@ Get-ChildItem -Path "$PSScriptRoot/Public/*.ps1" | ForEach-Object {
 
 # Define the types to export with type accelerators.
 $ExportableTypes = @(
-    [SystemState],
+    [MySystemState],
     [App]
 )
 # Get the internal TypeAccelerators class to use its static methods.

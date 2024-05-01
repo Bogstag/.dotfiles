@@ -3,28 +3,26 @@ using module DotfilesModule
 class sfsu : App {
 
     sfsu() : base(@{
-            Logo            = @"
+            Logo               = @"
 ░█▀▀░▀█▀░█░█░█▀█░▀█▀░█▀▄░░░█▀▀░█▀█░█▀▀░▀█▀░░░█▀▀░█▀▀░█▀█░█▀█░█▀█░░░█░█░▀█▀░▀█▀░█░░░█▀▀
 ░▀▀█░░█░░█░█░█▀▀░░█░░█░█░░░█▀▀░█▀█░▀▀█░░█░░░░▀▀█░█░░░█░█░█░█░█▀▀░░░█░█░░█░░░█░░█░░░▀▀█
 ░▀▀▀░░▀░░▀▀▀░▀░░░▀▀▀░▀▀░░░░▀░░░▀░▀░▀▀▀░░▀░░░░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░░░░░▀▀▀░░▀░░▀▀▀░▀▀▀░▀▀▀
 "@
-            Name            = "sfsu" # CTRL+H sfsu with your specific app name, same as folder name
-            Store           = "extras"
-            VerifyFile      = "$Env:SCOOP\apps\sfsu\current\sfsu.exe"
-            GithubOwnerRepo = "jewlexx/sfsu"
-            Docs            = "https://github.com/jewlexx/sfsu" # Replace DocsUrl with your specific docs URL
-            DotfilesFolder  = "$Env:XDG_CONFIG_HOME\sfsu"
-            Dotfiles        = @(
+            Name               = "sfsu" # CTRL+H sfsu with your specific app name, same as folder name
+            Store              = "extras"
+            VerifyFile         = "$Env:SCOOP\apps\sfsu\current\sfsu.exe"
+            GithubOwnerRepo    = "jewlexx/sfsu"
+            Docs               = "https://github.com/jewlexx/sfsu" # Replace DocsUrl with your specific docs URL
+            DotfilesSourcePath = "$PSScriptRoot"
+            Dotfiles           = @(
                 "$Env:XDG_CONFIG_HOME\sfsu\sfsu.json"
             )
-            CacheFolder     = "$Env:XDG_CACHE_HOME\sfsu"
-            AppFolder       = "$PSScriptRoot"
+            CacheFolder        = "$Env:XDG_CACHE_HOME\sfsu"
+            AppFolder          = "$PSScriptRoot"
         }) {
     }
 
     # [void] Clear() {}
-
-    # [void] DeployDotfiles() {}
 
     [void] Enable() {
         # Handle changes to the function by save it to a file and use git to detect changes.
@@ -69,7 +67,7 @@ class sfsu : App {
 
     # [void] Invoke() {}
 
-    # [void] RemoveDotfiles() {}
+
 
     # [void] Reset() {}
 
@@ -93,7 +91,7 @@ class sfsu : App {
 
     # [void] Update() {}
 
-    [void] UpdateSystemState([SystemState] $systemState) {
-        $systemState.UpdateAppData($this.Name, $this)
+    [void] UpdateSystemState() {
+        [MySystemState].UpdateAppData($this.GetType(), $this)
     }
 }

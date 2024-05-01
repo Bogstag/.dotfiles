@@ -1,0 +1,26 @@
+[
+  {
+    "Executable": "powershell.exe",
+    "HeaderTags": "#POWERSHELL",
+    "Extensions": null,
+    "Arguments": "-NoExit -NoProfile"
+  },
+  {
+    "Executable": "pwsh.exe",
+    "HeaderTags": "#PS7,#PWSH,#PS",
+    "Extensions": "ps1",
+    "Arguments": "-NoExit -NoProfile"
+  },
+  {
+    "Executable": "wt.exe",
+    "HeaderTags": "#WT",
+    "Extensions": null,
+    "Arguments": ""
+  },
+  {
+    "Executable": "python.exe",
+    "HeaderTags": "#PY,#PYTHON",
+    "Extensions": "py",
+    "Arguments": ""
+  }
+]

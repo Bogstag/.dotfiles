@@ -42,8 +42,6 @@ Network exploration and security auditing utility.
 
     # [void] Clear() {}
 
-    # [void] DeployDotfiles() {}
-
     # [void] Enable() {}
 
     # [uri] GetRepoUri([string]$Switch) {}
@@ -52,7 +50,7 @@ Network exploration and security auditing utility.
 
     # [void] Invoke() {}
 
-    # [void] RemoveDotfiles() {}
+
 
     # [void] Reset() {}
 
@@ -88,7 +86,7 @@ Network exploration and security auditing utility.
         regedt32 "$Env:SCOOP\apps\Nmap\current\nmap_performance.reg"
     }
 
-    [void] UpdateSystemState([SystemState] $systemState) {
-        $systemState.UpdateAppData($this.Name, $this)
-    }
+    # [void] UpdateSystemState() {
+    #     [MySystemState].UpdateAppData($this.GetType(), $this)
+    # }
 }

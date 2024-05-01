@@ -9,6 +9,17 @@ using module DotfilesModule
 $fileName = Split-Path -Leaf $PSCommandPath
 Write-Host "Running $fileName"
 
+# TODO: Add to dotfiles
+Import-Module C:\Users\bogge\Documents\PowerShell\Modules\PowerShellGet
+Import-Module C:\Users\bogge\Documents\PowerShell\Modules\PackageManagement
+Import-Module C:\Users\bogge\Documents\PowerShell\Modules\Microsoft.PowerShell.PSResourceGet
+Import-Module C:\Users\bogge\Documents\PowerShell\Modules\PSScriptAnalyzer
+Import-Module C:\Users\bogge\scoop\modules\scoop-completion
+# Import-Module C:\Users\bogge\scoop\modules\PSFzf
+Import-Module C:\Users\bogge\scoop\modules\Pester
+Import-Module C:\Users\bogge\scoop\modules\Microsoft.WinGet.Client
+# Import-Module C:\Users\bogge\Documents\PowerShell\Modules\PSReadLine
+
 $SecretScript = "$Env:dotfiles\PowerShell\Set-Secrets.ps1"
 if (Test-Path $SecretScript) {
     . $SecretScript
@@ -51,10 +62,10 @@ try {
     Write-Error "Failed to write log entry: $_"
 }
 
-$SystemState.SaveAllState()
+$MySystemState.SaveAllState()
 # $SaveSystemStateJob = Start-ThreadJob -ScriptBlock {
-#     $SystemState = $using:SystemState
-#     $SystemState.SaveState()
+#     $MySystemState = $using:MySystemState
+#     $MySystemState.SaveState()
 # }
 # $suaJob = Start-ThreadJob -ScriptBlock { Scoop Update * }
 # Write-Host "sua job is running: Receive-Job -Job $suaJob"

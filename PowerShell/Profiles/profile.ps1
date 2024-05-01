@@ -8,9 +8,12 @@ $DebugPreference = 'Continue'
 $fileName = Split-Path -Leaf $PSCommandPath
 Write-Host "Running $fileName"
 
-$SystemState = New-SystemState
-if ($null -eq $SystemState) {
-    Write-Error "Failed to initialize SystemState from the DotfilesModule."
+[Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
+# Import-PackageProvider -Name "PowerShellGet" -RequiredVersion "2.2.5.0" -Verbose -Force
+
+$MySystemState = New-MySystemState
+if ($null -eq $MySystemState) {
+    Write-Error "Failed to initialize MySystemState from the DotfilesModule."
 }
 
 if ($null -eq $ProfileLoadTime) {
