@@ -1,6 +1,6 @@
-using module DotfilesModule
+using module My
 
-class Ruff : App {
+class Ruff : MyScoopApps {
 
     Ruff() : base(@{
             Logo            = @"

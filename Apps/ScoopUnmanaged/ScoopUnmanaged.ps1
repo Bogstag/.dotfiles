@@ -1,6 +1,6 @@
-using module DotfilesModule
+using module My
 
-class ScoopUnmanaged : App {
+class ScoopUnmanaged : MyScoopApps {
     [array] $AppsList
 
     ScoopUnmanaged() : base(@{

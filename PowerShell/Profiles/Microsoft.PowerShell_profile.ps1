@@ -1,4 +1,4 @@
-using module DotfilesModule
+using module My
 # $ErrorActionPreference = "Continue"
 # $DebugPreference = 'Continue'
 # $ErrorActionPreference = "Stop"

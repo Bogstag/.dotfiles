@@ -1,6 +1,6 @@
-﻿using module DotfilesModule
+﻿using module My
 
-class Starship : App {
+class Starship : MyScoopApps {
 
     Starship() : base(@{
             Logo               = @"

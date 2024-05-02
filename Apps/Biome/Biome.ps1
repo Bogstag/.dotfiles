@@ -1,6 +1,6 @@
-﻿using module DotfilesModule
+﻿using module My
 
-class Biome : App {
+class Biome : MyScoopApps {
 
     Biome() : base(@{
             Logo               = @"

@@ -1,4 +1,4 @@
-using module DotfilesModule
+using module My
 $fileName = Split-Path -Leaf $PSCommandPath
 Write-Host "Running $fileName"
 

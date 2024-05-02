@@ -1,6 +1,6 @@
-using module DotfilesModule
+using module My
 
-class TerminalIcons : App {
+class TerminalIcons : MyScoopApps {
 
     TerminalIcons() : base(@{
             Logo            = @"

@@ -1,19 +1,23 @@
-﻿using module DotfilesModule
+﻿using module My
 
-class Template : App {
+class Template : MyScoopApps {
+    # class Template : MyNoneApps {
 
-    Template() : base(@{
+    Template() : base([ordered]@{
             Logo               = @"
 ░▀█▀░█▀▀░█▄█░█▀█░█░░░█▀█░▀█▀░█▀▀
 ░░█░░█▀▀░█░█░█▀▀░█░░░█▀█░░█░░█▀▀
 ░░▀░░▀▀▀░▀░▀░▀░░░▀▀▀░▀░▀░░▀░░▀▀▀
 "@
-            Name               = "Template" # CTRL+H Template with your specific app name, same as folder name
-            Store              = "main"
+            Name               = "Template"
+            Id                 = (Convert-ToPascalCase($this.Name)) # Package Manager or Safe Name
+            PackageManager     = "Scoop" # Remove if MyNoneApps
+            Store              = "main" # Remove if MyNoneApps
             VerifyFile         = "$Env:SCOOP\apps\Template\current\Template.exe"
             GithubOwnerRepo    = "OWNER/REPO"
-            Repo               = "https://github.com/RepoUrl" # Unset if GithubOwnerRepo is set.
-            Docs               = "https://github.com/DocsUrl" # Replace DocsUrl with your specific docs URL
+            RepoUrl            = "https://github.com/" + $this.GithubOwnerRepo # Unset if GithubOwnerRepo is set.
+            DocsUrl            = "https://github.com/DocsUrl"
+            ChangeLogUrl       = "https://api.github.com/repos/" + $this.GithubOwnerRepo + "/releases/latest"
             DotfilesSourcePath = "$PSScriptRoot"
             Dotfiles           = @(
                 "$Env:XDG_CONFIG_HOME\Template\Template.json"
@@ -25,18 +29,8 @@ class Template : App {
         # [IO.FileInfo]::new("$this.Dotfiles[0]")
     }
 
-    # [void] Clear() {}
-    # [void] CompareDotfiles() {}
-    # [void] DeployDotfile() {}
-    # [void] DeployDotfiles() {}
-    # [void] DotfilesSwitch() {}
     # [void] Enable() {}
-    # [void] GetRepoUri() {}
-    # [void] Install() {}
     # [void] Invoke() {}
-    # [void] RemoveDotfile() {}
-    # [void] RemoveDotfiles() {}
-    # [void] Reset() {}
 
     # [void] SetEnvironmentVariables() {
     #     # Logic to set app env variables
@@ -46,12 +40,4 @@ class Template : App {
     #     }
     # }
 
-    # [void] ShowDocs() {}
-    # [void] ShowLogo() {}
-    # [void] ShowReleases() {}
-    # [void] ShowRepo() {}
-    # [void] Uninstall() {}
-    # [void] Update() {}
-    # [void] UpdateScoopUnmanaged() {}
-    # [void] UpdateSystemState() {}
 }

@@ -1,6 +1,6 @@
-﻿using module DotfilesModule
+﻿using module My
 
-class Git : App {
+class Git : MyScoopApps {
 
     Git() : base(@{
             Logo               = @"
@@ -56,7 +56,9 @@ class Git : App {
         #     scoop install "$($this.Store)/$($this.Name)"
         #     $this.DotfilesSwitch()
         # }
-        [App].Install() # TODO: verify this solution
+        # $this.Install() # TODO: verify this solution
+
+        [MyScoopApps]::install()
 
         $this.SetEnvironmentVariables()
 

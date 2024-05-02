@@ -1,6 +1,4 @@
-using module DotfilesModule
-
-# Import-Module -Name DotfilesModule
+using module My
 
 $ErrorActionPreference = "Continue"
 $DebugPreference = 'Continue'
@@ -13,7 +11,7 @@ Write-Host "Running $fileName"
 
 $MySystemState = New-MySystemState
 if ($null -eq $MySystemState) {
-    Write-Error "Failed to initialize MySystemState from the DotfilesModule."
+    Write-Error "Failed to initialize MySystemState from My."
 }
 
 if ($null -eq $ProfileLoadTime) {

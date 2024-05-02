@@ -1,6 +1,8 @@
-using module .\DotfilesModule.MySystemState.psm1
-Enum AppType {
+using module .\MySystemState.psm1
+
+Enum PackageManager {
     Scoop
+    None
 }
 
 Enum DotfilesAction {
@@ -8,43 +10,40 @@ Enum DotfilesAction {
     remove
 }
 
-class App {
+class MyApps {
     [string] $Logo
-    [string] $Name # Scoop name
-    [AppType]$Type
-    [string] $Store # Stores in Scoop
+    [string] $Name # Pretty Name
+    [string] $Id = (Convert-ToPascalCase($this.Name)) # Package Manager Name
+    [PackageManager] $PackageManager = "None"
+    [string] $Store = "Unknown" # Buckets in Scoop
     [string] $VerifyFile # File that exist if installed, recommended is exe file.
     [string] $GithubOwnerRepo # Owner/Repo
-    [string] $Repo # URL to Repo or null if GithubOwnerRepo is set
-    [string] $Docs # URL to Docs
+    [string] $RepoUrl # URL to Repo or null if GithubOwnerRepo is set
+    [string] $DocsUrl # URL to Docs
+    [string] $ChangeLogUrl # URL to ChangeLog, version, releases
     [string] $DotfilesSourcePath
     [array[]] $Dotfiles
-    [version] $Version = [version]::Parse("0.0.0")
+    [version] $Version
     [datetime] $AppLastUpdate
     [string] $CacheFolder
     [string] $AppFolder
 
-    # App() {
-    #     $this.Init(@{})
-    # }
-
-    App([hashtable]$Properties) {
-        $this.Init($Properties)
+    MyApps() {
+        Write-Debug -Message "MyApps Ctor props"
+        $this.Init($null)
     }
 
-    App([hashtable]$Properties, [AppType]$Type) {
-        $this.Type = $Type
+    MyApps([hashtable]$Properties) {
+        Write-Debug -Message "MyApps Ctor props"
         $this.Init($Properties)
-    }
-
-    App([string]$Name, [string]$Store, [string]$VerifyFile) {
-        $this.Init(@{Name = $Name; Store = $Store; VerifyFile = $VerifyFile })
     }
 
     # Shared initializer method
     hidden Init([hashtable]$Properties) {
-        foreach ($Property in $Properties.Keys) {
-            $this.$Property = $Properties.$Property
+        if ($null -ne $Properties) {
+            foreach ($Property in $Properties.Keys) {
+                $this.$Property = $Properties.$Property
+            }
         }
     }
 
@@ -151,26 +150,6 @@ class App {
     #     # Logic to run in profile to import, dotsource or invoke app
     # }
 
-    [uri] GetRepoUri([string]$Switch) {
-        if ([string]::IsNullOrEmpty($this.GithubOwnerRepo)) {
-            return [uri]$this.Repo
-        } else {
-            switch ($Switch) {
-                'latest-release' {
-                    return [uri]"https://api.github.com/repos/" + $this.GithubOwnerRepo + "/releases/latest"
-                }
-                'repo' {
-                    return [uri]"https://github.com/" + $this.GithubOwnerRepo
-                }
-                default {
-                    Write-Error "`$Switch` not recognized or not implemented." -BackgroundColor Red
-                }
-            }
-            return [uri]$this.GithubOwnerRepo
-        }
-        return [uri]$this.Repo
-    }
-
     [void] Install() {
         # Logic to install app
         if (-Not (Test-Path "$Env:SCOOP\buckets\$($this.Store)" -PathType Container)) {
@@ -225,7 +204,7 @@ class App {
 
     [void] ShowDocs() {
         # Logic to show app documentation
-        Start-Process "$($this.Docs)"
+        if ([uri]$this.DocsUrl) { Start-Process "$($this.Docs)" }
     }
 
     [void] ShowLogo() {
@@ -246,31 +225,47 @@ class App {
         }
     }
 
-    [string] ShowReleases() {
+    [string] ShowChangeLog ($uri = $null) {
         # Logic to show release notes or changelog
-        $uri = $this.GetRepoUri('latest-release')
-        $Response = Invoke-RestMethod -Uri $uri
-        if ("github.com" -eq $uri.Host) {
-            $output = Show-Markdown -InputObject $Response.body
-        } else {
-            $output = $Response
+        if ($this.ChangeLogUrl) {
+            $uri = [uri]$this.ChangeLogUrl
+        } elseif ($this.GithubOwnerRepo) {
+            $uri = [uri]"https://api.github.com/repos/" + $this.GithubOwnerRepo + "/releases/latest"
         }
-        return $output.subString(0, [System.Math]::Min(400, $output.Length))
+
+        if ($uri) {
+            $Response = Invoke-RestMethod -Uri $uri
+            if ("github.com" -eq $uri.Host) {
+                $output = Show-Markdown -InputObject $Response.body
+            } else {
+                $output = $Response
+            }
+            return $output.subString(0, [System.Math]::Min(400, $output.Length))
+        } else {
+            Write-Warning -Message "No changelog found"
+            return $null
+        }
     }
 
-    [void] ShowRepo() {
+    [void] ShowRepo($uri = $null) {
         # Logic to show app repository
-        $uri = $this.GetRepoUri('repo')
-        Start-Process "$uri"
+        if ($this.RepoUrl) {
+            $uri = [uri]$this.RepoUrl
+        } elseif ($this.GithubOwnerRepo) {
+            $uri = [uri]"https://github.com/" + $this.GithubOwnerRepo
+        }
+        if ($uri) {
+            Start-Process "$uri"
+        } else {
+            Write-Warning -Message "No Repo URI found"
+        }
     }
-
 
     [void] Uninstall() {
         scoop uninstall "$($this.Store)/$($this.Name)"
         $this.DotfilesSwitch('remove')
         # TODO: Remove env var
     }
-
 
     [void] UpdateSystemState() {
         [MySystemState].UpdateAppData($this.GetType(), $this)
@@ -283,4 +278,7 @@ class App {
         $this.AppLastUpdate = (Get-Date).ToShortDateString()
         $this.UpdateSystemState()
     }
+
+
 }
+

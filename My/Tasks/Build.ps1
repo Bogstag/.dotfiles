@@ -1,5 +1,5 @@
-$modulePath = "$Env:dotfiles\DotfilesModule"
-$manifestPath = "$modulePath\DotfilesModule.psd1"
+$modulePath = "$Env:dotfiles\My"
+$manifestPath = "$modulePath\My.psd1"
 
 # Get all relevant files and convert them to module-relative paths
 $files = @()

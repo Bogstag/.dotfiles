@@ -50,6 +50,7 @@ $t = Measure-Command {
 
     Add-ToMyPath "$Env:dotfiles"
     Add-ToMyPath "$Env:dotfiles" "PSModulePath"
+    Add-ToMyPath "$Env:dotfiles\My" "PSModulePath"
 
     Add-ToMyPath "$env:LOCALAPPDATA\Microsoft\PowerShell"
     Add-ToMyPath "$env:LOCALAPPDATA\Microsoft\PowerShell" "PSModulePath"

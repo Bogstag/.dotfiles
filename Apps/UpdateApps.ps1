@@ -1,4 +1,4 @@
-using module DotfilesModule
+using module My
 
 function AppClassFromScoopName($ScoopName) {
     $Class = $MyApps.Values | Where-Object { $_.Name -eq $ScoopName }

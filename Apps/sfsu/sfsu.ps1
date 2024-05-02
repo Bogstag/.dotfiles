@@ -1,6 +1,6 @@
-using module DotfilesModule
+using module My
 
-class sfsu : App {
+class sfsu : MyScoopApps {
 
     sfsu() : base(@{
             Logo               = @"

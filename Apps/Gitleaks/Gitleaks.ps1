@@ -1,7 +1,7 @@
-using module DotfilesModule
+using module My
 
 # Also including pre-commit
-class Gitleaks : App {
+class Gitleaks : MyScoopApps {
 
     Gitleaks() : base(@{
             Logo               = @"

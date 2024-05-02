@@ -1,6 +1,6 @@
-using module DotfilesModule
+using module My
 
-class OneCommander : App {
+class OneCommander : MyScoopApps {
 
     OneCommander() : base(@{
             Logo               = @"

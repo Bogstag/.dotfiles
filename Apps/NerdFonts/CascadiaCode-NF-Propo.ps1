@@ -1,6 +1,6 @@
-# using module DotfilesModule
+# using module My
 
-# class CascadiaCodeNFPropo : App {
+# class CascadiaCodeNFPropo : MyScoopApps {
 
 #     CascadiaCodeNFPropo() : base(@{
 #             Logo            = @"

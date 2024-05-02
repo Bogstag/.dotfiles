@@ -1,6 +1,6 @@
-using module DotfilesModule
+using module My
 
-class Nmap : App {
+class Nmap : MyScoopApps {
 
     Nmap() : base(@{
             Logo       = @"

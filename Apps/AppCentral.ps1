@@ -1,8 +1,9 @@
-using module DotfilesModule
+using module My
 param (
     [string]$Command
 )
-# $DebugPreference = 'Continue'
+# $DebugPreference = "Continue"
+$ErrorActionPreference = "Stop"
 $appsPath = "$Env:dotfiles\Apps"
 $appsFolder = Get-ChildItem -Path $appsPath -Directory
 $MyApps = @{}

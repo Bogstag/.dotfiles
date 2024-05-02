@@ -1,6 +1,6 @@
-# using module DotfilesModule
+# using module My
 
-# class FiraCodeNFMono : App {
+# class FiraCodeNFMono : MyScoopApps {
 
 #     FiraCodeNFMono() : base(@{
 #             Logo            = @"

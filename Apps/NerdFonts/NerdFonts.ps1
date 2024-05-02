@@ -1,6 +1,6 @@
-using module DotfilesModule
+using module My
 
-class NerdFonts : App {
+class NerdFonts : MyScoopApps {
 
     NerdFonts() : base(@{
             Logo            = @"
