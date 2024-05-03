@@ -1,6 +1,6 @@
 using module My
 
-class ScoopUnmanaged : MyScoopApps {
+class ScoopUnmanaged : ScoopApps {
     [array] $AppsList
 
     ScoopUnmanaged() : base(@{

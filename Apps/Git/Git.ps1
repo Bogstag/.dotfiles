@@ -1,6 +1,6 @@
 ﻿using module My
 
-class Git : MyScoopApps {
+class Git : ScoopApps {
 
     Git() : base(@{
             Logo               = @"
@@ -25,7 +25,7 @@ class Git : MyScoopApps {
             Store              = "main"
             VerifyFile         = "$Env:SCOOP\apps\Git\current\git-cmd.exe"
             GithubOwnerRepo    = "git-for-windows/git"
-            Docs               = "https://git-scm.com/docs" # Replace DocsUrl with your specific docs URL
+            DocsUrl            = "https://git-scm.com/docs" # Replace DocsUrl with your specific docs URL
             DotfilesSourcePath = "$PSScriptRoot"
             Dotfiles           = @(
                 "$Env:USERPROFILE\.bash_profile",
@@ -58,7 +58,7 @@ class Git : MyScoopApps {
         # }
         # $this.Install() # TODO: verify this solution
 
-        [MyScoopApps]::install()
+        [ScoopApps]::install()
 
         $this.SetEnvironmentVariables()
 
@@ -88,6 +88,6 @@ class Git : MyScoopApps {
     # [void] Update() {}
 
     # [void] UpdateSystemState() {
-    #     [MySystemState].UpdateAppData($this.GetType(), $this)
+    #     [GenericState].UpdateAppData($this.GetType(), $this)
     # }
 }

@@ -1,6 +1,6 @@
 using module My
 
-class NerdFonts : MyScoopApps {
+class NerdFonts : ScoopApps {
 
     NerdFonts() : base(@{
             Logo            = @"
@@ -26,7 +26,7 @@ class NerdFonts : MyScoopApps {
                 "$Env:SCOOP\apps\CascadiaCode-NF-Propo\current\manifest.json",
                 "$Env:SCOOP\apps\FiraMono-NF-Mono\current\manifest.json")
             GithubOwnerRepo = "ryanoasis/nerd-fonts"
-            Docs            = "https://www.nerdfonts.com/cheat-sheet"
+            DocsUrl         = "https://www.nerdfonts.com/cheat-sheet"
             AppFolder       = "$PSScriptRoot"
         }) {
         # TODO: This need a solution! Is this a one off?

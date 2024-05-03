@@ -1,6 +1,6 @@
 using module My
 
-class Scoop : MyScoopApps {
+class Scoop : ScoopApps {
 
     Scoop() : base(@{
             Logo               = @"
@@ -12,8 +12,8 @@ class Scoop : MyScoopApps {
             Store              = "main"
             VerifyFile         = "$Env:SCOOP\apps\Scoop\current\Scoop.exe"
             GithubOwnerRepo    = "OWNER/REPO"
-            Repo               = "https://github.com/RepoUrl" # Unset if GithubOwnerRepo is set.
-            Docs               = "https://github.com/DocsUrl" # Replace DocsUrl with your specific docs URL
+            RepoUrl            = "https://github.com/RepoUrl" # Unset if GithubOwnerRepo is set.
+            DocsUrl            = "https://github.com/DocsUrl" # Replace DocsUrl with your specific docs URL
             DotfilesSourcePath = "$PSScriptRoot"
             Dotfiles           = @(
                 "$Env:XDG_CONFIG_HOME\Scoop\Scoop.json"

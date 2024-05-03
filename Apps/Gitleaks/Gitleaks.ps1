@@ -1,7 +1,7 @@
 using module My
 
 # Also including pre-commit
-class Gitleaks : MyScoopApps {
+class Gitleaks : ScoopApps {
 
     Gitleaks() : base(@{
             Logo               = @"
@@ -31,7 +31,7 @@ api keys, and tokens in git repos.
             Store              = "main"
             VerifyFile         = "$Env:SCOOP\apps\Gitleaks\current\Gitleaks.exe"
             GithubOwnerRepo    = "gitleaks/gitleaks"
-            Docs               = "https://github.com/gitleaks/gitleaks#configuration" # Replace DocsUrl with your specific docs URL
+            DocsUrl            = "https://github.com/gitleaks/gitleaks#configuration" # Replace DocsUrl with your specific docs URL
             DotfilesSourcePath = "$PSScriptRoot"
             Dotfiles           = @(
                 "$Env:dotfiles\.pre-commit-config.yaml"
@@ -90,6 +90,6 @@ api keys, and tokens in git repos.
     # [void] Update() {}
 
     # [void] UpdateSystemState() {
-    #     [MySystemState].UpdateAppData($this.GetType(), $this)
+    #     [GenericState].UpdateAppData($this.GetType(), $this)
     # }
 }

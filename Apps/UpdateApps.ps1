@@ -1,7 +1,7 @@
 using module My
 
 function AppClassFromScoopName($ScoopName) {
-    $Class = $MyApps.Values | Where-Object { $_.Name -eq $ScoopName }
+    $Class = $Apps.Values | Where-Object { $_.Name -eq $ScoopName }
     Write-Debug -Message "    Class: $($Class)"
     if ($Class) {
         return $Class.GetType()
@@ -32,25 +32,25 @@ foreach ($appStatus in $scoopStatus.packages) {
 
     if ($null -eq $ClassName) {
         Write-Host " ❌"
-        # $MySystemState.AppData.ScoopUnmanaged.AppsList += $appStatus.Name
+        # $GenericState.AppData.ScoopUnmanaged.AppsList += $appStatus.Name
         continue
     }
 
     Write-Host " ✅"
-    if ($MyApps["$ClassName"].GetType().GetMethod('ShowLogo')) {
-        $MyApps["$ClassName"].ShowLogo()
+    if ($Apps["$ClassName"].GetType().GetMethod('ShowLogo')) {
+        $Apps["$ClassName"].ShowLogo()
     }
 
-    if ($MyApps["$ClassName"].GetType().GetMethod('ShowReleases')) {
-        $MyApps["$ClassName"].ShowReleases()
+    if ($Apps["$ClassName"].GetType().GetMethod('ShowReleases')) {
+        $Apps["$ClassName"].ShowReleases()
     }
 
     Write-Debug -Message "    Updating $($ClassName): $($appStatus.current) -> $($appStatus.available)"
-    if ($MyApps["$ClassName"].GetType().GetMethod('Update')) {
-        $MyApps["$ClassName"].Update($appStatus.available)
+    if ($Apps["$ClassName"].GetType().GetMethod('Update')) {
+        $Apps["$ClassName"].Update($appStatus.available)
     }
 }
-$MySystemState.SaveState('App')
+$GenericState.SaveState('App')
 
 # To use with Default Scoop
 # $scoopStatus = scoop status --local
@@ -58,11 +58,11 @@ $MySystemState.SaveState('App')
 # foreach ($appStatus in $scoopStatus) {
 #     Write-Host "Check: $($appStatus.Name)"
 #     if ($appStatus."Installed Version" -ne $appStatus."Latest Version") {
-#         if ($null -ne $MyApps[$appStatus.Name]) {
-#             $MyApps["$($appStatus.Name)"].ShowLogo()
-#             $MyApps["$($appStatus.Name)"].ShowReleases()
-#             $MyApps["$($appStatus.Name)"].Update($appStatus."Latest Version")
+#         if ($null -ne $Apps[$appStatus.Name]) {
+#             $Apps["$($appStatus.Name)"].ShowLogo()
+#             $Apps["$($appStatus.Name)"].ShowReleases()
+#             $Apps["$($appStatus.Name)"].Update($appStatus."Latest Version")
 #         }
 #     }
 # }
-# $MySystemState.SaveState()
+# $GenericState.SaveState()

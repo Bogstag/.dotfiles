@@ -1,6 +1,6 @@
 using module My
 
-class AdvancedRenamer : MyScoopApps {
+class AdvancedRenamer : ScoopApps {
 
     AdvancedRenamer() : base(@{
             Logo           = @"
@@ -13,8 +13,9 @@ Batch file renaming utility for Windows
             PackageManager = "Scoop"
             Store          = "extras"
             VerifyFile     = "$Env:SCOOP\apps\AdvancedRenamer\current\arenc.exe"
-            Repo           = "https://www.advancedrenamer.com/versionlog" # Unset if GithubOwnerRepo is set.
-            Docs           = "https://www.advancedrenamer.com/user_guide/complete_guide" # Replace DocsUrl with your specific docs URL
+            RepoUrl        = $null # Unset if GithubOwnerRepo is set.
+            DocsUrl        = "https://www.advancedrenamer.com/user_guide/complete_guide" # Replace DocsUrl with your specific docs URL
+            ChangeLogUrl   = "https://www.advancedrenamer.com/versionlog"
             AppFolder      = "$PSScriptRoot"
         }) {
         # $Env:SCOOP\persist\advancedrenamer TODO: see if there is sonething here i care about.

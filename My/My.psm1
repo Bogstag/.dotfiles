@@ -1,9 +1,8 @@
-using module ".\MySystemState.psm1"
-using module ".\MyApp.psm1"
-using module ".\MyApps.psm1"
-using module ".\MyScoopApps.psm1"
-using module ".\MyNoneApps.psm1"
-using module ".\MyAppRunner.psm1"
+using module ./My.GenericState.psm1
+using module ./My.Apps.psm1
+using module ./My.ScoopApps.psm1
+using module ./My.NoneApps.psm1
+using module ./My.AppRunner.psm1
 
 # Define module-wide variable
 # $Script:SystemStateJsonFile = ""
@@ -22,12 +21,11 @@ Get-ChildItem -Path "$PSScriptRoot/Public/*.ps1" | ForEach-Object {
 
 # Define the types to export with type accelerators.
 $ExportableTypes = @(
-    [MySystemState],
-    [MyApp],
-    [MyApps],
-    [MyScoopApps],
-    [MyNoneApps],
-    [MyAppRunner]
+    [GenericState],
+    [Apps],
+    [ScoopApps],
+    [NoneApps],
+    [AppRunner]
 )
 
 # Get the internal TypeAccelerators class to use its static methods.

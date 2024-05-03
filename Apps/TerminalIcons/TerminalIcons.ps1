@@ -1,6 +1,6 @@
 using module My
 
-class TerminalIcons : MyScoopApps {
+class TerminalIcons : ScoopApps {
 
     TerminalIcons() : base(@{
             Logo            = @"
@@ -13,7 +13,7 @@ class TerminalIcons : MyScoopApps {
             Store           = "extras"
             VerifyFile      = "$Env:SCOOP\modules\Terminal-Icons\Terminal-Icons.psd1"
             GithubOwnerRepo = "devblackops/Terminal-Icons"
-            Docs            = "https://github.com/devblackops/Terminal-Icons"
+            DocsUrl         = "https://github.com/devblackops/Terminal-Icons"
             AppFolder       = "$PSScriptRoot"
         }) {
     }
@@ -55,6 +55,6 @@ class TerminalIcons : MyScoopApps {
     # [void] Update() {}
 
     [void] UpdateSystemState() {
-        [MySystemState].UpdateAppData($this.GetType(), $this)
+        [GenericState].UpdateAppData($this.GetType(), $this)
     }
 }

@@ -1,6 +1,6 @@
 using module My
 
-class OneCommander : MyScoopApps {
+class OneCommander : ScoopApps {
 
     OneCommander() : base(@{
             Logo               = @"
@@ -12,8 +12,8 @@ A modern dual-pane file manager.
             Name               = "OneCommander"
             Store              = "extras"
             VerifyFile         = "$Env:SCOOP\apps\OneCommander\current\OneCommander.exe"
-            Repo               = "https://onecommander.com/releasenotes.txt" # Unset if GithubOwnerRepo is set.
-            Docs               = "https://onecommander.com/help" # Replace DocsUrl with your specific docs URL
+            DocsUrl            = "https://onecommander.com/help" # Replace DocsUrl with your specific docs URL
+            ChangeLogUrl       = "https://onecommander.com/releasenotes.txt"
             DotfilesSourcePath = "$PSScriptRoot"
             Dotfiles           = @( # Dotfile source must exist
                 "$Env:SCOOP/persist/onecommander/Resources/Scripts",

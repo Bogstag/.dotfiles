@@ -6,7 +6,7 @@ param (
 $ErrorActionPreference = "Stop"
 $appsPath = "$Env:dotfiles\Apps"
 $appsFolder = Get-ChildItem -Path $appsPath -Directory
-$MyApps = @{}
+$Apps = @{}
 Write-Debug "appsFolder: $appsFolder"
 
 foreach ($appFolder in $appsFolder) {
@@ -15,8 +15,8 @@ foreach ($appFolder in $appsFolder) {
     if (Test-Path $scriptPath) {
         . $scriptPath
         Write-Debug "appFolder.Name: $($appFolder.Name)"
-        $MyApps[$appFolder.Name] = New-Object -TypeName $($appFolder.Name)
-        $MySystemState.UpdateAppData([string] $($appFolder.Name), [object] $MyApps[$appFolder.Name])
+        $Apps[$appFolder.Name] = New-Object -TypeName $($appFolder.Name)
+        $GenericState.UpdateAppData([string] $($appFolder.Name), [object] $Apps[$appFolder.Name])
     } else {
         Write-Warning "Script file for $($appFolder.Name) not found at $scriptPath"
         continue
@@ -28,22 +28,22 @@ foreach ($appFolder in $appsFolder) {
         }
 
         'clear-apps' {
-            $MyApps[$appFolder.Name].Clear()
+            $Apps[$appFolder.Name].Clear()
         }
 
         'compare-apps-dotfiles' {
-            $MyApps[$appFolder.Name].CompareDotfiles()
+            $Apps[$appFolder.Name].CompareDotfiles()
         }
 
         'deploy-apps-dotfiles' {
-            $MyApps[$appFolder.Name].DotfilesSwitch([DotfilesAction]'deploy')
+            $Apps[$appFolder.Name].DotfilesSwitch([DotfilesAction]'deploy')
         }
 
         'enable-apps' {
-            if ($MyApps[$appFolder.Name].GetType().GetMethod('Enable')) {
-                Write-Host " ⏱️ Enable $($MyApps[$appFolder.Name].Name) => " -NoNewline -ForegroundColor Green
+            if ($Apps[$appFolder.Name].GetType().GetMethod('Enable')) {
+                Write-Host " ⏱️ Enable $($Apps[$appFolder.Name].Name) => " -NoNewline -ForegroundColor Green
                 $t = Measure-Command {
-                    $MyApps[$appFolder.Name].Enable()
+                    $Apps[$appFolder.Name].Enable()
                 }
                 $ProfileLoadTime.Milliseconds += $t.Milliseconds
                 $ProfileLoadTime.Measurements += 1
@@ -52,27 +52,27 @@ foreach ($appFolder in $appsFolder) {
         }
 
         'install-apps' {
-            $MyApps[$appFolder.Name].Install()
+            $Apps[$appFolder.Name].Install()
         }
 
         'invoke-apps' {
-            $MyApps[$appFolder.Name].Invoke()
+            $Apps[$appFolder.Name].Invoke()
         }
 
         'remove-apps-dotfiles' {
             Write-Warning "Not allowed" -BackgroundColor Red
-            # $MyApps[$appFolder.Name].DotfilesSwitch([DotfilesAction]'remove')
+            # $Apps[$appFolder.Name].DotfilesSwitch([DotfilesAction]'remove')
         }
 
         'reset-apps' {
-            $MyApps[$appFolder.Name].Reset()
+            $Apps[$appFolder.Name].Reset()
         }
 
         'set-apps-environmentvariables' {
-            if ($MyApps[$appFolder.Name].GetType().GetMethod('SetEnvironmentVariables')) {
-                Write-Host " ⏱️ Set Env Vars $($MyApps[$appFolder.Name].Name) => " -NoNewline -ForegroundColor Green
+            if ($Apps[$appFolder.Name].GetType().GetMethod('SetEnvironmentVariables')) {
+                Write-Host " ⏱️ Set Env Vars $($Apps[$appFolder.Name].Name) => " -NoNewline -ForegroundColor Green
                 $t = Measure-Command {
-                    $MyApps[$appFolder.Name].SetEnvironmentVariables()
+                    $Apps[$appFolder.Name].SetEnvironmentVariables()
                 }
                 $ProfileLoadTime.Milliseconds += $t.Milliseconds
                 $ProfileLoadTime.Measurements += 1
@@ -82,31 +82,31 @@ foreach ($appFolder in $appsFolder) {
 
         'show-apps-docs' {
             Write-Warning "Not allowed" -BackgroundColor Red
-            # $MyApps[$appFolder.Name].ShowDocs()
+            # $Apps[$appFolder.Name].ShowDocs()
         }
 
         'show-apps-logo' {
-            $MyApps[$appFolder.Name].ShowLogo()
+            $Apps[$appFolder.Name].ShowLogo()
         }
 
         'show-apps-releases' {
             Write-Warning "Not allowed" -BackgroundColor Red
-            # $MyApps[$appFolder.Name].ShowReleases()
+            # $Apps[$appFolder.Name].ShowReleases()
         }
 
         'show-apps-repo' {
             Write-Warning "Not allowed" -BackgroundColor Red
-            # $MyApps[$appFolder.Name].ShowRepo()
+            # $Apps[$appFolder.Name].ShowRepo()
         }
 
 
         'uninstall-apps' {
             Write-Warning "Not allowed" -BackgroundColor Red
-            # $MyApps[$appFolder.Name].Uninstall()
+            # $Apps[$appFolder.Name].Uninstall()
         }
 
         'update-apps' {
-            $MyApps[$appFolder.Name].Update()
+            $Apps[$appFolder.Name].Update()
         }
 
         default {
@@ -114,3 +114,8 @@ foreach ($appFolder in $appsFolder) {
         }
     }
 }
+
+Remove-Variable -Name appFolder
+Remove-Variable -Name appsFolder
+Remove-Variable -Name scriptPath
+Remove-Variable -Name appsPath

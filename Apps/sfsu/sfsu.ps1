@@ -1,6 +1,6 @@
 using module My
 
-class sfsu : MyScoopApps {
+class sfsu : ScoopApps {
 
     sfsu() : base(@{
             Logo               = @"
@@ -12,7 +12,7 @@ class sfsu : MyScoopApps {
             Store              = "extras"
             VerifyFile         = "$Env:SCOOP\apps\sfsu\current\sfsu.exe"
             GithubOwnerRepo    = "jewlexx/sfsu"
-            Docs               = "https://github.com/jewlexx/sfsu" # Replace DocsUrl with your specific docs URL
+            DocsUrl            = "https://github.com/jewlexx/sfsu" # Replace DocsUrl with your specific docs URL
             DotfilesSourcePath = "$PSScriptRoot"
             Dotfiles           = @(
                 "$Env:XDG_CONFIG_HOME\sfsu\sfsu.json"
@@ -92,6 +92,6 @@ class sfsu : MyScoopApps {
     # [void] Update() {}
 
     [void] UpdateSystemState() {
-        [MySystemState].UpdateAppData($this.GetType(), $this)
+        [GenericState].UpdateAppData($this.GetType(), $this)
     }
 }

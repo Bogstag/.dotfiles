@@ -1,10 +1,10 @@
 function Exit-IfAlreadyRunToday {
-    if ($MySystemState.HasRunToday()) {
+    if ($GenericState.HasRunToday()) {
         # Exit if the last profile run date is today
         exit
     } else {
         # Update the JSON file with today's date if not exiting
-        $MySystemState.UpdateLastRunDate()
+        $GenericState.UpdateLastRunDate()
     }
 }
 Exit-IfAlreadyRunToday
@@ -37,9 +37,9 @@ if (Test-Path $Env:dotfiles\Host\$Env:COMPUTERNAME.ps1 -PathType Leaf) {
 
 # App specific setup
 # if ($true -eq $Env:InstallAppsOnHost) {
-#     $MyApps = Get-ChildItem -Path "$Env:dotfiles/Apps/*" -Include *.ps1 -Recurse
+#     $Apps = Get-ChildItem -Path "$Env:dotfiles/Apps/*" -Include *.ps1 -Recurse
 
-#     foreach ($MyApp in $MyApps) {
+#     foreach ($MyApp in $Apps) {
 #         $BaseName = $MyApp.BaseName
 #         Write-Host " ⏱️ $BaseName => " -NoNewline -ForegroundColor Green
 

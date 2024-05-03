@@ -1,6 +1,6 @@
 using module My
 
-class Ruff : MyScoopApps {
+class Ruff : ScoopApps {
 
     Ruff() : base(@{
             Logo            = @"
@@ -30,7 +30,7 @@ An extremely fast Python linter.
             Store           = "main"
             VerifyFile      = "$Env:SCOOP\apps\Ruff\current\ruff.exe"
             GithubOwnerRepo = "astral-sh/ruff"
-            Docs            = "https://docs.astral.sh/ruff/configuration" # Replace DocsUrl with your specific docs URL
+            DocsUrl         = "https://docs.astral.sh/ruff/configuration" # Replace DocsUrl with your specific docs URL
             CacheFolder     = "$Env:XDG_CACHE_HOME\Ruff"
             AppFolder       = "$PSScriptRoot"
         }) {
@@ -71,6 +71,6 @@ An extremely fast Python linter.
     # [void] Update() {}
 
     # [void] UpdateSystemState() {
-    #     [MySystemState].UpdateAppData($this.GetType(), $this)
+    #     [GenericState].UpdateAppData($this.GetType(), $this)
     # }
 }

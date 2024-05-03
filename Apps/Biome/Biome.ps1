@@ -1,6 +1,6 @@
 ﻿using module My
 
-class Biome : MyScoopApps {
+class Biome : ScoopApps {
 
     Biome() : base(@{
             Logo               = @"
@@ -19,7 +19,7 @@ Formatter, linter, bundler for JavaScript, JSON, HTML, Markdown, and CSS.
             Store              = "main"
             VerifyFile         = "$Env:SCOOP\apps\biome\current\biome.exe"
             GithubOwnerRepo    = "biomejs/biome"
-            Docs               = "https://biomejs.dev/guides/getting-started/"
+            DocsUrl            = "https://biomejs.dev/guides/getting-started/"
             DotfilesSourcePath = "$PSScriptRoot"
             Dotfiles           = @(
                 "$Env:XDG_CONFIG_HOME\biome\biome.json"
@@ -65,6 +65,6 @@ Formatter, linter, bundler for JavaScript, JSON, HTML, Markdown, and CSS.
     # [void] Update() {}
 
     # [void] UpdateSystemState() {
-    #     [MySystemState].UpdateAppData($this.GetType(), $this)
+    #     [GenericState].UpdateAppData($this.GetType(), $this)
     # }
 }

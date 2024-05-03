@@ -1,6 +1,6 @@
 # using module My
 
-# class FiraCodeNFMono : MyScoopApps {
+# class FiraCodeNFMono : ScoopApps {
 
 #     FiraCodeNFMono() : base(@{
 #             Logo            = @"
@@ -64,6 +64,6 @@
 #     # [void] Update() {}
 
 #     [void] UpdateSystemState() {
-#         [MySystemState].UpdateAppData($this.GetType(), $this)
+#         [GenericState].UpdateAppData($this.GetType(), $this)
 #     }
 # }

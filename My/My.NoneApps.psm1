@@ -1,22 +1,27 @@
-using module .\MyApps.psm1
+using module ./My.Apps.psm1
 
-class MyScoopApps : MyApps {
+class NoneApps : Apps {
 
-    # MyScoopApps() : base(@{}) {
-    MyScoopApps() {
-        Write-Debug -Message "MyScoopApps Ctor"
-        $this.MyScoopAppsInit(@{})
+    # ScoopApps() : base(@{}) {
+    NoneApps() {
+        Write-Debug -Message "NoneApps Ctor"
+        $this.NoneAppsInit()
     }
 
-    MyScoopApps([hashtable]$Properties) {
-        Write-Debug -Message "MyScoopApps Ctor props"
-        $this.MyScoopAppsInit($Properties)
+    NoneApps($Properties) {
+        Write-Debug -Message "NoneApps Ctor props"
+        $this.NoneAppsInit([hashtable]$Properties)
     }
 
-    hidden MyScoopAppsInit([hashtable]$Properties) {
-        $this.PackageManager = "Scoop"
+    [void] NoneAppsInit() {
+        $this.NoneAppsInit(@{})
+    }
+
+    [void] NoneAppsInit([hashtable]$Properties) {
+        $this.PackageManager = "None"
+        $this.Store = $null
         if ($Properties -ne @{}) {
-            [MyApps]::Init($Properties)
+            $this.Init($Properties)
         }
     }
 
@@ -57,7 +62,7 @@ class MyScoopApps : MyApps {
     # [void] Update() {}
 
     # [void] UpdateSystemState() {
-    #     [MySystemState].UpdateAppData($this.GetType(), $this)
+    #     [GenericState].UpdateAppData($this.GetType(), $this)
     # }
 }
 

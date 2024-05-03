@@ -1,7 +1,7 @@
 ﻿using module My
 
-class Template : MyScoopApps {
-    # class Template : MyNoneApps {
+class Template : ScoopApps {
+    # class Template : NoneApps {
 
     Template() : base([ordered]@{
             Logo               = @"
@@ -11,8 +11,8 @@ class Template : MyScoopApps {
 "@
             Name               = "Template"
             Id                 = (Convert-ToPascalCase($this.Name)) # Package Manager or Safe Name
-            PackageManager     = "Scoop" # Remove if MyNoneApps
-            Store              = "main" # Remove if MyNoneApps
+            PackageManager     = "Scoop" # Remove if NoneApps
+            Store              = "main" # Remove if NoneApps
             VerifyFile         = "$Env:SCOOP\apps\Template\current\Template.exe"
             GithubOwnerRepo    = "OWNER/REPO"
             RepoUrl            = "https://github.com/" + $this.GithubOwnerRepo # Unset if GithubOwnerRepo is set.

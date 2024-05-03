@@ -1,9 +1,9 @@
 using module My
 
-class Nmap : MyScoopApps {
+class Nmap : ScoopApps {
 
     Nmap() : base(@{
-            Logo       = @"
+            Logo         = @"
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%@@@@@%%###*********###%%@@@@@%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -31,12 +31,13 @@ class Nmap : MyScoopApps {
 Network exploration and security auditing utility.
 "@
 
-            Name       = "Nmap" # CTRL+H Nmap with your specific app name, same as folder name
-            Store      = "main"
-            VerifyFile = "$Env:SCOOP\apps\Nmap\current\Nmap.exe"
-            Repo       = "https://svn.nmap.org/" # Replace RepoUrl with your specific repo URL
-            Docs       = "https://nmap.org/book/man.html" # Replace DocsUrl with your specific docs URL
-            AppFolder  = "$PSScriptRoot"
+            Name         = "Nmap" # CTRL+H Nmap with your specific app name, same as folder name
+            Store        = "main"
+            VerifyFile   = "$Env:SCOOP\apps\Nmap\current\Nmap.exe"
+            RepoUrl      = "https://svn.nmap.org/" # Replace RepoUrl with your specific repo URL
+            DocsUrl      = "https://nmap.org/book/man.html" # Replace DocsUrl with your specific docs URL
+            ChangeLogUrl = "" # TODO: Exists?
+            AppFolder    = "$PSScriptRoot"
         }) {
     }
 
@@ -87,6 +88,6 @@ Network exploration and security auditing utility.
     }
 
     # [void] UpdateSystemState() {
-    #     [MySystemState].UpdateAppData($this.GetType(), $this)
+    #     [GenericState].UpdateAppData($this.GetType(), $this)
     # }
 }

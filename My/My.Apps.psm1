@@ -1,4 +1,4 @@
-using module .\MySystemState.psm1
+using module ./My.GenericState.psm1
 
 Enum PackageManager {
     Scoop
@@ -10,7 +10,7 @@ Enum DotfilesAction {
     remove
 }
 
-class MyApps {
+class Apps {
     [string] $Logo
     [string] $Name # Pretty Name
     [string] $Id = (Convert-ToPascalCase($this.Name)) # Package Manager Name
@@ -28,23 +28,44 @@ class MyApps {
     [string] $CacheFolder
     [string] $AppFolder
 
-    MyApps() {
-        Write-Debug -Message "MyApps Ctor props"
-        $this.Init($null)
+    Apps() {
+        Write-Debug -Message "Apps Ctor props"
+        $this.Init()
     }
 
-    MyApps([hashtable]$Properties) {
-        Write-Debug -Message "MyApps Ctor props"
+    Apps([hashtable]$Properties) {
+        $type = $this.GetType()
+
+        if ($type -eq [Apps]) {
+            throw("Class $type must be inherited")
+        }
+
+        Write-Debug -Message "Apps Ctor props"
         $this.Init($Properties)
     }
 
-    # Shared initializer method
-    hidden Init([hashtable]$Properties) {
+    [void] Init() {
+        $this.Init(@{})
+    }
+
+    [void] Init([hashtable]$Properties) {
         if ($null -ne $Properties) {
             foreach ($Property in $Properties.Keys) {
                 $this.$Property = $Properties.$Property
             }
         }
+    }
+
+    [HashTable] Splat([String[]] $Properties) {
+        $splat = @{}
+
+        foreach ($prop in $Properties) {
+            if ($this.GetType().GetProperty($prop)) {
+                $splat.Add($prop, $this.$prop)
+            }
+        }
+
+        return $splat
     }
 
     # [void] Clear() {
@@ -268,7 +289,8 @@ class MyApps {
     }
 
     [void] UpdateSystemState() {
-        [MySystemState].UpdateAppData($this.GetType(), $this)
+        New-App($this.GetType(), $this)
+        $global:GenericState.UpdateAppData($this.GetType(), $this) # TODO: This dont work
     }
 
     [void] Update([string] $Version) {

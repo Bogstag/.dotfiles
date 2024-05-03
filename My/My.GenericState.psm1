@@ -1,12 +1,12 @@
 
-class MySystemState {
+class GenericState {
     [string] $SystemStateJsonFile = "$($Env:dotfiles)\MySystemState-$($Env:COMPUTERNAME).json"
     [string] $AppStateJsonFile = "$($Env:dotfiles)\AppState-$($Env:COMPUTERNAME).json"
     [Hashtable] $AppData = @{}
     [Hashtable] $SystemData = @{}
 
 
-    MySystemState() {
+    GenericState() {
         $this.SystemData["LastProfileRunDate"] = [datetime] (Get-Date -Date "1900-01-01").ToShortDateString()
         $this.SystemData["SystemStateJsonFile"] = $this.SystemStateJsonFile
         $this.LoadSystemState()
@@ -74,7 +74,6 @@ class MySystemState {
         if ($appInstance) {
             if ($appType) { $appType = $appInstance.GetType() }
             $data = @{}
-            # Iterate over all properties of the app instance except 'Logo'
             $appInstance.GetType().GetProperties() | ForEach-Object {
                 # Check if the property name is 'Logo', skip it if true
                 if ($_.Name -ne 'Logo') {

@@ -1,10 +1,10 @@
-using module .\MyApps.psm1
-class MyAppRunner {
+using module ./My.Apps.psm1
+class AppRunner {
 
     #     # [System.IO.DirectoryInfo] $AppFolders = (Get-ChildItem -Path "$($this.AppsScriptFolder)" -Directory)
     #     # static [array] $AppFolders
     #     static [string] $Command = $null
-    #     static [hashtable] $MyApps = [hashtable]::new() # $MyApps = @{}
+    #     static [hashtable] $Apps = [hashtable]::new() # $Apps = @{}
 
     #     static [void] Run([string] $Command) {
     #         if ($null -ne $Command) {
@@ -27,8 +27,8 @@ class MyAppRunner {
     #         if (Test-Path $scriptPath) {
     #             . $scriptPath
     #             Write-Debug "appFolder.Name: $($AppFolder.Name)"
-    #             [AppCommander]::MyApps[$AppFolder.Name] = New-Object -TypeName $($AppFolder.Name)
-    #             $MySystemState.UpdateAppData([string] $($AppFolder.Name), [object] [AppCommander]::MyApps[$AppFolder.Name])
+    #             [AppCommander]::Apps[$AppFolder.Name] = New-Object -TypeName $($AppFolder.Name)
+    #             $GenericState.UpdateAppData([string] $($AppFolder.Name), [object] [AppCommander]::Apps[$AppFolder.Name])
     #         } else {
     #             Write-Warning "Script file for $($AppFolder.Name) not found at $scriptPath"
     #             continue
@@ -44,18 +44,18 @@ class MyAppRunner {
     #             }
 
     #             'clear-apps' {
-    #                 [AppCommander]::MyApps[$AppFolder.Name].Clear()
+    #                 [AppCommander]::Apps[$AppFolder.Name].Clear()
     #             }
 
     #             'compare-apps-dotfiles' {
-    #                 [AppCommander]::MyApps[$AppFolder.Name].CompareDotfiles()
+    #                 [AppCommander]::Apps[$AppFolder.Name].CompareDotfiles()
     #             }
 
     #             'enable-apps' {
-    #                 if ([AppCommander]::MyApps[$AppFolder.Name].GetType().GetMethod('Enable')) {
+    #                 if ([AppCommander]::Apps[$AppFolder.Name].GetType().GetMethod('Enable')) {
     #                     Write-Host " ⏱️ Enable $($AppFolder.Name) => " -NoNewline -ForegroundColor Green
     #                     $t = Measure-Command {
-    #                         [AppCommander]::MyApps[$AppFolder.Name].Enable()
+    #                         [AppCommander]::Apps[$AppFolder.Name].Enable()
     #                     }
     #                     $ProfileLoadTime.Milliseconds += $t.Milliseconds
     #                     $ProfileLoadTime.Measurements += 1
@@ -64,18 +64,18 @@ class MyAppRunner {
     #             }
 
     #             'install-apps' {
-    #                 [AppCommander]::MyApps[$AppFolder.Name].Install()
+    #                 [AppCommander]::Apps[$AppFolder.Name].Install()
     #             }
 
     #             'invoke-apps' {
-    #                 [AppCommander]::MyApps[$AppFolder.Name].Invoke()
+    #                 [AppCommander]::Apps[$AppFolder.Name].Invoke()
     #             }
 
     #             'set-apps-environmentvariables' {
-    #                 if ([AppCommander]::MyApps[$AppFolder.Name].GetType().GetMethod('SetEnvironmentVariables')) {
-    #                     Write-Host " ⏱️ Set Env Vars $([AppCommander]::MyApps[$AppFolder.Name].Name) => " -NoNewline -ForegroundColor Green
+    #                 if ([AppCommander]::Apps[$AppFolder.Name].GetType().GetMethod('SetEnvironmentVariables')) {
+    #                     Write-Host " ⏱️ Set Env Vars $([AppCommander]::Apps[$AppFolder.Name].Name) => " -NoNewline -ForegroundColor Green
     #                     $t = Measure-Command {
-    #                         [AppCommander]::MyApps[$AppFolder.Name].SetEnvironmentVariables()
+    #                         [AppCommander]::Apps[$AppFolder.Name].SetEnvironmentVariables()
     #                     }
     #                     $ProfileLoadTime.Milliseconds += $t.Milliseconds
     #                     $ProfileLoadTime.Measurements += 1
@@ -84,36 +84,36 @@ class MyAppRunner {
     #             }
 
     #             'show-apps-docs' {
-    #                 Write-Warning "Really show all docs including $([AppCommander]::MyApps[$AppFolder.Name].Name)?" -BackgroundColor Red
-    #                 # $MyApps[$AppFolder.Name].ShowDocs()
+    #                 Write-Warning "Really show all docs including $([AppCommander]::Apps[$AppFolder.Name].Name)?" -BackgroundColor Red
+    #                 # $Apps[$AppFolder.Name].ShowDocs()
     #             }
 
     #             'show-apps-logo' {
     #                 $windowWidth = $host.ui.RawUI.WindowSize.Width
-    #                 [AppCommander]::MyApps[$AppFolder.Name].ShowLogo($windowWidth)
+    #                 [AppCommander]::Apps[$AppFolder.Name].ShowLogo($windowWidth)
     #             }
 
     #             'show-apps-releases' {
-    #                 Write-Warning "Really show all releases including $([AppCommander]::MyApps[$AppFolder.Name].Name)?" -BackgroundColor Red
-    #                 # $MyApps[$AppFolder.Name].ShowReleases()
+    #                 Write-Warning "Really show all releases including $([AppCommander]::Apps[$AppFolder.Name].Name)?" -BackgroundColor Red
+    #                 # $Apps[$AppFolder.Name].ShowReleases()
     #             }
 
     #             'show-apps-repo' {
-    #                 Write-Warning "Really show all repos including $([AppCommander]::MyApps[$AppFolder.Name].Name)?" -BackgroundColor Red
-    #                 # $MyApps[$AppFolder.Name].ShowRepo()
+    #                 Write-Warning "Really show all repos including $([AppCommander]::Apps[$AppFolder.Name].Name)?" -BackgroundColor Red
+    #                 # $Apps[$AppFolder.Name].ShowRepo()
     #             }
     #             'reset-apps' {
-    #                 [AppCommander]::MyApps[$AppFolder.Name].Reset()
+    #                 [AppCommander]::Apps[$AppFolder.Name].Reset()
     #             }
 
     #             'uninstall-apps' {
-    #                 Write-Warning "Really uninstall  all app including $([AppCommander]::MyApps[$AppFolder.Name].Name)?" -BackgroundColor Red
+    #                 Write-Warning "Really uninstall  all app including $([AppCommander]::Apps[$AppFolder.Name].Name)?" -BackgroundColor Red
     #                 # To proceed, uncomment the line below
-    #                 # $MyApps[$AppFolder.Name].Uninstall()
+    #                 # $Apps[$AppFolder.Name].Uninstall()
     #             }
 
     #             'update-apps' {
-    #                 [AppCommander]::MyApps[$AppFolder.Name].Update()
+    #                 [AppCommander]::Apps[$AppFolder.Name].Update()
     #             }
 
     #             default {
@@ -209,7 +209,7 @@ class MyAppRunner {
     #     # }
 
     #     # [void] UpdateSystemState() {
-    #     #     $MySystemState.UpdateAppData($this.Name, $this)
+    #     #     $GenericState.UpdateAppData($this.Name, $this)
     #     # }
 }
 

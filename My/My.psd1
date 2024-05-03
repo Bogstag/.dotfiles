@@ -9,7 +9,7 @@
 @{
 
     # Script module or binary module file associated with this manifest.
-    RootModule        = '.\My.psm1'
+    RootModule        = 'My.psm1'
 
     # Version number of this module.
     ModuleVersion     = '0.0.2'
@@ -67,12 +67,11 @@
 
     # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
     NestedModules     = @(
-        ".\MyApp.psm1",
-        ".\MyApps.psm1",
-        ".\MyAppRunner.psm1",
-        ".\MyScoopApps.psm1",
-        ".\MySystemState.psm1",
-        ".\MyNoneApps.psm1"
+        "./My.Apps.psm1",
+        "./My.AppRunner.psm1",
+        "./My.ScoopApps.psm1",
+        "./My.GenericState.psm1",
+        "./My.NoneApps.psm1"
     )
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
@@ -93,31 +92,29 @@
     # List of all modules packaged with this module
     ModuleList        = @(
         ".\My.psm1",
-        ".\MyApp.psm1",
-        ".\MyAppRunner.psm1",
-        ".\MyApps.psm1",
-        ".\MyScoopApps.psm1",
-        ".\MySystemState.psm1",
-        ".\MyNoneApps.psm1"
+        ".\My.AppRunner.psm1",
+        ".\My.Apps.psm1",
+        ".\My.ScoopApps.psm1",
+        ".\My.GenericState.psm1",
+        ".\My.NoneApps.psm1"
     )
 
     # List of all files packaged with this module
     FileList          = @(
-        'MyApp.psm1',
-        'MyAppRunner.psm1',
+        'My.AppRunner.psm1',
         'My.psd1',
         'My.psm1',
-        'MyApps.psm1',
-        'MySystemState.psm1',
-        'MyScoopApps.psm1',
-        "MyNoneApps.psm1",
+        'My.Apps.psm1',
+        'My.GenericState.psm1',
+        'My.ScoopApps.psm1',
+        "My.NoneApps.psm1",
         'Functions\Convert-ToPascalCase.ps1',
         'Functions\ShowCalendar.ps1',
         'Implementations\SpecificImplementations.ps1',
         'Public\Get-AppConfig.ps1',
         'Public\New-App.ps1',
         'Public\New-AppFromConfig.ps1',
-        'Public\New-MySystemState.ps1',
+        'Public\New-GenericState.ps1',
         'Tasks\Build.ps1',
         'Tasks\MaintenanceTasks.ps1'
     )

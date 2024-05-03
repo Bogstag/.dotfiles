@@ -1,6 +1,6 @@
 ﻿using module My
 
-class Starship : MyScoopApps {
+class Starship : ScoopApps {
 
     Starship() : base(@{
             Logo               = @"
@@ -31,7 +31,7 @@ and extremely customizable prompt!
             Store              = "main"
             VerifyFile         = "$Env:SCOOP\apps\starship\current\starship.exe"
             GithubOwnerRepo    = "starship/starship"
-            Docs               = "https://starship.rs/config/"
+            DocsUrl            = "https://starship.rs/config/"
             DotfilesSourcePath = "$PSScriptRoot"
             Dotfiles           = @(
                 "$Env:XDG_CONFIG_HOME\Starship.toml"
@@ -81,6 +81,6 @@ and extremely customizable prompt!
     # [void] Update() {}
 
     [void] UpdateSystemState() {
-        [MySystemState].UpdateAppData($this.GetType(), $this)
+        [GenericState].UpdateAppData($this.GetType(), $this)
     }
 }

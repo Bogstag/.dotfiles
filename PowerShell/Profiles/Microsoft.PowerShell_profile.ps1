@@ -61,11 +61,12 @@ try {
 } catch {
     Write-Error "Failed to write log entry: $_"
 }
-
-$MySystemState.SaveAllState()
+Remove-Variable -Name logEntry
+Remove-Variable -Name ProfileLoadTime
+$GenericState.SaveAllState()
 # $SaveSystemStateJob = Start-ThreadJob -ScriptBlock {
-#     $MySystemState = $using:MySystemState
-#     $MySystemState.SaveState()
+#     $GenericState = $using:GenericState
+#     $GenericState.SaveState()
 # }
 # $suaJob = Start-ThreadJob -ScriptBlock { Scoop Update * }
 # Write-Host "sua job is running: Receive-Job -Job $suaJob"

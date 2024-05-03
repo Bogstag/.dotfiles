@@ -1,6 +1,6 @@
 # using module My
 
-# class CascadiaCodeNFMono : MyScoopApps {
+# class CascadiaCodeNFMono : ScoopApps {
 
 #     CascadiaCodeNFMono() : base(@{
 #             Logo            = @"
@@ -65,6 +65,6 @@
 #     # [void] Update() {}
 
 #     [void] UpdateSystemState() {
-#         [MySystemState].UpdateAppData($this.GetType(), $this)
+#         [GenericState].UpdateAppData($this.GetType(), $this)
 #     }
 # }
