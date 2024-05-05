@@ -1,37 +1,39 @@
-﻿using module My
-
+﻿# using module My
+# using module My/My.ScoopApps.psm1
+# $ErrorActionPreference = "Stop"
+# $DebugPreference = 'Stop'
 class Template : ScoopApps {
     # class Template : NoneApps {
-
-    Template() : base([ordered]@{
-            Logo               = @"
+    Template() {
+        $this.Logo = @"
 ░▀█▀░█▀▀░█▄█░█▀█░█░░░█▀█░▀█▀░█▀▀
 ░░█░░█▀▀░█░█░█▀▀░█░░░█▀█░░█░░█▀▀
 ░░▀░░▀▀▀░▀░▀░▀░░░▀▀▀░▀░▀░░▀░░▀▀▀
 "@
-            Name               = "Template"
-            Id                 = (Convert-ToPascalCase($this.Name)) # Package Manager or Safe Name
-            PackageManager     = "Scoop" # Remove if NoneApps
-            Store              = "main" # Remove if NoneApps
-            VerifyFile         = "$Env:SCOOP\apps\Template\current\Template.exe"
-            GithubOwnerRepo    = "OWNER/REPO"
-            RepoUrl            = "https://github.com/" + $this.GithubOwnerRepo # Unset if GithubOwnerRepo is set.
-            DocsUrl            = "https://github.com/DocsUrl"
-            ChangeLogUrl       = "https://api.github.com/repos/" + $this.GithubOwnerRepo + "/releases/latest"
-            DotfilesSourcePath = "$PSScriptRoot"
-            Dotfiles           = @(
-                "$Env:XDG_CONFIG_HOME\Template\Template.json"
-            )
-            CacheFolder        = "$Env:XDG_CACHE_HOME\Template"
-            AppFolder          = "$PSScriptRoot"
-        }) {
-        # [IO.DirectoryInfo]::new("$this.CacheFolder")
-        # [IO.FileInfo]::new("$this.Dotfiles[0]")
+        $this.Name = "Template"
+        $this.Id = (ConvertTo-SafePascalCase($this.GetType()))
+        $this.PackageManager = "Scoop"
+        $this.Store = "main"
+        $this.VerifyFile = "$Env:SCOOP\apps\Template\current\Template.exe"
+        $this.GithubOwnerRepo = "OWNER/REPO" # Or $this.RepoUrl = "https://github.com/" + $this.GithubOwnerRepo
+        $this.DocsUrl = "https://github.com/DocsUrl"
+        $this.ChangeLogUrl = "https://api.github.com/repos/" + $this.GithubOwnerRepo + "/releases/latest"
+        $this.DotfilesSourcePath = "$PSScriptRoot"
+        $this.Dotfiles = @(
+            "$Env:XDG_CONFIG_HOME\Template\Template.json"
+        )
+        # $this.Version = "0.0.0"
+        # $this.AppLastUpdate = $null
+        $this.CacheFolder = "$Env:XDG_CACHE_HOME\Template"
+        $this.AppFolder = "$PSScriptRoot"
+        $this.AppStatePath = "$($Env:dotfiles)\Apps\$($this.GetType())\$($this.GetType()).json"
+        # Anything else? or notes?
     }
 
-    # [void] Enable() {}
-    # [void] Invoke() {}
-
+    # Methods below is disabled in parent.
+    [void] Enable() {} # Logic to run in profile to import
+    [void] Clear() {} # Logic to clean app's cache or other maintenance tasks.
+    [void] Invoke() {} # Logic to run the app.
     # [void] SetEnvironmentVariables() {
     #     # Logic to set app env variables
     #     $Value = ""
@@ -40,4 +42,28 @@ class Template : ScoopApps {
     #     }
     # }
 
+    # Enable if repos and docs are missing
+    # [void] ShowDocs() {}
+    # [string] ShowChangeLog ($uri = $null) {} # Logic to show release notes or changelog
+    # [void] ShowRepo() {}
+    # [void] GetRepoUri() {}
+
+    # Enable this if app dont have any dotfiles or you need to override. Else disable if not needed.
+    # [void] CompareDotfiles() {}
+    # [bool] DeployDotfile($DotfileString) {
+    # [void] DeployDotfiles() {}
+    # [void] DotfilesSwitch([DotfilesAction]$DotfilesAction) {}
+    # [void] DotfilesSwitch([DotfilesAction]$DotfilesAction, [array]$DotArray = @()) {}
+
+    # [void] Install() {} # Logic to install app
+    # [bool] RemoveDotfile($Dotfile) {}
+    # [void] RemoveDotfiles() {}
+    # [void] Reset() {} # Logic to reset app
+    # [void] ShowLogo() {}
+    # [void] Uninstall() {}
+    # [void] Update([string] $Version) {}
+    # [void] UpdateScoopUnmanaged() {}
+
 }
+[AppRunner]::makeApp("Template")
+

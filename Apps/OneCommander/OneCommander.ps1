@@ -1,29 +1,34 @@
-using module My
+# using module My
+# using module My/My.ScoopApps.psm1
 
 class OneCommander : ScoopApps {
 
-    OneCommander() : base(@{
-            Logo               = @"
+    OneCommander() {
+        $this.Logo = @"
 ░█▀█░█▀█░█▀▀░█▀▀░█▀█░█▄█░█▄█░█▀█░█▀█░█▀▄░█▀▀░█▀▄
 ░█░█░█░█░█▀▀░█░░░█░█░█░█░█░█░█▀█░█░█░█░█░█▀▀░█▀▄
 ░▀▀▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀░▀░▀░▀░▀░▀░▀▀░░▀▀▀░▀░▀
 A modern dual-pane file manager.
 "@
-            Name               = "OneCommander"
-            Store              = "extras"
-            VerifyFile         = "$Env:SCOOP\apps\OneCommander\current\OneCommander.exe"
-            DocsUrl            = "https://onecommander.com/help" # Replace DocsUrl with your specific docs URL
-            ChangeLogUrl       = "https://onecommander.com/releasenotes.txt"
-            DotfilesSourcePath = "$PSScriptRoot"
-            Dotfiles           = @( # Dotfile source must exist
-                "$Env:SCOOP/persist/onecommander/Resources/Scripts",
-                "$Env:SCOOP/persist/onecommander/Resources/FileDesigns"
-                "$Env:SCOOP/persist/onecommander/Settings/OneCommanderV3.json"
-                "$Env:SCOOP/persist/onecommander/Settings/ScriptExecutors.json"
-                "$Env:SCOOP/persist/onecommander/Templates"
-            )
-            AppFolder          = "$PSScriptRoot"
-        }) {
+        $this.Name = "OneCommander"
+        $this.Id = "OneCommander"
+        $this.PackageManager = "Scoop"
+        $this.Store = "extras"
+        $this.VerifyFile = "$Env:SCOOP\apps\OneCommander\current\OneCommander.exe"
+        $this.DocsUrl = "https://onecommander.com/help" # Replace DocsUrl with your specific docs URL
+        $this.ChangeLogUrl = "https://onecommander.com/releasenotes.txt"
+        $this.DotfilesSourcePath = "$PSScriptRoot"
+        $this.Dotfiles = @( # Dotfile source must exist
+            "$Env:SCOOP/persist/onecommander/Resources/Scripts",
+            "$Env:SCOOP/persist/onecommander/Resources/FileDesigns"
+            "$Env:SCOOP/persist/onecommander/Settings/OneCommanderV3.json"
+            "$Env:SCOOP/persist/onecommander/Settings/ScriptExecutors.json"
+            "$Env:SCOOP/persist/onecommander/Templates"
+        )
+        # $this.Version = "0.0.0"
+        # $this.AppLastUpdate = $null
+        $this.AppFolder = "$PSScriptRoot"
+        $this.AppStatePath = "$($Env:dotfiles)\Apps\$($this.GetType())\$($this.GetType()).json"
     }
 
     # [void] Clear() {}
@@ -49,3 +54,4 @@ A modern dual-pane file manager.
     # [void] Update() {}
     # [void] UpdateSystemState() {}
 }
+[AppRunner]::makeApp("OneCommander")

@@ -50,7 +50,7 @@ foreach ($appStatus in $scoopStatus.packages) {
         $Apps["$ClassName"].Update($appStatus.available)
     }
 }
-$GenericState.SaveState('App')
+$GenericState.SaveAppState()
 
 # To use with Default Scoop
 # $scoopStatus = scoop status --local
@@ -65,4 +65,4 @@ $GenericState.SaveState('App')
 #         }
 #     }
 # }
-# $GenericState.SaveState()
+# $GenericState.SaveAllState()

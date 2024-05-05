@@ -1,37 +1,36 @@
-using module My
+# using module My
+# using module My/My.ScoopApps.psm1
 
 class TerminalIcons : ScoopApps {
 
-    TerminalIcons() : base(@{
-            Logo            = @"
+    TerminalIcons() {
+        $this.Logo = @"
 ░▀█▀░█▀▀░█▀▄░█▄█░▀█▀░█▀█░█▀█░█░░░░░░░▀█▀░█▀▀░█▀█░█▀█░█▀▀
 ░░█░░█▀▀░█▀▄░█░█░░█░░█░█░█▀█░█░░░▄▄▄░░█░░█░░░█░█░█░█░▀▀█
 ░░▀░░▀▀▀░▀░▀░▀░▀░▀▀▀░▀░▀░▀░▀░▀▀▀░░░░░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀▀▀
 "@
-
-            Name            = "Terminal-Icons"
-            Store           = "extras"
-            VerifyFile      = "$Env:SCOOP\modules\Terminal-Icons\Terminal-Icons.psd1"
-            GithubOwnerRepo = "devblackops/Terminal-Icons"
-            DocsUrl         = "https://github.com/devblackops/Terminal-Icons"
-            AppFolder       = "$PSScriptRoot"
-        }) {
+        $this.Name = "Terminal-Icons"
+        $this.Id = "TerminalIcons"
+        $this.PackageManager = "Scoop"
+        $this.Store = "extras"
+        $this.VerifyFile = "$Env:SCOOP\modules\Terminal-Icons\Terminal-Icons.psd1"
+        $this.GithubOwnerRepo = "devblackops/Terminal-Icons"
+        $this.DocsUrl = "https://github.com/devblackops/Terminal-Icons"
+        $this.AppFolder = "$PSScriptRoot"
+        $this.AppStatePath = "$($Env:dotfiles)\Apps\$($this.GetType())\$($this.GetType()).json"
     }
 
     # [void] Clear() {}
-
+    [void] CompareDotfiles() {}
+    [void] DeployDotfile() {}
+    [void] DotfilesSwitch() {}
     [void] Enable() {
         Import-Module "$Env:SCOOP\modules\Terminal-Icons"
     }
-
-    # [uri] GetRepoUri([string]$Switch) {}
-
+    # [void] GetRepoUri() {}
     # [void] Install() {}
-
     # [void] Invoke() {}
-
-
-
+    [void] RemoveDotfile() {}
     # [void] Reset() {}
 
     # [void] SetEnvironmentVariables() {
@@ -43,18 +42,15 @@ class TerminalIcons : ScoopApps {
     # }
 
     # [void] ShowDocs() {}
-
     # [void] ShowLogo() {}
-
     # [void] ShowReleases() {}
-
     # [void] ShowRepo() {}
-
     # [void] Uninstall() {}
-
     # [void] Update() {}
+    # [void] UpdateScoopUnmanaged() {}
 
     [void] UpdateSystemState() {
         [GenericState].UpdateAppData($this.GetType(), $this)
     }
 }
+[AppRunner]::makeApp("TerminalIcons")

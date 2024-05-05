@@ -1,28 +1,29 @@
-using module My
+# using module My
+# using module My/My.ScoopApps.psm1
 
 class Scoop : ScoopApps {
 
-    Scoop() : base(@{
-            Logo               = @"
-# ░█▀▀░█▀▀░█▀█░█▀█░█▀█░
-# ░▀▀█░█░░░█░█░█░█░█▀▀░
-# ░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░░░
+    Scoop() {
+        $this.Logo = @"
+░█▀▀░█▀▀░█▀█░█▀█░█▀█░
+░▀▀█░█░░░█░█░█░█░█▀▀░
+░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░░░
 "@
-            Name               = "Scoop" # CTRL+H Scoop with your specific app name, same as folder name
-            Store              = "main"
-            VerifyFile         = "$Env:SCOOP\apps\Scoop\current\Scoop.exe"
-            GithubOwnerRepo    = "OWNER/REPO"
-            RepoUrl            = "https://github.com/RepoUrl" # Unset if GithubOwnerRepo is set.
-            DocsUrl            = "https://github.com/DocsUrl" # Replace DocsUrl with your specific docs URL
-            DotfilesSourcePath = "$PSScriptRoot"
-            Dotfiles           = @(
-                "$Env:XDG_CONFIG_HOME\Scoop\Scoop.json"
-            )
-            CacheFolder        = "$Env:XDG_CACHE_HOME\Scoop"
-            AppFolder          = "$PSScriptRoot"
-        }) {
-        # [IO.DirectoryInfo]::new("$this.CacheFolder")
-        # [IO.FileInfo]::new("$this.Dotfiles[0]")
+        $this.Name = "Scoop"
+        $this.Id = "Scoop"
+        $this.Store = "main"
+        $this.VerifyFile = "$Env:SCOOP\apps\Scoop\current\Scoop.exe"
+        $this.GithubOwnerRepo = "OWNER/REPO"
+        $this.RepoUrl = "https://github.com/RepoUrl" # Unset if GithubOwnerRepo is set.
+        $this.DocsUrl = "https://github.com/DocsUrl" # Replace DocsUrl with your specific docs URL
+        $this.ChangeLogUrl = "https://api.github.com/repos/" + $this.GithubOwnerRepo + "/releases/latest"
+        $this.DotfilesSourcePath = "$PSScriptRoot"
+        $this.Dotfiles = @(
+            "$Env:XDG_CONFIG_HOME\Scoop\Scoop.json"
+        )
+        $this.CacheFolder = "$Env:XDG_CACHE_HOME\Scoop"
+        $this.AppFolder = "$PSScriptRoot"
+        $this.AppStatePath = "$($Env:dotfiles)\Apps\$($this.GetType())\$($this.GetType()).json"
     }
 
     # [void] Clear() {}
@@ -53,4 +54,4 @@ class Scoop : ScoopApps {
     # [void] UpdateScoopUnmanaged() {}
     # [void] UpdateSystemState() {}
 }
-
+[AppRunner]::makeApp("Scoop")

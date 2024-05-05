@@ -1,25 +1,29 @@
-using module My
+# using module My
+# using module My/My.ScoopApps.psm1
 
 class sfsu : ScoopApps {
 
-    sfsu() : base(@{
-            Logo               = @"
+    sfsu() {
+        $this.Logo = @"
 ░█▀▀░▀█▀░█░█░█▀█░▀█▀░█▀▄░░░█▀▀░█▀█░█▀▀░▀█▀░░░█▀▀░█▀▀░█▀█░█▀█░█▀█░░░█░█░▀█▀░▀█▀░█░░░█▀▀
 ░▀▀█░░█░░█░█░█▀▀░░█░░█░█░░░█▀▀░█▀█░▀▀█░░█░░░░▀▀█░█░░░█░█░█░█░█▀▀░░░█░█░░█░░░█░░█░░░▀▀█
 ░▀▀▀░░▀░░▀▀▀░▀░░░▀▀▀░▀▀░░░░▀░░░▀░▀░▀▀▀░░▀░░░░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░░░░░▀▀▀░░▀░░▀▀▀░▀▀▀░▀▀▀
 "@
-            Name               = "sfsu" # CTRL+H sfsu with your specific app name, same as folder name
-            Store              = "extras"
-            VerifyFile         = "$Env:SCOOP\apps\sfsu\current\sfsu.exe"
-            GithubOwnerRepo    = "jewlexx/sfsu"
-            DocsUrl            = "https://github.com/jewlexx/sfsu" # Replace DocsUrl with your specific docs URL
-            DotfilesSourcePath = "$PSScriptRoot"
-            Dotfiles           = @(
-                "$Env:XDG_CONFIG_HOME\sfsu\sfsu.json"
-            )
-            CacheFolder        = "$Env:XDG_CACHE_HOME\sfsu"
-            AppFolder          = "$PSScriptRoot"
-        }) {
+        $this.Name = "sfsu"
+        $this.Id = "Sfsu"
+        $this.PackageManager = "Scoop"
+        $this.Store = "extras"
+        $this.VerifyFile = "$Env:SCOOP\apps\sfsu\current\sfsu.exe"
+        $this.GithubOwnerRepo = "jewlexx/sfsu"
+        $this.DocsUrl = "https://github.com/jewlexx/sfsu" # Replace DocsUrl with your specific docs URL
+        $this.ChangeLogUrl = "https://api.github.com/repos/" + $this.GithubOwnerRepo + "/releases/latest"
+        $this.DotfilesSourcePath = "$PSScriptRoot"
+        $this.Dotfiles = @(
+            "$Env:XDG_CONFIG_HOME\sfsu\sfsu.json"
+        )
+        $this.CacheFolder = "$Env:XDG_CACHE_HOME\sfsu"
+        $this.AppFolder = "$PSScriptRoot"
+        $this.AppStatePath = "$($Env:dotfiles)\Apps\$($this.GetType())\$($this.GetType()).json"
     }
 
     # [void] Clear() {}
@@ -62,13 +66,8 @@ class sfsu : ScoopApps {
     }
 
     # [uri] GetRepoUri([string]$Switch) {}
-
     # [void] Install() {}
-
     # [void] Invoke() {}
-
-
-
     # [void] Reset() {}
 
     # [void] SetEnvironmentVariables() {
@@ -95,3 +94,4 @@ class sfsu : ScoopApps {
         [GenericState].UpdateAppData($this.GetType(), $this)
     }
 }
+[AppRunner]::makeApp("sfsu")

@@ -1,9 +1,10 @@
-﻿using module My
+﻿# using module My
+# using module My/My.ScoopApps.psm1
 
 class Biome : ScoopApps {
 
-    Biome() : base(@{
-            Logo               = @"
+    Biome() {
+        $this.Logo = @"
           -=
          -**=              ......      ..
        .+****+.           +@@%%%%%#:  =%%.
@@ -15,17 +16,21 @@ class Biome : ScoopApps {
 +*+*++************+**:        .               ...                         ...
 Formatter, linter, bundler for JavaScript, JSON, HTML, Markdown, and CSS.
 "@
-            Name               = "Biome"
-            Store              = "main"
-            VerifyFile         = "$Env:SCOOP\apps\biome\current\biome.exe"
-            GithubOwnerRepo    = "biomejs/biome"
-            DocsUrl            = "https://biomejs.dev/guides/getting-started/"
-            DotfilesSourcePath = "$PSScriptRoot"
-            Dotfiles           = @(
-                "$Env:XDG_CONFIG_HOME\biome\biome.json"
-            )
-            AppFolder          = "$PSScriptRoot"
-        }) {
+        $this.Name = "Biome"
+        $this.Id = "Biome"
+        $this.PackageManager = "Scoop"
+        $this.Store = "main"
+        $this.VerifyFile = "$Env:SCOOP\apps\biome\current\biome.exe"
+        $this.GithubOwnerRepo = "biomejs/biome"
+        $this.DocsUrl = "https://biomejs.dev/guides/getting-started/"
+        $this.DotfilesSourcePath = "$PSScriptRoot\dotfile"
+        $this.Dotfiles = @(
+            "$Env:XDG_CONFIG_HOME\biome\biome.json"
+        )
+        # $this.Version = "0.0.0"
+        # $this.AppLastUpdate = $null
+        $this.AppFolder = "$PSScriptRoot"
+        $this.AppStatePath = "$($Env:dotfiles)\Apps\$($this.GetType())\$($this.GetType()).json"
     }
 
     # [void] Clear() {}
@@ -68,3 +73,4 @@ Formatter, linter, bundler for JavaScript, JSON, HTML, Markdown, and CSS.
     #     [GenericState].UpdateAppData($this.GetType(), $this)
     # }
 }
+[AppRunner]::makeApp("Biome")

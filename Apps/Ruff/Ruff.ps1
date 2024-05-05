@@ -1,9 +1,10 @@
-using module My
+# using module My
+# using module My/My.ScoopApps.psm1
 
 class Ruff : ScoopApps {
 
-    Ruff() : base(@{
-            Logo            = @"
+    Ruff() {
+        $this.Logo = @"
             ^;:;;;;;;;;;;;;;::::
          .''","""""""""""""",:::
          ,;;^               .;;;
@@ -26,14 +27,17 @@ class Ruff : ScoopApps {
    `;::;;;
 An extremely fast Python linter.
 "@
-            Name            = "Ruff"
-            Store           = "main"
-            VerifyFile      = "$Env:SCOOP\apps\Ruff\current\ruff.exe"
-            GithubOwnerRepo = "astral-sh/ruff"
-            DocsUrl         = "https://docs.astral.sh/ruff/configuration" # Replace DocsUrl with your specific docs URL
-            CacheFolder     = "$Env:XDG_CACHE_HOME\Ruff"
-            AppFolder       = "$PSScriptRoot"
-        }) {
+        $this.Name = "Ruff"
+        $this.Id = "Ruff"
+        $this.PackageManager = "Scoop"
+        $this.Store = "main"
+        $this.VerifyFile = "$Env:SCOOP\apps\Ruff\current\ruff.exe"
+        $this.GithubOwnerRepo = "astral-sh/ruff"
+        $this.DocsUrl = "https://docs.astral.sh/ruff/configuration" # Replace DocsUrl with your specific docs URL
+        # $this.ChangeLogUrl = "https://api.github.com/repos/" + $this.GithubOwnerRepo + "/releases/latest"
+        $this.CacheFolder = "$Env:XDG_CACHE_HOME\Ruff"
+        $this.AppFolder = "$PSScriptRoot"
+        $this.AppStatePath = "$($Env:dotfiles)\Apps\$($this.GetType())\$($this.GetType()).json"
     }
 
     # [void] Clear() {}
@@ -74,3 +78,4 @@ An extremely fast Python linter.
     #     [GenericState].UpdateAppData($this.GetType(), $this)
     # }
 }
+[AppRunner]::makeApp("Ruff")

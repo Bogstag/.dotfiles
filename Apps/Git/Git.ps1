@@ -1,9 +1,11 @@
-﻿using module My
-
+﻿# using module My
+# using module My/My.ScoopApps.psm1
+# $ErrorActionPreference = "Stop"
+# $DebugPreference = 'Stop'
 class Git : ScoopApps {
 
-    Git() : base(@{
-            Logo               = @"
+    Git() {
+        $this.Logo = @"
              .=***=.
             =*******=.
          .-..-********=.
@@ -21,23 +23,26 @@ class Git : ScoopApps {
             =#@%%%@@#-
               =%%%*-
 "@
-            Name               = "Git"
-            Store              = "main"
-            VerifyFile         = "$Env:SCOOP\apps\Git\current\git-cmd.exe"
-            GithubOwnerRepo    = "git-for-windows/git"
-            DocsUrl            = "https://git-scm.com/docs" # Replace DocsUrl with your specific docs URL
-            DotfilesSourcePath = "$PSScriptRoot"
-            Dotfiles           = @(
-                "$Env:USERPROFILE\.bash_profile",
-                "$Env:USERPROFILE\.bashrc",
-                "$Env:USERPROFILE\.gitattributes",
-                "$Env:USERPROFILE\.gitconfig",
-                "$Env:USERPROFILE\.gitignore",
-                "$Env:USERPROFILE\.minttyrc"
-            )
-            AppFolder          = "$PSScriptRoot"
-        }) {
-
+        $this.Name = "Git"
+        $this.Id = "Git"
+        $this.Store = "main"
+        $this.VerifyFile = "$Env:SCOOP\apps\Git\current\git-cmd.exe"
+        $this.GithubOwnerRepo = "git-for-windows/git"
+        $this.DocsUrl = "https://git-scm.com/docs" # Replace DocsUrl with your specific docs URL
+        # $this.ChangeLogUrl = "https://api.github.com/repos/" + $this.GithubOwnerRepo + "/releases/latest"
+        $this.DotfilesSourcePath = "$PSScriptRoot"
+        $this.Dotfiles = @(
+            "$Env:USERPROFILE\.bash_profile",
+            "$Env:USERPROFILE\.bashrc",
+            "$Env:USERPROFILE\.gitattributes",
+            "$Env:USERPROFILE\.gitconfig",
+            "$Env:USERPROFILE\.gitignore",
+            "$Env:USERPROFILE\.minttyrc"
+        )
+        # $this.Version = "0.0.0"
+        # $this.AppLastUpdate = $null
+        $this.AppFolder = "$PSScriptRoot"
+        $this.AppStatePath = "$($Env:dotfiles)\Apps\$($this.GetType())\$($this.GetType()).json"
     }
 
     # [void] Clear() {}
@@ -91,3 +96,4 @@ class Git : ScoopApps {
     #     [GenericState].UpdateAppData($this.GetType(), $this)
     # }
 }
+[AppRunner]::makeApp("Git")

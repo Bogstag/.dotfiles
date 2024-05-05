@@ -1,23 +1,31 @@
-using module My
+# using module My
+# using module ./My.ScoopApps.psm1
 
 class AdvancedRenamer : ScoopApps {
 
-    AdvancedRenamer() : base(@{
-            Logo           = @"
+    AdvancedRenamer() {
+        $this.Logo = @"
 ░█▀█░█▀▄░█░█░█▀█░█▀█░█▀▀░█▀▀░█▀▄░░░█▀▄░█▀▀░█▀█░█▀█░█▄█░█▀▀░█▀▄
 ░█▀█░█░█░▀▄▀░█▀█░█░█░█░░░█▀▀░█░█░░░█▀▄░█▀▀░█░█░█▀█░█░█░█▀▀░█▀▄
 ░▀░▀░▀▀░░░▀░░▀░▀░▀░▀░▀▀▀░▀▀▀░▀▀░░░░▀░▀░▀▀▀░▀░▀░▀░▀░▀░▀░▀▀▀░▀░▀
 Batch file renaming utility for Windows
 "@
-            Name           = "AdvancedRenamer" # CTRL+H AdvancedRenamer with your specific app name, same as folder name
-            PackageManager = "Scoop"
-            Store          = "extras"
-            VerifyFile     = "$Env:SCOOP\apps\AdvancedRenamer\current\arenc.exe"
-            RepoUrl        = $null # Unset if GithubOwnerRepo is set.
-            DocsUrl        = "https://www.advancedrenamer.com/user_guide/complete_guide" # Replace DocsUrl with your specific docs URL
-            ChangeLogUrl   = "https://www.advancedrenamer.com/versionlog"
-            AppFolder      = "$PSScriptRoot"
-        }) {
+        $this.Name = "AdvancedRenamer"
+        $this.Id = (ConvertTo-SafePascalCase($this.GetType()))
+        $this.PackageManager = "Scoop"
+        $this.Store = "extras"
+        $this.VerifyFile = "$Env:SCOOP\apps\AdvancedRenamer\current\arenc.exe"
+        # $this.GithubOwnerRepo = "OWNER/REPO" # Or $this.RepoUrl = "https://github.com/" + $this.GithubOwnerRepo
+        # $this.RepoUrl = $null
+        $this.DocsUrl = "https://www.advancedrenamer.com/user_guide/complete_guide"
+        $this.ChangeLogUrl = "https://www.advancedrenamer.com/versionlog"
+        # $this.DotfilesSourcePath = "$PSScriptRoot"
+        # $this.Dotfiles = @()
+        # $this.Version = "0.0.0"
+        # $this.AppLastUpdate = $null
+        # $this.CacheFolder = "$($this.AppFolder)\$($this.GetType()).json"
+        $this.AppFolder = "$PSScriptRoot"
+        $this.AppStatePath = "$($Env:dotfiles)\Apps\$($this.GetType())\$($this.GetType()).json"
         # $Env:SCOOP\persist\advancedrenamer TODO: see if there is sonething here i care about.
     }
 
@@ -25,7 +33,7 @@ Batch file renaming utility for Windows
     [void] CompareDotfiles() {}
     [void] DeployDotfile() {}
     [void] DotfilesSwitch() {}
-    [void] Enable() {}
+    # [void] Enable() {}
     # [void] GetRepoUri() {}
     # [void] Install() {}
     # [void] Invoke() {}
@@ -49,3 +57,5 @@ Batch file renaming utility for Windows
     # [void] UpdateScoopUnmanaged() {}
     # [void] UpdateSystemState() {}
 }
+[AppRunner]::makeApp("AdvancedRenamer")
+

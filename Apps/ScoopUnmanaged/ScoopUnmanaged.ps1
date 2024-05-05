@@ -1,12 +1,15 @@
-using module My
+# using module My
+# using module My/My.ScoopApps.psm1
 
 class ScoopUnmanaged : ScoopApps {
     [array] $AppsList
 
-    ScoopUnmanaged() : base(@{
-            Name      = "ScoopUnmanaged"
-            AppFolder = "$PSScriptRoot"
-        }) {
+    ScoopUnmanaged() {
+        $this.Name = "ScoopUnmanaged"
+        $this.Id = "ScoopUnmanaged"
+        $this.PackageManager = "Scoop"
+        $this.AppFolder = "$PSScriptRoot"
+        $this.AppStatePath = "$($Env:dotfiles)\Apps\$($this.GetType())\$($this.GetType()).json"
     }
 
     [void] Clear() {}
@@ -49,3 +52,4 @@ class ScoopUnmanaged : ScoopApps {
 
     # [void] UpdateSystemState() {}
 }
+[AppRunner]::makeApp("ScoopUnmanaged")

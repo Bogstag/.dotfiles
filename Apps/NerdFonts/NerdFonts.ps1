@@ -1,9 +1,10 @@
-using module My
+# using module My
+# using module My/My.ScoopApps.psm1
 
 class NerdFonts : ScoopApps {
 
-    NerdFonts() : base(@{
-            Logo            = @"
+    NerdFonts() {
+        $this.Logo = @"
 @@@@@@@%%%%##############%%%%@@@@@@@@@@@@@@@@@@@@@@@@%%%##############%%%@@@@@@@
 %%######*####%%%%%%%@@%%%%%#######%%%%%%%%%%%%%#######%%%%%%%%%%%%%%###**#####%%
 ########%@@@@@@@@@@@@%#%@@@@@@@%%#*##@@@@@@#*#*#%%@@@@@@@@@@@@@@%######%%#######
@@ -20,15 +21,17 @@ class NerdFonts : ScoopApps {
 @@@@@@@@@@@@%%############%%@@@@@@@@@@@@@@@@@@@@@@@@@@%%##########%%@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 "@
-            Name            = @("CascadiaCode-NF-Mono", "CascadiaCode-NF-Propo", "FiraCode-NF-Mono")
-            Store           = "nerd-fonts"
-            VerifyFile      = @("$Env:SCOOP\apps\CascadiaCode-NF-Mono\current\manifest.json",
-                "$Env:SCOOP\apps\CascadiaCode-NF-Propo\current\manifest.json",
-                "$Env:SCOOP\apps\FiraMono-NF-Mono\current\manifest.json")
-            GithubOwnerRepo = "ryanoasis/nerd-fonts"
-            DocsUrl         = "https://www.nerdfonts.com/cheat-sheet"
-            AppFolder       = "$PSScriptRoot"
-        }) {
+        $this.Name = @("CascadiaCode-NF-Mono", "CascadiaCode-NF-Propo", "FiraCode-NF-Mono")
+        $this.Store = "nerd-fonts"
+        $this.VerifyFile = @("$Env:SCOOP\apps\CascadiaCode-NF-Mono\current\manifest.json",
+            "$Env:SCOOP\apps\CascadiaCode-NF-Propo\current\manifest.json",
+            "$Env:SCOOP\apps\FiraMono-NF-Mono\current\manifest.json")
+        $this.GithubOwnerRepo = "ryanoasis/nerd-fonts"
+        $this.DocsUrl = "https://www.nerdfonts.com/cheat-sheet"
+        $this.ChangeLogUrl = "https://api.github.com/repos/" + $this.GithubOwnerRepo + "/releases/latest"
+        $this.AppFolder = "$PSScriptRoot"
+
+        $this.AppStatePath = "$($Env:dotfiles)\Apps\$($this.GetType())\$($this.GetType()).json"
         # TODO: This need a solution! Is this a one off?
     }
 
@@ -85,4 +88,4 @@ class NerdFonts : ScoopApps {
 
     # [void] UpdateSystemState() {}
 }
-
+[AppRunner]::makeApp("NerdFonts")

@@ -1,9 +1,10 @@
-using module My
+# using module My
+# using module My/My.ScoopApps.psm1
 
 class Nmap : ScoopApps {
 
-    Nmap() : base(@{
-            Logo         = @"
+    Nmap() {
+        $this.Logo = @"
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%@@@@@@@@@@@@@@@@@%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%@@@@@%%###*********###%%@@@@@%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -31,14 +32,16 @@ class Nmap : ScoopApps {
 Network exploration and security auditing utility.
 "@
 
-            Name         = "Nmap" # CTRL+H Nmap with your specific app name, same as folder name
-            Store        = "main"
-            VerifyFile   = "$Env:SCOOP\apps\Nmap\current\Nmap.exe"
-            RepoUrl      = "https://svn.nmap.org/" # Replace RepoUrl with your specific repo URL
-            DocsUrl      = "https://nmap.org/book/man.html" # Replace DocsUrl with your specific docs URL
-            ChangeLogUrl = "" # TODO: Exists?
-            AppFolder    = "$PSScriptRoot"
-        }) {
+        $this.Name = "Nmap" # CTRL+H Nmap with your specific app name, same as folder name
+        $this.Id = "Nmap"
+        $this.PackageManager = "Scoop"
+        $this.Store = "main"
+        $this.VerifyFile = "$Env:SCOOP\apps\Nmap\current\Nmap.exe"
+        $this.RepoUrl = "https://svn.nmap.org/" # Replace RepoUrl with your specific repo URL
+        $this.DocsUrl = "https://nmap.org/book/man.html" # Replace DocsUrl with your specific docs URL
+        $this.ChangeLogUrl = "" # TODO: Exists?
+        $this.AppFolder = "$PSScriptRoot"
+        $this.AppStatePath = "$($Env:dotfiles)\Apps\$($this.GetType())\$($this.GetType()).json"
     }
 
     # [void] Clear() {}
@@ -91,3 +94,5 @@ Network exploration and security auditing utility.
     #     [GenericState].UpdateAppData($this.GetType(), $this)
     # }
 }
+[AppRunner]::makeApp("Nmap")
+

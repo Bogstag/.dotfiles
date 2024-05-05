@@ -1,8 +1,9 @@
-# using module My
+# # using module My
+# using module My/My.ScoopApps.psm1
 
 # class CascadiaCodeNFPropo : ScoopApps {
 
-#     CascadiaCodeNFPropo() : base(@{
+#     CascadiaCodeNFPropo() {
 #             Logo            = @"
 # @@@@@@@%%%%##############%%%%@@@@@@@@@@@@@@@@@@@@@@@@%%%##############%%%@@@@@@@
 # %%######*####%%%%%%%@@%%%%%#######%%%%%%%%%%%%%#######%%%%%%%%%%%%%%###**#####%%
@@ -23,11 +24,11 @@
 # "@
 #             Name            = "CascadiaCode-NF-Propo"
 #             Store           = "nerd-fonts"
-#             VerifyFile      = "$Env:SCOOP\apps\CascadiaCode-NF-Propo\current\manifest.json"
-#             GithubOwnerRepo = "ryanoasis/nerd-fonts"
+#             $this.VerifyFile      = "$Env:SCOOP\apps\CascadiaCode-NF-Propo\current\manifest.json"
+#             $this.GithubOwnerRepo = "ryanoasis/nerd-fonts"
 #             Docs            = "https://www.nerdfonts.com/cheat-sheet"
-#             AppFolder       = "$PSScriptRoot"
-#         }) {
+#             $this.AppFolder = "$PSScriptRoot"
+#
 #     }
 
 #     # [void] Clear() {}
