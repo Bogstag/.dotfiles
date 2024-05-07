@@ -1,11 +1,14 @@
-using module ./My.GenericState.psm1
-
-Enum PackageManager {
+# using module ./My.psd1
+# using module ./My.State.psm1
+# $ErrorActionPreference = "Stop"
+# $DebugPreference = 'Stop'
+Enum MyPM {
     Scoop
     None
+    PSModule
 }
 
-Enum DotfilesAction {
+Enum MyDotfilesAction {
     deploy
     remove
 }
@@ -13,9 +16,9 @@ Enum DotfilesAction {
 class Apps {
     [string] $Logo
     [string] $Name # Pretty Name
-    [string] $Id = (Convert-ToPascalCase($this.Name)) # Package Manager Name
-    [PackageManager] $PackageManager = "None"
-    [string] $Store = "Unknown" # Buckets in Scoop
+    [string] $Id # App Name from Package Manager
+    [MyPM] $MyPM # Package Manager Name
+    [string] $Store # Buckets in Scoop
     [string] $VerifyFile # File that exist if installed, recommended is exe file.
     [string] $GithubOwnerRepo # Owner/Repo
     [string] $RepoUrl # URL to Repo or null if GithubOwnerRepo is set
@@ -27,50 +30,126 @@ class Apps {
     [datetime] $AppLastUpdate
     [string] $CacheFolder
     [string] $AppFolder
+    [string] $AppStatePath
+
 
     Apps() {
-        Write-Debug -Message "Apps Ctor props"
+        $type = $this.GetType()
+        if ($type -eq [Apps]) {
+            throw("Class $type must be inherited")
+        }
         $this.Init()
     }
 
     Apps([hashtable]$Properties) {
         $type = $this.GetType()
-
         if ($type -eq [Apps]) {
             throw("Class $type must be inherited")
         }
-
-        Write-Debug -Message "Apps Ctor props"
-        $this.Init($Properties)
+        $this.SplatProperties($Properties)
     }
+
+    [void] SplatProperties([hashtable]$Properties) {
+        # TODO: Check if this is needed and you cant just send in hash table as is.
+        foreach ($Property in $Properties.Keys) {
+            $this.$Property = $Properties.$Property
+        }
+        $this.Init()
+    }
+
+    # [HashTable] Splat([String[]] $Properties) {
+    #     $splat = @{}
+    #     foreach ($prop in $Properties) {
+    #         if ($this.GetType().GetProperty($prop)) {
+    #             $splat.Add($prop, $this.$prop)
+    #         }
+    #     }
+    #     return $splat
+    # }
 
     [void] Init() {
-        $this.Init(@{})
+        # All goes thru here
+        if (-Not $this.AppStatePath) {
+            $this.AppStatePath = "$($Env:dotfiles)\Apps\$($this.GetType())\$($this.GetType()).json"
+        }
+
+        # $this.SaveAppState()
     }
 
-    [void] Init([hashtable]$Properties) {
-        if ($null -ne $Properties) {
-            foreach ($Property in $Properties.Keys) {
-                $this.$Property = $Properties.$Property
+    [IO.FileInfo] GetStateFilePath() {
+        $file = [IO.FileInfo]::new("$($this.AppStatePath)")
+        if (-Not $file.Exists) {
+            $file.Create()
+        }
+
+        return $file.FullName
+    }
+
+    [Hashtable] AppObject() {
+        $type = $this.GetType()
+        $appobject = [ordered]@{
+            $type.ToString() = [ordered]@{
+                Logo = $this.Logo
             }
+        }
+
+        # POC
+        # $appobject2 = [ordered]@{
+        #     $type.ToString() = [ordered]@{
+        #         Logo = $this.Logo
+        #     }
+        # }
+        # $app3 = $appobject + $appobject2
+        # Works
+
+        return $appobject
+    }
+
+    [Hashtable] AppsObject() {
+        # POC
+        $ObjArr = @()
+        $ObjArr += $this.AppObject()
+        $ObjArr = Sort-Object $ObjArr
+        $appsobject = [ordered]@{}
+        $appsobject += $ObjArr
+
+        # POC
+        # $appobject2 = [ordered]@{
+        #     $type.ToString() = [ordered]@{
+        #         Logo = $this.Logo
+        #     }
+        # }
+        # $app3 = $appobject + $appobject2
+        # Works
+
+        # POC
+        return $appsobject
+    }
+
+    [void] SaveAppState() {
+        try {
+            $this | ConvertTo-Json -Depth 20 | Set-Content -Path $this.GetStateFilePath()
+        } catch {
+            Write-Error "Failed to save app state file:"
+            Write-Error "$_"
         }
     }
 
-    [HashTable] Splat([String[]] $Properties) {
-        $splat = @{}
-
-        foreach ($prop in $Properties) {
-            if ($this.GetType().GetProperty($prop)) {
-                $splat.Add($prop, $this.$prop)
-            }
+    [Hashtable] LoadAppState() {
+        [Hashtable] $Hashtable = @{}
+        try {
+            $FileContent = (Get-Content -Raw $this.GetStateFilePath())
+            Write-Host $FileContent
+            $Hashtable = ConvertFrom-Json -AsHashtable -DateKind Local -InputObject $FileContent
+        } catch {
+            Write-Error "Failed to get app state from file:"
+            Write-Error "$_"
         }
-
-        return $splat
+        $this.Init([hashtable]$Hashtable)
+        return $Hashtable
     }
 
-    # [void] Clear() {
-    #     # Logic to clean app's cache or other maintenance tasks.
-    # }
+    # [void] Clear() {} # Logic to clean app's cache or other maintenance tasks.
 
     [bool] DeployDotfile($DotfileString) {
         Write-Debug "DeployDotfile DotfileString: $DotfileString"
@@ -133,27 +212,27 @@ class Apps {
 
     [void] DeployDotfiles() {
         Write-Host "Dont use DeployDotfiles. Use DotfilesSwitch()"
-        $this.DotfilesSwitch([DotfilesAction]'deploy')
+        $this.DotfilesSwitch([MyDotfilesAction]'deploy')
     }
 
-    [void] DotfilesSwitch([DotfilesAction]$DotfilesAction) {
+    [void] DotfilesSwitch([MyDotfilesAction]$DotfilesAction) {
         Write-Debug "DotfilesAction: $DotfilesAction"
         $this.DotfilesSwitch($DotfilesAction, @())
     }
-    [void] DotfilesSwitch([DotfilesAction]$DotfilesAction, [array]$DotArray = @()) {
+    [void] DotfilesSwitch([MyDotfilesAction]$DotfilesAction, [array]$DotArray = @()) {
         Write-Debug "DotfilesAction: $DotfilesAction, DotArray: $DotArray, DotArray.Count: $($DotArray.Count)"
         if ($DotArray.Count -eq 0) {
             $DotArray = $this.Dotfiles
         }
         Write-Debug "DotfilesAction: $DotfilesAction, DotArray: $DotArray, DotArray.Count: $($DotArray.Count)"
         switch ($DotArray) {
-            { $DotfilesAction -eq [DotfilesAction]::deploy } {
+            { $DotfilesAction -eq [MyDotfilesAction]::deploy } {
                 Write-Debug "deploy PSItem: $PSItem"
                 $this.DeployDotfile($PSItem)
                 continue
             }
 
-            { $DotfilesAction -eq [DotfilesAction]::remove } {
+            { $DotfilesAction -eq [MyDotfilesAction]::remove } {
                 Write-Debug "remove PSItem: $PSItem"
                 $this.RemoveDotfile($PSItem)
                 continue
@@ -165,27 +244,15 @@ class Apps {
         }
     }
 
-
-
-    # [void] Enable() {
-    #     # Logic to run in profile to import, dotsource or invoke app
-    # }
+    # [void] Enable() {} # Logic to run in profile to import, dotsource or invoke app
 
     [void] Install() {
-        # Logic to install app
-        if (-Not (Test-Path "$Env:SCOOP\buckets\$($this.Store)" -PathType Container)) {
-            scoop bucket add -Name "$($this.Store)"
-        }
-        if (-Not (Test-Path $this.VerifyFile -PathType Leaf)) {
-            scoop install "$($this.Store)/$($this.Name)"
-            $this.DotfilesSwitch('deploy')
-            # TODO: Add env var
+        if ($this.GetType() -eq [Apps]) {
+            throw("Install must be inherited from package manager")
         }
     }
 
-    # [void] Invoke() {
-    #     # Logic to run the app.
-    # }
+    # [void] Invoke() {} # Logic to run the app.
 
     [bool] RemoveDotfile($Dotfile) {
         $Dotfile = [IO.FileInfo]::new("$Dotfile")
@@ -211,17 +278,17 @@ class Apps {
 
     [void] RemoveDotfiles() {
         Write-Host "Dont use RemoveDotfiles. Use DotfilesSwitch()"
-        $this.DotfilesSwitch([DotfilesAction]'remove')
+        $this.DotfilesSwitch([MyDotfilesAction]'remove')
+        $this.SaveAppState()
     }
 
     [void] Reset() {
-        # Logic to reset app
-        scoop reset "$($this.Store)/$($this.Name)"
+        if ($this.GetType() -eq [Apps]) {
+            throw("Reset must be inherited from package manager")
+        }
     }
 
-    # [void] SetEnvironmentVariables() {
-    #     # Logic to set app env variables
-    # }
+    # [void] SetEnvironmentVariables() {} # Logic to set app env variables
 
     [void] ShowDocs() {
         # Logic to show app documentation
@@ -283,24 +350,15 @@ class Apps {
     }
 
     [void] Uninstall() {
-        scoop uninstall "$($this.Store)/$($this.Name)"
-        $this.DotfilesSwitch('remove')
-        # TODO: Remove env var
-    }
-
-    [void] UpdateSystemState() {
-        New-App($this.GetType(), $this)
-        $global:GenericState.UpdateAppData($this.GetType(), $this) # TODO: This dont work
+        if ($this.GetType() -eq [Apps]) {
+            throw("Uninstall must be inherited from package manager")
+        }
     }
 
     [void] Update([string] $Version) {
-        # Logic to update app
-        scoop update "$($this.Store)/$($this.Name)"
-        $this.Version = [version]::Parse($Version)
-        $this.AppLastUpdate = (Get-Date).ToShortDateString()
-        $this.UpdateSystemState()
+        if ($this.GetType() -eq [Apps]) {
+            throw("Update must be inherited from package manager")
+        }
     }
 
-
 }
-

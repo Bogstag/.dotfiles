@@ -1,5 +1,4 @@
-# using module My
-# using module My/My.ScoopApps.psm1
+
 
 class OneCommander : ScoopApps {
 
@@ -11,8 +10,8 @@ class OneCommander : ScoopApps {
 A modern dual-pane file manager.
 "@
         $this.Name = "OneCommander"
-        $this.Id = "OneCommander"
-        $this.PackageManager = "Scoop"
+        $this.Id = "onecommander"
+        $this.MyPM = "Scoop"
         $this.Store = "extras"
         $this.VerifyFile = "$Env:SCOOP\apps\OneCommander\current\OneCommander.exe"
         $this.DocsUrl = "https://onecommander.com/help" # Replace DocsUrl with your specific docs URL
@@ -54,4 +53,4 @@ A modern dual-pane file manager.
     # [void] Update() {}
     # [void] UpdateSystemState() {}
 }
-[AppRunner]::makeApp("OneCommander")
+[AppRunner]::InitApp("OneCommander")

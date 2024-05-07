@@ -1,5 +1,4 @@
-# using module My
-# using module My/My.ScoopApps.psm1
+
 
 class NerdFonts : ScoopApps {
 
@@ -22,6 +21,7 @@ class NerdFonts : ScoopApps {
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 "@
         $this.Name = @("CascadiaCode-NF-Mono", "CascadiaCode-NF-Propo", "FiraCode-NF-Mono")
+        $this.Id = "nerd-fonts"
         $this.Store = "nerd-fonts"
         $this.VerifyFile = @("$Env:SCOOP\apps\CascadiaCode-NF-Mono\current\manifest.json",
             "$Env:SCOOP\apps\CascadiaCode-NF-Propo\current\manifest.json",
@@ -88,4 +88,4 @@ class NerdFonts : ScoopApps {
 
     # [void] UpdateSystemState() {}
 }
-[AppRunner]::makeApp("NerdFonts")
+[AppRunner]::InitApp("NerdFonts")

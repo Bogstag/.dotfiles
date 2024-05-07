@@ -32,7 +32,7 @@ foreach ($appStatus in $scoopStatus.packages) {
 
     if ($null -eq $ClassName) {
         Write-Host " ❌"
-        # $GenericState.AppData.ScoopUnmanaged.AppsList += $appStatus.Name
+        # $State.AppData.ScoopUnmanaged.AppsList += $appStatus.Name
         continue
     }
 
@@ -50,7 +50,7 @@ foreach ($appStatus in $scoopStatus.packages) {
         $Apps["$ClassName"].Update($appStatus.available)
     }
 }
-$GenericState.SaveAppState()
+$State.SaveAppState()
 
 # To use with Default Scoop
 # $scoopStatus = scoop status --local
@@ -65,4 +65,4 @@ $GenericState.SaveAppState()
 #         }
 #     }
 # }
-# $GenericState.SaveAllState()
+# $State.SaveAllState()

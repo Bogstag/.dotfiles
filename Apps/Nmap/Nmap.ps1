@@ -1,5 +1,4 @@
-# using module My
-# using module My/My.ScoopApps.psm1
+
 
 class Nmap : ScoopApps {
 
@@ -33,8 +32,8 @@ Network exploration and security auditing utility.
 "@
 
         $this.Name = "Nmap" # CTRL+H Nmap with your specific app name, same as folder name
-        $this.Id = "Nmap"
-        $this.PackageManager = "Scoop"
+        $this.Id = "nmap"
+        $this.MyPM = "Scoop"
         $this.Store = "main"
         $this.VerifyFile = "$Env:SCOOP\apps\Nmap\current\Nmap.exe"
         $this.RepoUrl = "https://svn.nmap.org/" # Replace RepoUrl with your specific repo URL
@@ -91,8 +90,8 @@ Network exploration and security auditing utility.
     }
 
     # [void] UpdateSystemState() {
-    #     [GenericState].UpdateAppData($this.GetType(), $this)
+    #     [State].UpdateAppData($this.GetType(), $this)
     # }
 }
-[AppRunner]::makeApp("Nmap")
+[AppRunner]::InitApp("Nmap")
 

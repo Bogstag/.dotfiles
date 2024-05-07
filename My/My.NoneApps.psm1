@@ -2,7 +2,7 @@ using module ./My.Apps.psm1
 
 class NoneApps : Apps {
 
-    # ScoopApps() : base(@{}) {
+    # ScoopApps() : base([ordered]@{}) {
     NoneApps() {
         Write-Debug -Message "NoneApps Ctor"
         $this.NoneAppsInit()
@@ -18,7 +18,7 @@ class NoneApps : Apps {
     }
 
     [void] NoneAppsInit([hashtable]$Properties) {
-        $this.PackageManager = "None"
+        $this.MyPM = "None"
         $this.Store = $null
         if ($Properties -ne @{}) {
             $this.Init($Properties)
@@ -62,7 +62,7 @@ class NoneApps : Apps {
     # [void] Update() {}
 
     # [void] UpdateSystemState() {
-    #     [GenericState].UpdateAppData($this.GetType(), $this)
+    #     [State].UpdateAppData($this.GetType(), $this)
     # }
 }
 

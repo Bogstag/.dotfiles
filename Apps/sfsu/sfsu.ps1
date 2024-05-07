@@ -1,5 +1,4 @@
-# using module My
-# using module My/My.ScoopApps.psm1
+
 
 class sfsu : ScoopApps {
 
@@ -9,9 +8,9 @@ class sfsu : ScoopApps {
 ░▀▀█░░█░░█░█░█▀▀░░█░░█░█░░░█▀▀░█▀█░▀▀█░░█░░░░▀▀█░█░░░█░█░█░█░█▀▀░░░█░█░░█░░░█░░█░░░▀▀█
 ░▀▀▀░░▀░░▀▀▀░▀░░░▀▀▀░▀▀░░░░▀░░░▀░▀░▀▀▀░░▀░░░░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░░░░░▀▀▀░░▀░░▀▀▀░▀▀▀░▀▀▀
 "@
-        $this.Name = "sfsu"
-        $this.Id = "Sfsu"
-        $this.PackageManager = "Scoop"
+        $this.Name = "Stupid Fast Scoop Utils"
+        $this.Id = "sfsu"
+        $this.MyPM = "Scoop"
         $this.Store = "extras"
         $this.VerifyFile = "$Env:SCOOP\apps\sfsu\current\sfsu.exe"
         $this.GithubOwnerRepo = "jewlexx/sfsu"
@@ -91,7 +90,7 @@ class sfsu : ScoopApps {
     # [void] Update() {}
 
     [void] UpdateSystemState() {
-        [GenericState].UpdateAppData($this.GetType(), $this)
+        [State].UpdateAppData($this.GetType(), $this)
     }
 }
-[AppRunner]::makeApp("sfsu")
+[AppRunner]::InitApp("sfsu")

@@ -12,8 +12,10 @@ Hopfully some nice app and dotfiles management and a way to handle custom things
 
 ## Names
 
-App Folder = Class Name
-App Name in Class = Scoop Name
+- App ps1 = App Folder = Class Name = Scoop Name
+  - Problem with this is that Scoop Name is a file name and there is different restrictions on files and folders. Trying to use Id as a safe alternative.
+
+But im now thinking about setting Id to Packet Managers Name, then i just need to do a little searching for that Id. Then finding a safe name standard for App ps1 = App Folder = Class Name
 
 ## Nerd Fonts
 

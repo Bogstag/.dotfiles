@@ -1,4 +1,3 @@
-# using module My
 # param (
 #     [string]$Command
 # )
@@ -19,7 +18,7 @@
 #         $Apps[$appFolder.Name] = $AppRunner.makeApp([String] $($appFolder.Name))
 #         [AppRunner]::Apps[$appFolder.Name] = $Apps[$appFolder.Name]
 #         # $Apps[$appFolder.Name] = New-Object -TypeName $($appFolder.Name)
-#         # $GenericState.UpdateAppData([string] $($appFolder.Name), [object] $Apps[$appFolder.Name])
+#         # $State.UpdateAppData([string] $($appFolder.Name), [object] $Apps[$appFolder.Name])
 #     } else {
 #         Write-Warning "Script file for $($appFolder.Name) not found at $scriptPath"
 #         continue

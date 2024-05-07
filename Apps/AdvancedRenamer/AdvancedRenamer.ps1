@@ -1,6 +1,3 @@
-# using module My
-# using module ./My.ScoopApps.psm1
-
 class AdvancedRenamer : ScoopApps {
 
     AdvancedRenamer() {
@@ -10,9 +7,9 @@ class AdvancedRenamer : ScoopApps {
 ░▀░▀░▀▀░░░▀░░▀░▀░▀░▀░▀▀▀░▀▀▀░▀▀░░░░▀░▀░▀▀▀░▀░▀░▀░▀░▀░▀░▀▀▀░▀░▀
 Batch file renaming utility for Windows
 "@
-        $this.Name = "AdvancedRenamer"
-        $this.Id = (ConvertTo-SafePascalCase($this.GetType()))
-        $this.PackageManager = "Scoop"
+        $this.Name = "Advanced Renamer"
+        $this.Id = "advancedrenamer"
+        $this.MyPM = "Scoop"
         $this.Store = "extras"
         $this.VerifyFile = "$Env:SCOOP\apps\AdvancedRenamer\current\arenc.exe"
         # $this.GithubOwnerRepo = "OWNER/REPO" # Or $this.RepoUrl = "https://github.com/" + $this.GithubOwnerRepo
@@ -57,5 +54,4 @@ Batch file renaming utility for Windows
     # [void] UpdateScoopUnmanaged() {}
     # [void] UpdateSystemState() {}
 }
-[AppRunner]::makeApp("AdvancedRenamer")
-
+[AppRunner]::InitApp("advancedrenamer")

@@ -1,7 +1,6 @@
-# using module My
-# using module My/My.ScoopApps.psm1
 
-class Scoop : ScoopApps {
+
+class Scoop : NoneApps {
 
     Scoop() {
         $this.Logo = @"
@@ -10,7 +9,7 @@ class Scoop : ScoopApps {
 ░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░░░
 "@
         $this.Name = "Scoop"
-        $this.Id = "Scoop"
+        $this.Id = "scoop"
         $this.Store = "main"
         $this.VerifyFile = "$Env:SCOOP\apps\Scoop\current\Scoop.exe"
         $this.GithubOwnerRepo = "OWNER/REPO"
@@ -54,4 +53,4 @@ class Scoop : ScoopApps {
     # [void] UpdateScoopUnmanaged() {}
     # [void] UpdateSystemState() {}
 }
-[AppRunner]::makeApp("Scoop")
+[AppRunner]::InitApp("Scoop")

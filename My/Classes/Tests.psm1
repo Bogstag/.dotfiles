@@ -38,13 +38,13 @@ class One {
 class Two : One {
     [string] $TwoName = "2 Default"
 
-    Two() : base(@{
+    Two() : base([ordered]@{
             OneName = "Empty Base Ctor2"
         }) {
         Write-Host "Empty Ctor2: 1: $($this.OneName), 2: $($this.TwoName)"
     }
 
-    Two([hashtable]$Props) : base(@{
+    Two([hashtable]$Props) : base([ordered]@{
             OneName = "Props Base Ctor2"
         }) {
         Write-Host "Start Ctor2: 1: $($this.OneName), 2: $($this.TwoName)"
@@ -65,13 +65,13 @@ class Two : One {
 class Three : Two {
     [string] $ThreeName = "3 Default"
 
-    Three() : base(@{
+    Three() : base([ordered]@{
             OneName = "Empty Base Ctor3"
         }) {
         Write-Host "Empty Ctor3: 1: $($this.OneName), 2: $($this.TwoName), 3: $($this.ThreeName)"
     }
 
-    Three([hashtable]$Props) : base(@{
+    Three([hashtable]$Props) : base([ordered]@{
             OneName = "Props Base Ctor3"
         }) {
         Write-Host "Start Ctor3: 1: $($this.OneName), 2: $($this.TwoName), 3: $($this.ThreeName)"
@@ -98,11 +98,11 @@ class Three : Two {
     }
 }
 
-Remove-Variable one
-Remove-Variable two
-Remove-Variable three
-Remove-Variable empty
-$empty = @{}
+# Remove-Variable one
+# Remove-Variable two
+# Remove-Variable three
+# Remove-Variable empty
+# $empty = @{}
 
 # $one = [One]::New(@{ OneName = "Inst new One" })
 

@@ -1,69 +1,58 @@
+# using module My
 using module ./My.Apps.psm1
 
 class ScoopApps : Apps {
 
-    # ScoopApps() : base(@{}) {
     ScoopApps() {
-        Write-Debug -Message "ScoopApps Ctor"
-        $this.ScoopAppsInit()
-    }
-
-    ScoopApps([hashtable]$Properties) {
-        Write-Debug -Message "ScoopApps Ctor props"
-        $this.ScoopAppsInit($Properties)
-    }
-
-    [void] ScoopAppsInit() {
-        Write-Debug -Message "ScoopApps Init Empty"
         $this.ScoopAppsInit(@{})
     }
 
-    [void] ScoopAppsInit([hashtable]$Properties) {
-        Write-Debug -Message "ScoopApps Init props"
-        $this.PackageManager = "Scoop"
-        if ($Properties -ne @{}) {
-            $this.Init($Properties)
+    ScoopApps([hashtable]$Properties) {
+        $this.ScoopAppsInit($Properties)
+    }
+
+    ScoopAppsInit([hashtable]$Properties) {
+        $this.MyPM = "Scoop"
+
+        if (@{} -eq $Properties) {
+            $this.Init()
+        } else {
+            $this.SplatProperties($Properties)
         }
     }
 
-    # [void] Clear() {}
+    [void] Install() {
+        # Logic to install app
+        if (-Not (Test-Path "$Env:SCOOP\buckets\$($this.Store)" -PathType Container)) {
+            scoop bucket add -Name "$($this.Store)"
+        }
+        if (-Not (Test-Path $this.VerifyFile -PathType Leaf)) {
+            scoop install "$($this.Store)/$($this.Id)"
+            $this.DotfilesSwitch('deploy')
+            # TODO: Add env var
+        }
+        $this.SaveAppState()
+    }
+    
+    [void] Reset() {
+        # Logic to reset app
+        scoop reset "$($this.Store)/$($this.Id)"
+        $this.SaveAppState()
+    }
 
-    # [void] Enable() {}
+    [void] Uninstall() {
+        scoop uninstall "$($this.Store)/$($this.Id)"
+        $this.DotfilesSwitch('remove')
+        # TODO: Remove env var
+        $this.SaveAppState()
+    }
 
-    # [uri] GetRepoUri([string]$Switch) {}
-
-    # [void] Install() {}
-
-    # [void] Invoke() {}
-
-    # [void] Reset() {}
-
-    # [void] SetEnvironmentVariables() {
-    #     $Value1 = "$($this.VerifyFile)"
-    #     if (($null -eq $Env:BIOME_BINARY) -or ($Value1 -ne $Env:BIOME_BINARY)) {
-    #         [Environment]::SetEnvironmentVariable("BIOME_BINARY", "$Value1", [EnvironmentVariableTarget]::User)
-    #     }
-
-    #     $Value2 = "$Env:XDG_CONFIG_HOME\biome\biome.json"
-    #     if (($null -eq $Env:BIOME_CONFIG_PATH) -or ($Value2 -ne $Env:BIOME_CONFIG_PATH)) {
-    #         [Environment]::SetEnvironmentVariable("BIOME_CONFIG_PATH", "$Value2", [EnvironmentVariableTarget]::User)
-    #     }
-    # }
-
-    # [void] ShowDocs() {}
-
-    # [void] ShowLogo() {}
-
-    # [void] ShowReleases() {}
-
-    # [void] ShowRepo() {}
-
-    # [void] Uninstall() {}
-
-    # [void] Update() {}
-
-    # [void] UpdateSystemState() {
-    #     [GenericState].UpdateAppData($this.GetType(), $this)
-    # }
+    [void] Update([string] $Version) {
+        # Logic to update app
+        scoop update "$($this.Store)/$($this.Id)"
+        $this.Version = [version]::Parse($Version)
+        $this.AppLastUpdate = (Get-Date).ToShortDateString()
+        # $this.UpdateSystemState()
+        $this.SaveAppState()
+    }
 }
-

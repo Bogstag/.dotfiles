@@ -1,5 +1,4 @@
-﻿# using module My
-# using module My/My.ScoopApps.psm1
+﻿
 
 class Starship : ScoopApps {
 
@@ -29,8 +28,8 @@ The minimal, blazing fast,
 and extremely customizable prompt!
 "@
         $this.Name = "Starship"
-        $this.Id = "Starship"
-        $this.PackageManager = "Scoop"
+        $this.Id = "starship"
+        $this.MyPM = "Scoop"
         $this.Store = "main"
         $this.VerifyFile = "$Env:SCOOP\apps\starship\current\starship.exe"
         $this.GithubOwnerRepo = "starship/starship"
@@ -81,7 +80,7 @@ and extremely customizable prompt!
     # [void] Update() {}
 
     [void] UpdateSystemState() {
-        [GenericState].UpdateAppData($this.GetType(), $this)
+        [State].UpdateAppData($this.GetType(), $this)
     }
 }
-[AppRunner]::makeApp("Starship")
+[AppRunner]::InitApp("Starship")

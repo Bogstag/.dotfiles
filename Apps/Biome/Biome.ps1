@@ -1,5 +1,4 @@
-﻿# using module My
-# using module My/My.ScoopApps.psm1
+﻿
 
 class Biome : ScoopApps {
 
@@ -17,8 +16,8 @@ class Biome : ScoopApps {
 Formatter, linter, bundler for JavaScript, JSON, HTML, Markdown, and CSS.
 "@
         $this.Name = "Biome"
-        $this.Id = "Biome"
-        $this.PackageManager = "Scoop"
+        $this.Id = "biome"
+        $this.MyPM = "Scoop"
         $this.Store = "main"
         $this.VerifyFile = "$Env:SCOOP\apps\biome\current\biome.exe"
         $this.GithubOwnerRepo = "biomejs/biome"
@@ -70,7 +69,7 @@ Formatter, linter, bundler for JavaScript, JSON, HTML, Markdown, and CSS.
     # [void] Update() {}
 
     # [void] UpdateSystemState() {
-    #     [GenericState].UpdateAppData($this.GetType(), $this)
+    #     [State].UpdateAppData($this.GetType(), $this)
     # }
 }
-[AppRunner]::makeApp("Biome")
+[AppRunner]::InitApp("Biome")

@@ -1,7 +1,8 @@
 ﻿# using module My
-# using module My/My.ScoopApps.psm1
-# $ErrorActionPreference = "Stop"
-# $DebugPreference = 'Stop'
+
+# (Lower Case) "PackageMangers" Id = PacketManager (Scoop name)
+# (Pascal Case) "MyId" Class = Folder name = Script Name
+# Name = a pretty name
 class Template : ScoopApps {
     # class Template : NoneApps {
     Template() {
@@ -12,7 +13,6 @@ class Template : ScoopApps {
 "@
         $this.Name = "Template"
         $this.Id = (ConvertTo-SafePascalCase($this.GetType()))
-        $this.PackageManager = "Scoop"
         $this.Store = "main"
         $this.VerifyFile = "$Env:SCOOP\apps\Template\current\Template.exe"
         $this.GithubOwnerRepo = "OWNER/REPO" # Or $this.RepoUrl = "https://github.com/" + $this.GithubOwnerRepo
@@ -65,5 +65,5 @@ class Template : ScoopApps {
     # [void] UpdateScoopUnmanaged() {}
 
 }
-[AppRunner]::makeApp("Template")
+[AppRunner]::InitApp("Template")
 

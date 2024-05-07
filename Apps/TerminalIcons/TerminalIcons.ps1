@@ -1,5 +1,4 @@
-# using module My
-# using module My/My.ScoopApps.psm1
+
 
 class TerminalIcons : ScoopApps {
 
@@ -9,9 +8,9 @@ class TerminalIcons : ScoopApps {
 ░░█░░█▀▀░█▀▄░█░█░░█░░█░█░█▀█░█░░░▄▄▄░░█░░█░░░█░█░█░█░▀▀█
 ░░▀░░▀▀▀░▀░▀░▀░▀░▀▀▀░▀░▀░▀░▀░▀▀▀░░░░░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀▀▀
 "@
-        $this.Name = "Terminal-Icons"
-        $this.Id = "TerminalIcons"
-        $this.PackageManager = "Scoop"
+        $this.Name = "Terminal Icons"
+        $this.Id = "terminal-icons"
+        $this.MyPM = "Scoop"
         $this.Store = "extras"
         $this.VerifyFile = "$Env:SCOOP\modules\Terminal-Icons\Terminal-Icons.psd1"
         $this.GithubOwnerRepo = "devblackops/Terminal-Icons"
@@ -50,7 +49,7 @@ class TerminalIcons : ScoopApps {
     # [void] UpdateScoopUnmanaged() {}
 
     [void] UpdateSystemState() {
-        [GenericState].UpdateAppData($this.GetType(), $this)
+        [State].UpdateAppData($this.GetType(), $this)
     }
 }
-[AppRunner]::makeApp("TerminalIcons")
+[AppRunner]::InitApp("TerminalIcons")

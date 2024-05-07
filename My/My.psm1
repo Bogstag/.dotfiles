@@ -1,11 +1,10 @@
-using module ./My.GenericState.psm1
+using module ./My.State.psm1
 using module ./My.Apps.psm1
 using module ./My.ScoopApps.psm1
 using module ./My.NoneApps.psm1
 using module ./My.AppRunner.psm1
-
-# Define module-wide variable
-# $Script:SystemStateJsonFile = ""
+# $ErrorActionPreference = "Stop"
+# $DebugPreference = 'Stop'
 
 # Get-ChildItem -Path "$PSScriptRoot/Classes/*.ps1" | ForEach-Object {
 #     . $_.FullName
@@ -19,9 +18,15 @@ Get-ChildItem -Path "$PSScriptRoot/Public/*.ps1" | ForEach-Object {
     . $_.FullName
 }
 
+Get-ChildItem -Path "$PSScriptRoot/Tests/*.ps1" | ForEach-Object {
+    . $_.FullName
+}
+
 # Define the types to export with type accelerators.
 $ExportableTypes = @(
-    [GenericState],
+    [MyPM],
+    [MyDotfilesAction],
+    [State],
     [Apps],
     [ScoopApps],
     [NoneApps],
@@ -64,4 +69,8 @@ $MyInvocation.MyCommand.ScriptBlock.Module.OnRemove = {
     }
 }.GetNewClosure()
 
-Export-ModuleMember -Cmdlet * -Function * -Alias * -Variable *
+Export-ModuleMember `
+    -Cmdlet @() `
+    -Function @() `
+    -Alias @() `
+    -Variable @('$State', '$AppRunner')

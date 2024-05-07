@@ -1,5 +1,4 @@
-# using module My
-# using module My/My.ScoopApps.psm1
+
 
 # Also including pre-commit
 class Gitleaks : ScoopApps {
@@ -29,8 +28,8 @@ api keys, and tokens in git repos.
              |####|
 "@
         $this.Name = "Gitleaks" # CTRL+H Gitleaks with your specific app name, same as folder name
-        $this.Id = "Gitleaks"
-        $this.PackageManager = "Scoop"
+        $this.Id = "gitleaks"
+        $this.MyPM = "Scoop"
         $this.Store = "main"
         $this.VerifyFile = "$Env:SCOOP\apps\Gitleaks\current\Gitleaks.exe"
         $this.GithubOwnerRepo = "gitleaks/gitleaks"
@@ -96,8 +95,8 @@ api keys, and tokens in git repos.
     # [void] Update() {}
 
     # [void] UpdateSystemState() {
-    #     [GenericState].UpdateAppData($this.GetType(), $this)
+    #     [State].UpdateAppData($this.GetType(), $this)
     # }
 }
-[AppRunner]::makeApp("Gitleaks")
+[AppRunner]::InitApp("Gitleaks")
 

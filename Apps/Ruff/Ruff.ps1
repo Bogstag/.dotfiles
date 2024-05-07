@@ -1,5 +1,4 @@
-# using module My
-# using module My/My.ScoopApps.psm1
+
 
 class Ruff : ScoopApps {
 
@@ -28,8 +27,8 @@ class Ruff : ScoopApps {
 An extremely fast Python linter.
 "@
         $this.Name = "Ruff"
-        $this.Id = "Ruff"
-        $this.PackageManager = "Scoop"
+        $this.Id = "ruff"
+        $this.MyPM = "Scoop"
         $this.Store = "main"
         $this.VerifyFile = "$Env:SCOOP\apps\Ruff\current\ruff.exe"
         $this.GithubOwnerRepo = "astral-sh/ruff"
@@ -75,7 +74,7 @@ An extremely fast Python linter.
     # [void] Update() {}
 
     # [void] UpdateSystemState() {
-    #     [GenericState].UpdateAppData($this.GetType(), $this)
+    #     [State].UpdateAppData($this.GetType(), $this)
     # }
 }
-[AppRunner]::makeApp("Ruff")
+[AppRunner]::InitApp("Ruff")

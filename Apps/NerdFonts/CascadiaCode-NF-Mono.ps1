@@ -1,5 +1,5 @@
-# # using module My
-# using module My/My.ScoopApps.psm1
+# #
+# /My.ScoopApps.psm1
 
 # class CascadiaCodeNFMono : ScoopApps {
 
@@ -66,6 +66,6 @@
 #     # [void] Update() {}
 
 #     [void] UpdateSystemState() {
-#         [GenericState].UpdateAppData($this.GetType(), $this)
+#         [State].UpdateAppData($this.GetType(), $this)
 #     }
 # }
