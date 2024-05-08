@@ -1,6 +1,4 @@
-﻿
-
-class Biome : ScoopApps {
+﻿class Biome : ScoopApps {
 
     Biome() {
         $this.Logo = @"
@@ -22,14 +20,13 @@ Formatter, linter, bundler for JavaScript, JSON, HTML, Markdown, and CSS.
         $this.VerifyFile = "$Env:SCOOP\apps\biome\current\biome.exe"
         $this.GithubOwnerRepo = "biomejs/biome"
         $this.DocsUrl = "https://biomejs.dev/guides/getting-started/"
-        $this.DotfilesSourcePath = "$PSScriptRoot\dotfile"
         $this.Dotfiles = @(
-            "$Env:XDG_CONFIG_HOME\biome\biome.json"
+            "$Env:HOME\.config\biome"
         )
-        # $this.Version = "0.0.0"
+        # New-Item -ItemType SymbolicLink -Path $Env:HOME\.config\Biome -Target $Env:DOME\.config\Biome
         # $this.AppLastUpdate = $null
         $this.AppFolder = "$PSScriptRoot"
-        $this.AppStatePath = "$($Env:dotfiles)\Apps\$($this.GetType())\$($this.GetType()).json"
+        $this.AppStatePath = "$Env:dotfiles\Apps\Biome\Biome.json"
     }
 
     # [void] Clear() {}
@@ -66,7 +63,9 @@ Formatter, linter, bundler for JavaScript, JSON, HTML, Markdown, and CSS.
 
     # [void] Uninstall() {}
 
-    # [void] Update() {}
+    # [void] Update() {
+    #     $this.Version = [Management.Automation.SemanticVersion]::new((biome --version).TrimStart("Version: "))
+    # }
 
     # [void] UpdateSystemState() {
     #     [State].UpdateAppData($this.GetType(), $this)

@@ -1,0 +1,20 @@
+{
+    "ExperimentalFeatures": [
+        "PSCommandNotFoundSuggestion",
+        "PSSubsystemPluginModel",
+        "PSLoadAssemblyFromNativeCode",
+        "PSFeedbackProvider",
+        "PSModuleAutoLoadSkipOfflineFiles",
+        "PSCommandWithArgs",
+        "PSNativeWindowsTildeExpansion"
+    ],
+    "ModuleLogging": {
+        "EnableModuleLogging": true,
+        "ModuleNames": [
+            "My"
+        ]
+    },
+    "UpdatableHelp": {
+        "DefaultSourcePath": "$env:PSPROFIL/Help"
+    }
+}

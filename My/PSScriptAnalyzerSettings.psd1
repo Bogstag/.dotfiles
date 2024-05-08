@@ -2,30 +2,6 @@
     # Error
     Severity     = @('Error', 'Warning')
 
-    # Analyze **only** the following rules. Use IncludeRules when you want
-    # to invoke only a small subset of the default rules.
-    # IncludeRules = @(
-    #     'PSUseConsistentWhitespace',
-    #     'PSUseConsistentIndentation',
-    #     'PSAlignAssignmentStatement',
-    #     'PSUseCorrectCasing',
-    #     'PSAvoidTrailingWhitespace'
-    # )
-    # IncludeRules = @("PSAvoidDefaultValueSwitchParameter",
-    #                  "PSMisleadingBacktick",
-    #                  "PSMissingModuleManifestField",
-    #                  "PSReservedCmdletChar",
-    #                  "PSReservedParams",
-    #                  "PSShouldProcess",
-    #                  "PSUseApprovedVerbs",
-    #                  "PSAvoidUsingCmdletAliases",
-    #                  "PSUseDeclaredVarsMoreThanAssignments")
-
-    # Do not analyze the following rules. Use ExcludeRules when you have
-    # commented out the IncludeRules settings above and want to include all
-    # the default rules except for those you exclude below.
-    # Note: if a rule is in both IncludeRules and ExcludeRules, the rule
-    # will be excluded.
     ExcludeRules = @(
         # 'PSAvoidUsingCmdletAliases',
         'PSAvoidUsingWriteHost',
@@ -34,31 +10,53 @@
     )
 
     Rules        = @{
-        PSUseConsistentWhitespace  = @{
-            Enable         = $true
-            CheckOpenBrace = $true
-            CheckOpenParen = $true
-            CheckOperator  = $false
-            CheckSeparator = $true
-        }
+        s = @{
+            PSPlaceOpenBrace           = @{
+                Enable             = $true
+                OnSameLine         = $true
+                NewLineAfter       = $true
+                IgnoreOneLineBlock = $true
+            }
 
-        PSUseConsistentIndentation = @{
-            Enable          = $true
-            Kind            = 'space' # or 'tab'
-            IndentationSize = 4
-        }
+            PSPlaceCloseBrace          = @{
+                Enable             = $true
+                NewLineAfter       = $false
+                IgnoreOneLineBlock = $true
+                NoEmptyLineBefore  = $false
+            }
 
-        PSAlignAssignmentStatement = @{
-            Enable         = $true
-            CheckHashtable = $true
-        }
+            PSUseConsistentWhitespace  = @{
+                Enable                                  = $true
+                CheckInnerBrace                         = $true
+                CheckOpenBrace                          = $true
+                CheckOpenParen                          = $true
+                CheckOperator                           = $true # $false
+                CheckPipe                               = $true
+                CheckPipeForRedundantWhitespace         = $false
+                CheckSeparator                          = $true
+                CheckParameter                          = $false
+                IgnoreAssignmentOperatorInsideHashTable = $true
+            }
 
-        PSAvoidTrailingWhitespace  = @{
-            Enable = $true
-        }
+            PSUseConsistentIndentation = @{
+                Enable              = $true
+                Kind                = 'space'
+                PipelineIndentation = 'IncreaseIndentationForFirstPipeline'
+                IndentationSize     = 4
+            }
 
-        PSUseCorrectCasing         = @{
-            Enable = $true
+            PSAlignAssignmentStatement = @{
+                Enable         = $true
+                CheckHashtable = $true
+            }
+
+            PSAvoidTrailingWhitespace  = @{
+                Enable = $true
+            }
+
+            PSUseCorrectCasing         = @{
+                Enable = $true
+            }
         }
     }
 }

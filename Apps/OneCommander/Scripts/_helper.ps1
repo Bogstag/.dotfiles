@@ -1,7 +1,7 @@
-$PSNativeCommandUseErrorActionPreference = $true
+# $PSNativeCommandUseErrorActionPreference = $true
 # $PSNativeCommandArgumentPassing = "Windows"
 # $PSNativeWindowsTildeExpansion = $true
-$ErrorActionPreference = 'Stop'
+# $ErrorActionPreference = 'Stop'
 
 Function Log {
     param(

@@ -149,7 +149,92 @@ class Apps {
         return $Hashtable
     }
 
-    # [void] Clear() {} # Logic to clean app's cache or other maintenance tasks.
+    # [void] Clear() {} # Logic to clean app's cache or other maintenance tasks
+
+    [void] NewDotfilesSwitch([MyDotfilesAction]$DotfilesAction, [array]$DotArray = @()) {
+        Write-Debug "DotfilesAction: $DotfilesAction, DotArray: $DotArray, DotArray.Count: $($DotArray.Count)"
+        if ($DotArray.Count -eq 0) {
+            $DotArray = $this.Dotfiles
+        }
+
+        Write-Debug "DotfilesAction: $DotfilesAction, DotArray: $DotArray, DotArray.Count: $($DotArray.Count)"
+        switch ($DotArray) {
+            { $DotfilesAction -eq [MyDotfilesAction]::deploy } {
+                Write-Debug "deploy PSItem: $PSItem"
+                $this.DeployDotfile($PSItem)
+                continue
+            }
+
+            { $DotfilesAction -eq [MyDotfilesAction]::remove } {
+                Write-Debug "remove PSItem: $PSItem"
+                $this.RemoveDotfile($PSItem)
+                continue
+            }
+
+            Default {
+                Write-Host "Invalid dotfile action: $DotfilesAction"
+            }
+        }
+    }
+
+    [bool] NewDeployDotfile($DotfileString) {
+        Write-Debug "DeployDotfile DotfileString: $DotfileString"
+        $isDir = $false
+        $isFile = $false
+        $DotfileDest = $false
+        $DotFileSource = $false
+        $OldDotfileDest = $false
+        $leaf = Split-Path -Leaf $DotfileString
+        $sourceString = "$($this.DotfilesSourcePath)\$($leaf)"
+        if ([System.IO.File]::Exists($sourceString)) {
+            $isFile = $true
+            $DotfileDest = [IO.FileInfo]::new("$DotfileString")
+            $DotFileSource = [IO.FileInfo]::new("$sourceString")
+            $OldDotfileDest = [IO.FileInfo]::new("($($DotfileDest.FullName)).old")
+        }
+        if ([System.IO.Directory]::Exists($sourceString)) {
+            $isDir = $true
+            $DotfileDest = [IO.DirectoryInfo]::new("$DotfileString")
+            $DotFileSource = [IO.DirectoryInfo]::new("$sourceString")
+            $OldDotfileDest = [IO.DirectoryInfo]::new("($($DotfileDest.FullName)).old")
+        }
+
+        if (($false -eq $isFile) -AND ($false -eq $isDir)) {
+            Write-Error -Message "Missing Dotfile Source: $($sourceString)"
+            return $false
+        }
+
+        if ($isFile) {
+            $DotFileDestFolder = $DotfileDest.Directory
+        } else {
+            $DotFileDestFolder = $DotfileDest.Parent
+        }
+
+        if ($DotFileDestFolder.Exists) {
+            Write-Debug "DotFileDestFolder exists: $DotFileDestFolder"
+            if ($OldDotfileDest.Exists) {
+                Write-Debug "OldDotfileDest exists: $OldDotfileDest"
+                $OldDotfileDest.Delete()
+            }
+            if ($DotfileDest.Exists) {
+                Write-Debug "DotfileDest exists: $DotfileDest"
+                if ("SymbolicLink" -eq $DotfileDest.LinkType) {
+                    $DotfileDest.Delete()
+                    $DotfileDest.Refresh()
+                } else {
+                    Write-Debug "DotfileDest did not exists: $DotfileDest"
+                    # If there are existing file there, rename it to .old as a soft backup
+                    Rename-Item -Path "$($DotfileDest.FullName)" -NewName "$($DotfileDest.Name).old" -Force -ErrorAction SilentlyContinue
+                }
+            }
+        } else {
+            Write-Debug "DotFileDestFolder did not exists: $DotFileDestFolder"
+            $DotFileDestFolder.Create()
+        }
+
+        $DotfileDest.CreateAsSymbolicLink("$($DotFileSource.FullName)")
+        return $true
+    }
 
     [bool] DeployDotfile($DotfileString) {
         Write-Debug "DeployDotfile DotfileString: $DotfileString"
@@ -183,6 +268,7 @@ class Apps {
         } else {
             $DotFileDestFolder = $DotfileDest.Parent
         }
+
         if ($DotFileDestFolder.Exists) {
             Write-Debug "DotFileDestFolder exists: $DotFileDestFolder"
             if ($OldDotfileDest.Exists) {
@@ -219,11 +305,13 @@ class Apps {
         Write-Debug "DotfilesAction: $DotfilesAction"
         $this.DotfilesSwitch($DotfilesAction, @())
     }
+
     [void] DotfilesSwitch([MyDotfilesAction]$DotfilesAction, [array]$DotArray = @()) {
         Write-Debug "DotfilesAction: $DotfilesAction, DotArray: $DotArray, DotArray.Count: $($DotArray.Count)"
         if ($DotArray.Count -eq 0) {
             $DotArray = $this.Dotfiles
         }
+
         Write-Debug "DotfilesAction: $DotfilesAction, DotArray: $DotArray, DotArray.Count: $($DotArray.Count)"
         switch ($DotArray) {
             { $DotfilesAction -eq [MyDotfilesAction]::deploy } {

@@ -1,4 +1,4 @@
-﻿$timer = $State.StartMeasurement("Setting Paths")
+﻿$timer = $State.MyStartMeasurement("Setting Paths")
 # ░█▀▀░█▀▀░▀█▀░░░░░█▀█░█▀█░▀█▀░█░█░█▀▀
 # ░▀▀█░█▀▀░░█░░▄▄▄░█▀▀░█▀█░░█░░█▀█░▀▀█
 # ░▀▀▀░▀▀▀░░▀░░░░░░▀░░░▀░▀░░▀░░▀░▀░▀▀▀
@@ -56,7 +56,7 @@ Add-ToMyPath "$env:LOCALAPPDATA\Microsoft\PowerShell" "PSModulePath"
 Add-ToMyPath "$ENV:LOCALAPPDATA\pnpm"
 
 Add-ToMyPath "$HOME\.dotnet\tools"
-Add-ToMyPath "$HOME\Documents\PowerShell\Modules"
+Add-ToMyPath "$HOME\Documents\PowerShell"
 Add-ToMyPath "$HOME\Documents\PowerShell\Modules" "PSModulePath"
 Add-ToMyPath "$HOME\scoop\shims"
 Add-ToMyPath "$HOME\scoop\apps\vscode-insiders\current"
@@ -69,4 +69,4 @@ Add-ToMyPath "C:\Program Files\PackageManagement\ProviderAssemblies" "PSModulePa
 
 Add-ToMyPath "C:\Windows\System32"
 
-$State.StopMeasurement($timer)
+$State.MyStopMeasurement($timer)

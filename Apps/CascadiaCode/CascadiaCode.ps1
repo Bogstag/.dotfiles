@@ -1,8 +1,8 @@
 
 
-class NerdFonts : ScoopApps {
+class CascadiaCode : ScoopApps {
 
-    NerdFonts() {
+    CascadiaCode() {
         $this.Logo = @"
 @@@@@@@%%%%##############%%%%@@@@@@@@@@@@@@@@@@@@@@@@%%%##############%%%@@@@@@@
 %%######*####%%%%%%%@@%%%%%#######%%%%%%%%%%%%%#######%%%%%%%%%%%%%%###**#####%%
@@ -19,20 +19,19 @@ class NerdFonts : ScoopApps {
 @@@@@@@@@%####%%@@@@@@@%%#####%@@@@@@@@@@@@@@@@@@@%%#####%@@@@@%%%%###%@@@@@@@@@
 @@@@@@@@@@@@%%############%%@@@@@@@@@@@@@@@@@@@@@@@@@@%%##########%%@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+A fun, new monospaced font that includes programming ligatures and is
+designed to enhance the modern look and feel of the Windows Terminal.
 "@
-        $this.Name = @("CascadiaCode-NF-Mono", "CascadiaCode-NF-Propo", "FiraCode-NF-Mono")
-        $this.Id = "nerd-fonts"
+        $this.Name = "CascadiaCode"
+        $this.Id = "Cascadia-Code"
         $this.Store = "nerd-fonts"
-        $this.VerifyFile = @("$Env:SCOOP\apps\CascadiaCode-NF-Mono\current\manifest.json",
-            "$Env:SCOOP\apps\CascadiaCode-NF-Propo\current\manifest.json",
-            "$Env:SCOOP\apps\FiraMono-NF-Mono\current\manifest.json")
-        $this.GithubOwnerRepo = "ryanoasis/nerd-fonts"
+        $this.VerifyFile = "$Env:SystemRoot\Fonts\CascadiaMono.ttf"
+        $this.GithubOwnerRepo = "microsoft/cascadia-code"
         $this.DocsUrl = "https://www.nerdfonts.com/cheat-sheet"
         $this.ChangeLogUrl = "https://api.github.com/repos/" + $this.GithubOwnerRepo + "/releases/latest"
         $this.AppFolder = "$PSScriptRoot"
 
-        $this.AppStatePath = "$($Env:dotfiles)\Apps\$($this.GetType())\$($this.GetType()).json"
-        # TODO: This need a solution! Is this a one off?
+        $this.AppStatePath = "$Env:dotfiles\Apps\CascadiaCode\CascadiaCode.json"
     }
 
     # [void] Clear() {}
@@ -41,23 +40,7 @@ class NerdFonts : ScoopApps {
 
     # [uri] GetRepoUri([string]$Switch) {}
 
-    [void] Install() {
-        # Logic to install app
-        if (-Not (Test-Path "$Env:SCOOP\buckets\$($this.Store)" -PathType Container)) {
-            scoop bucket add -Name "$($this.Store)"
-        }
-        if (-Not (Test-Path "$Env:SCOOP\apps\CascadiaCode-NF-Mono\current\manifest.json" -PathType Leaf)) {
-            scoop install "$($this.Store)/CascadiaCode-NF-Mono"
-        }
-
-        if (-Not (Test-Path "$Env:SCOOP\apps\CascadiaCode-NF-Propo\current\manifest.json" -PathType Leaf)) {
-            scoop install "$($this.Store)/CascadiaCode-NF-Propo"
-        }
-
-        if (-Not (Test-Path "$Env:SCOOP\apps\FiraMono-NF-Mono\current\manifest.json" -PathType Leaf)) {
-            scoop install "$($this.Store)/FiraMono-NF-Mono"
-        }
-    }
+    # [void] Install() {}
 
     # [void] Invoke() {}
 
@@ -77,15 +60,16 @@ class NerdFonts : ScoopApps {
 
     # [void] Uninstall() {}
 
-    [void] Update([string] $Version) {
-        # Logic to update app
-        scoop update "$($this.Store)/CascadiaCode-NF-Mono"
-        scoop update "$($this.Store)/CascadiaCode-NF-Propo"
-        scoop update "$($this.Store)/FiraMono-NF-Mono"
-        $this.AppLastUpdate = (Get-Date).ToShortDateString()
-        $this.UpdateSystemState()
-    }
+    # [void] Update([string] $Version) {}
 
     # [void] UpdateSystemState() {}
 }
 [AppRunner]::InitApp("NerdFonts")
+
+
+# Cascadia Code: standard version of Cascadia
+# Cascadia Mono: a version of Cascadia that doesn't have ligatures
+# Cascadia (Code|Mono) PL: a version of Cascadia that has embedded Powerline symbols
+# Cascadia (Code|Mono) NF: a version of Cascadia that has Nerd Font symbols
+# For the italic, there is a standard italic and a cursive variant accessible via ss01
+# "editor.fontLigatures": "'ss01', 'ss02', 'ss03', 'ss19', 'ss20'"

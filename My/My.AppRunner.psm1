@@ -1,5 +1,6 @@
 using module ./My.State.psm1
-
+# $ErrorActionPreference = "Continue"
+# $DebugPreference = 'Continue'
 class AppRunner {
 
     static [Hashtable] $Apps = @{}
@@ -47,8 +48,7 @@ class AppRunner {
         return [AppRunner]::Apps.Where({ $_.MyPM -eq $PackageManager })
     }
 
-    static [bool] LoadApps() {
-        $timer = $global:State.StartMeasurement("LoadApps")
+    static [void] LoadApps() {
         [AppRunner]::AppFolderRoot = [IO.DirectoryInfo]::new("$Env:dotfiles\Apps")
         [AppRunner]::AppFolders = [AppRunner]::AppFolderRoot.GetDirectories()
 
@@ -58,8 +58,8 @@ class AppRunner {
             . $AppScriptFile.FullName
         }
 
-        # [AppRunner]::AppJsonFiles = ([AppRunner]::AppFolders.GetFiles()).Where({ (($_.Extension -eq ".json") -And ($_.BaseName -eq $_.Directory.BaseName)) })
-        # [AppRunner]::AppJsonFiles | ForEach-Object { [AppRunner]::LoadAppStateFromJsonFile($_) }
+        [AppRunner]::AppJsonFiles = ([AppRunner]::AppFolders.GetFiles()).Where({ (($_.Extension -eq ".json") -And ($_.BaseName -eq $_.Directory.BaseName)) })
+        [AppRunner]::AppJsonFiles | ForEach-Object { [AppRunner]::LoadAppStateFromJsonFile($_) }
         # foreach ($AppJsonFile in [AppRunner]::AppJsonFiles) {
         #     # Write-Host "Pretending to load state from json $($AppJsonFile.FullName)"
         #     [AppRunner]::LoadAppStateFromJsonFile($AppJsonFile)
@@ -72,20 +72,14 @@ class AppRunner {
         #         "AppStatePath" = [AppRunner]::AppJsonFiles.FullName
         #     }
         # }
-        $global:State.StopMeasurement($timer)
-
-        return $true
     }
 
     static [void] InitApp([String] $TypeString) {
         # Loads when app gets dot sourced
-
-        # Init App
-        # [AppRunner]::Apps["$($TypeString)"] = New-Object -TypeName $TypeString.ToString()
-        [AppRunner]::Apps."$($TypeString)" = New-Object -TypeName $TypeString.ToString()
-
-        # Load Properties from json file
-        [AppRunner]::LoadAppStateFromAppStatePath("$($TypeString)")
+        # Write-Debug -Message "Init TypeString: $TypeString"
+        # [AppRunner]::Apps = New-Object -TypeName $TypeString
+        # Write-Debug -Message "Load Json TypeString: $TypeString"
+        # [AppRunner]::LoadAppStateFromAppStatePath("$($TypeString)")
     }
 
     static [void] AllAppState([string]$Action) {
@@ -117,7 +111,7 @@ class AppRunner {
             try {
                 [AppRunner]::Apps."$($JsonFile.Directory.BaseName)" = [AppRunner]::LoadJsonFile($JsonFile)
             } catch {
-                Write-Error "Failed to parse the system state JSON file. ($($JsonFile))"
+                Write-Error "Failed to parse the system state JSON file. ($($JsonFile)) $_"
             }
         } else {
             Write-Warning "System state JSON file does not exist. Creating file and initializing with default values."
@@ -126,13 +120,22 @@ class AppRunner {
     }
 
     static [void] LoadAppStateFromAppStatePath([String] $TypeString) {
+        Write-Host "$([AppRunner]::Apps."$($TypeString)".AppStatePath)"
         $JsonFile = [IO.FileInfo]::new("$([AppRunner]::Apps."$($TypeString)".AppStatePath)")
         if ($JsonFile.Exists) {
+            $App = [AppRunner]::Apps."$($TypeString)"
+            Write-Host "App: $App"
+            $Config = [AppRunner]::LoadJsonFile($JsonFile)
+            Write-Host "Config: $Config"
             try {
-                [AppRunner]::Apps."$($TypeString)" = [AppRunner]::LoadJsonFile($JsonFile)
+                [AppRunner]::Apps."$($TypeString)" = New-Object -TypeName $TypeString.ToString() -Property @{
+                    $Config = $Config."$($TypeString)"
+                    $App    = $App."$($TypeString)"
+                }
             } catch {
                 Write-Error "Failed to parse the system state JSON file. ($($JsonFile))"
                 Write-Error "$_"
+                Get-Error
             }
         } else {
             Write-Warning "System state JSON file does not exist. Creating file and initializing with default values."
@@ -208,11 +211,11 @@ class AppRunner {
 
             'enable-apps' {
                 if ([AppRunner]::Apps[$App.Name].GetType().GetMethod('Enable')) {
-                    $stopWatch = [State]::StartMeasurement("Enable: $($App.Name)")
+                    $stopWatch = [State]::MyStartMeasurement("Enable: $($App.Name)")
 
                     [AppRunner]::Apps[$App.Name].Enable()
 
-                    [State]::StopMeasurement($stopWatch)
+                    [State]::MyStopMeasurement($stopWatch)
                 }
             }
 
@@ -226,11 +229,11 @@ class AppRunner {
 
             'set-apps-environmentvariables' {
                 if ([AppRunner]::Apps[$App.Name].GetType().GetMethod('SetEnvironmentVariables')) {
-                    $stopWatch = [State].StartMeasurement("Set Env: $($App.Name)")
+                    $stopWatch = [State].MyStartMeasurement("Set Env: $($App.Name)")
 
                     [AppRunner]::Apps[$App.Name].SetEnvironmentVariables()
 
-                    [State].StopMeasurement($stopWatch)
+                    [State].MyStopMeasurement($stopWatch)
                 }
             }
 

@@ -38,7 +38,7 @@ function ConvertTo-SafePascalCase {
     $newName = $Value
 
     # Remove Characters
-    $newName = $newName -replace '#', ' '
+    $newName = $newName -replace '#', ''
 
     # Remove Hyphen with _
     $newName = $newName -replace '-', '_'
@@ -46,13 +46,17 @@ function ConvertTo-SafePascalCase {
     # Remove @ with at
     $newName = $newName -replace '@', 'at'
 
+    # Remove space
+    $newName = $newName -replace ' ', ''
+
     # and some more replacements......
 
     $newName = ConvertTo-PascalCase($newName)
 
     if ($Value -ne $newName) {
-        Write-Host "Renaming: $Value to $newName"
+        Write-Debug -Message "Renaming: $Value to $newName"
     }
+
     return $newName
 }
 

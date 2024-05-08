@@ -5,23 +5,24 @@ class NoneApps : Apps {
     # ScoopApps() : base([ordered]@{}) {
     NoneApps() {
         Write-Debug -Message "NoneApps Ctor"
-        $this.NoneAppsInit()
+        $this.NoneAppsInit(@{})
     }
 
-    NoneApps($Properties) {
+    NoneApps([hashtable]$Properties) {
         Write-Debug -Message "NoneApps Ctor props"
         $this.NoneAppsInit([hashtable]$Properties)
     }
 
-    [void] NoneAppsInit() {
-        $this.NoneAppsInit(@{})
-    }
-
     [void] NoneAppsInit([hashtable]$Properties) {
+        Write-Debug -Message "NoneAppsInit Properties: $($Properties)"
         $this.MyPM = "None"
         $this.Store = $null
-        if ($Properties -ne @{}) {
-            $this.Init($Properties)
+        if (@{} -eq $Properties) {
+            Write-Debug -Message "NoneAppsInit Init"
+            $this.Init()
+        } else {
+            Write-Debug -Message "NoneAppsInit SplatProperties"
+            $this.SplatProperties($Properties)
         }
     }
 

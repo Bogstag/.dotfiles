@@ -10,10 +10,10 @@
 
 # MysteryOrder Colors
 
-add_newline = true
+add_newline = false
 
 # nf-ple icons
-#           
+#         
 
 format = """
 [┌](fg:#0bff00)\
@@ -39,7 +39,7 @@ $terraform\
 $jobs\
 [](fg:#ff3be8 bg:#a880ff)\
 $time\
-[](fg:#ff3be8)\
+[](fg:#ff3be8)\
 $line_break\
 [└](fg:#0bff00)\
 $character"""

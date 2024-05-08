@@ -23,17 +23,26 @@ class ScoopApps : Apps {
 
     [void] Install() {
         # Logic to install app
+        $this.InstallBucket()
+        $this.InstallPackage()
+        $this.DotfilesSwitch('deploy')
+        # TODO: Add env var
+
+        $this.SaveAppState()
+    }
+
+    [void] InstallBucket() {
         if (-Not (Test-Path "$Env:SCOOP\buckets\$($this.Store)" -PathType Container)) {
             scoop bucket add -Name "$($this.Store)"
         }
+    }
+
+    [void] InstallPackage() {
         if (-Not (Test-Path $this.VerifyFile -PathType Leaf)) {
             scoop install "$($this.Store)/$($this.Id)"
-            $this.DotfilesSwitch('deploy')
-            # TODO: Add env var
         }
-        $this.SaveAppState()
     }
-    
+
     [void] Reset() {
         # Logic to reset app
         scoop reset "$($this.Store)/$($this.Id)"

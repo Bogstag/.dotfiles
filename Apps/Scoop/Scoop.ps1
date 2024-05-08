@@ -1,4 +1,4 @@
-
+# TODO: $Env:SCOOP_GLOBAL
 
 class Scoop : NoneApps {
 

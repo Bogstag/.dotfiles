@@ -1,9 +1,6 @@
-
-
 if ($null -eq $Env:InstallAppsOnHost) {
     [Environment]::SetEnvironmentVariable("InstallAppsOnHost", $true, [EnvironmentVariableTarget]::User)
 }
-
 if ($null -eq $Env:REPOS) {
     [Environment]::SetEnvironmentVariable("REPOS", "$HOME\repos", [EnvironmentVariableTarget]::User)
 }
@@ -28,4 +25,3 @@ if ($null -eq $Env:forgeui_install_path) {
 if ($null -eq $Env:swarmui_install_path) {
     [Environment]::SetEnvironmentVariable("swarmui_install_path", "$HOME\AI\SD\Data\Packages\StableSwarmUI", [EnvironmentVariableTarget]::User)
 }
-

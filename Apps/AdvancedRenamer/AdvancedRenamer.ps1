@@ -24,6 +24,7 @@ Batch file renaming utility for Windows
         $this.AppFolder = "$PSScriptRoot"
         $this.AppStatePath = "$($Env:dotfiles)\Apps\$($this.GetType())\$($this.GetType()).json"
         # $Env:SCOOP\persist\advancedrenamer TODO: see if there is sonething here i care about.
+        # [AppRunner]::InitApp("advancedrenamer")
     }
 
     # [void] Clear() {}
@@ -54,4 +55,4 @@ Batch file renaming utility for Windows
     # [void] UpdateScoopUnmanaged() {}
     # [void] UpdateSystemState() {}
 }
-[AppRunner]::InitApp("advancedrenamer")
+[AdvancedRenamer]::new()

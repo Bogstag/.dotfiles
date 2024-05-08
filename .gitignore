@@ -6,3 +6,7 @@ MySystemState-*.json
 **/*.old
 AppState-*.json
 !AppState-Example.json
+/DOME/Documents/PowerShell/Help
+/DOME/Documents/PowerShell/Modules
+/DOME/Documents/PowerShell/Scripts
+Config/*installed packages.json

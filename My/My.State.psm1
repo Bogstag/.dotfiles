@@ -1,11 +1,15 @@
+# using namespace Microsoft.PowerShell.Commands
 # $State = New-Object -TypeName State
 # $State = New-Object State
 # $State = [State]::new()
+# TODO: Use this? https://learn.microsoft.com/en-us/dotnet/api/microsoft.powershell.commands.measureobjectcommand?view=powershellsdk-7.5.0
 class State {
     [string] $SystemStateJsonFile = "$($Env:dotfiles)\MySystemState-$($Env:COMPUTERNAME).json"
     [Hashtable] $SystemData = @{}
-    [Hashtable] $Measurements
-    [TimeSpan] $Measurement
+    [psobject] $Measurements = (New-Object -TypeName PSObject)
+    [psobject] $Measurement = (New-Object -TypeName PSObject)
+    [string] $CurrentMeasurementGroup
+    [object] $LastGroupMeasurement
 
     State() {
         $this.SystemData["LastProfileRunDate"] = [datetime] (Get-Date -Date "1900-01-01").ToShortDateString()
@@ -59,15 +63,33 @@ class State {
         $this.SystemData["LastProfileRunDate"] = [DateTime]::Parse($datetime).Date.ToShortDateString()
     }
 
-    [Diagnostics.Stopwatch] StartMeasurement([string] $MeasureThis) {
-        Write-Host " ⏱️ $($MeasureThis) => " -NoNewline -ForegroundColor Green
-        return [Diagnostics.Stopwatch]::StartNew()
+    [void] StartCollectingMeasurements([string]$GroupName) {
+        $this.CurrentMeasurementGroup = $GroupName
+        Add-Member -InputObject $this.Measurements -MemberType NoteProperty -Name $this.CurrentMeasurementGroup -Value @{}
     }
 
-    [void] StopMeasurement([Diagnostics.Stopwatch]$stopWatch) {
-        $stopWatch.Stop()
-        [TimeSpan] $ts = $stopWatch.Elapsed
-        $this.Measurement.Add($ts)
-        Write-Host $ts.Milliseconds"ms" -ForegroundColor Green
+    [void] EndCollectingMeasurements([string]$GroupName = $this.CurrentMeasurementGroup) {
+        $this.CurrentMeasurementGroup = $null
+        $this.LastGroupMeasurement = $this.Measurements.$($GroupName).values | Measure-Object -Property totalmilliseconds -Maximum -Minimum -Average -Sum
+    }
+
+    [Object[]] MyStartMeasurement([string] $MeasureThis) {
+        if ($null -eq $this.CurrentMeasurementGroup) {
+            $this.CurrentMeasurementGroup = "Unknown"
+        }
+        Write-Host "  ⏱️ $($MeasureThis.PadRight(20)) => " -NoNewline -ForegroundColor Green
+
+
+        return @{$MeasureThis = [Diagnostics.Stopwatch]::StartNew() }
+    }
+
+    [void] MyStopMeasurement([object[]]$Stopwatch) {
+        $Stopwatch.Values.Stop()
+        [TimeSpan] $this.Measurement = $Stopwatch.Values.Elapsed
+        $this.Measurements.$($this.CurrentMeasurementGroup).Add($Stopwatch.Keys, $this.Measurement)
+        Write-Host "$($Stopwatch.Values.Elapsed.Milliseconds.ToString().PadLeft(4))ms" -ForegroundColor Green
+        if ("Unknown" -eq $this.CurrentMeasurementGroup) {
+            $this.CurrentMeasurementGroup = $null
+        }
     }
 }

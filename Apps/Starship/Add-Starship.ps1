@@ -1,6 +1,14 @@
 # 99% of all code here is from https://github.com/giggio/poshfiles
-# Write-Host " ⏱️ Starship => " -NoNewline -ForegroundColor Green
-# $t = Measure-Command {
+
+# function Invoke-Starship-PreCommand {
+#     $loc = $executionContext.SessionState.Path.CurrentLocation
+#     $prompt = "$([char]27)]9;12$([char]7)"
+#     if ($loc.Provider.Name -eq "FileSystem") {
+#         $prompt += "$([char]27)]9;9;`"$($loc.ProviderPath)`"$([char]27)\"
+#     }
+#     $host.ui.Write($prompt)
+# }
+
 function Add-Starship {
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingInvokeExpression', "", Scope = 'function', Justification = 'This is how you setup starship')]
     param()
@@ -13,7 +21,8 @@ function Add-Starship {
 Add-Starship
 Remove-Item -Path Function:\Add-Starship
 
-if ($IsWindows -and (Get-Item Env:\WT_SESSION -ErrorAction SilentlyContinue) -and ($PSEdition -eq 'Core')) {
+# if ($IsWindows -and (Get-Item Env:\WT_SESSION -ErrorAction SilentlyContinue) -and ($PSEdition -eq 'Core')) {
+if ($IsWindows -and ($PSEdition -eq 'Core')) {
     # bellow script originally from these 2 places:
     # 1. https://learn.microsoft.com/windows/terminal/tutorials/shell-integration#powershell-pwshexe
     # 2. https://github.com/starship/starship/blob/885241114a933ae97820030cd28c97dc31670d3a/src/init/starship.ps1
@@ -82,7 +91,4 @@ if ($IsWindows -and (Get-Item Env:\WT_SESSION -ErrorAction SilentlyContinue) -an
         return $out
     }
 }
-# }
-# $ProfileLoadTime.Milliseconds += $t.Milliseconds
-# $ProfileLoadTime.Measurements += 1
-# Write-Host $t.Milliseconds"ms" -ForegroundColor Green
+
