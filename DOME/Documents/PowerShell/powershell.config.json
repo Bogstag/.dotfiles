@@ -1,4 +1,33 @@
 {
+    "Microsoft.PowerShell:ExecutionPolicy": "RemoteSigned",
+    "PowerShellPolicies": {
+        "ScriptExecution": {
+            "ExecutionPolicy": "RemoteSigned"
+        }
+    },
+    "ConsoleSessionConfiguration": {
+        "EnableConsoleSessionConfiguration": false,
+        "ConsoleSessionConfigurationName": []
+    },
+    "ProtectedEventLogging": {
+        "EnableProtectedEventLogging": false,
+        "EncryptionCertificate": []
+    },
+    "WindowsPowerShellCompatibilityModuleDenyList": [
+        "PSScheduledJob",
+        "BestPractices",
+        "UpdateServices"
+    ],
+    "PSModulePath": "%dotfiles%",
+    "ScriptBlockLogging": {
+        "EnableScriptBlockInvocationLogging": true,
+        "EnableScriptBlockLogging": true
+    },
+    "Transcription": {
+        "EnableTranscripting": true,
+        "EnableInvocationHeader": true,
+        "OutputDirectory": "~/.log/PowerShell"
+    },
     "ExperimentalFeatures": [
         "PSCommandNotFoundSuggestion",
         "PSSubsystemPluginModel",

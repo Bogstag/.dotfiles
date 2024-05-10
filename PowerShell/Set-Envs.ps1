@@ -26,4 +26,7 @@ if ($null -eq $Env:GRAMPSHOME) { [Environment]::SetEnvironmentVariable("GRAMPSHO
 if ($null -eq $Env:HF_HUB_OFFLINE) { [Environment]::SetEnvironmentVariable("HF_HUB_OFFLINE", "True", [EnvironmentVariableTarget]::User) }
 if ($null -eq $Env:DISABLE_TELEMETRY) { [Environment]::SetEnvironmentVariable("DISABLE_TELEMETRY", "YES", [EnvironmentVariableTarget]::User) }
 
+if ($null -eq $Env:LANG ) { [Environment]::SetEnvironmentVariable("LANG ", "en_SE", [EnvironmentVariableTarget]::User) }
+if ($null -eq $Env:LANGUAGE) { [Environment]::SetEnvironmentVariable("LANGUAGE", "en:sv", [EnvironmentVariableTarget]::User) }
+
 $State.MyStopMeasurement($timer)

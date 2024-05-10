@@ -2,59 +2,48 @@
 # using module ./My.State.psm1
 # $ErrorActionPreference = "Stop"
 # $DebugPreference = 'Stop'
-Enum MyPM {
-    Scoop
-    None
-    PSModule
-}
 
 Enum MyDotfilesAction {
     deploy
     remove
 }
-
+[NoRunspaceAffinity()]
 class Apps {
     [string] $Logo
     [string] $Name # Pretty Name
-    [string] $Id # App Name from Package Manager
-    [MyPM] $MyPM # Package Manager Name
-    [string] $Store # Buckets in Scoop
+    [string] $AppId # Safe App Name
+    [string] $AppFolder
+    [string] $AppStateJson
     [string] $VerifyFile # File that exist if installed, recommended is exe file.
     [string] $GithubOwnerRepo # Owner/Repo
     [string] $RepoUrl # URL to Repo or null if GithubOwnerRepo is set
     [string] $DocsUrl # URL to Docs
     [string] $ChangeLogUrl # URL to ChangeLog, version, releases
-    [string] $DotfilesSourcePath
     [array[]] $Dotfiles
+    [hashtable] $EnvVars
+    [string] $CacheFolder
     [version] $Version
     [datetime] $AppLastUpdate
-    [string] $CacheFolder
-    [string] $AppFolder
-    [string] $AppStatePath
-
+    [bool] $IsState = $false # $false, Init, NeedUpdate, Updated
 
     Apps() {
+        # Write-Host "Apps()"
         $type = $this.GetType()
         if ($type -eq [Apps]) {
             throw("Class $type must be inherited")
         }
-        $this.Init()
+        $this.IsState = "Init"
+        $this.AppsExit()
     }
 
     Apps([hashtable]$Properties) {
+        # Write-Host "Apps(hashtable]$Properties)"
         $type = $this.GetType()
         if ($type -eq [Apps]) {
             throw("Class $type must be inherited")
         }
-        $this.SplatProperties($Properties)
-    }
-
-    [void] SplatProperties([hashtable]$Properties) {
-        # TODO: Check if this is needed and you cant just send in hash table as is.
-        foreach ($Property in $Properties.Keys) {
-            $this.$Property = $Properties.$Property
-        }
-        $this.Init()
+        $this.IsState = "Init"
+        $this.UpdateProperties($Properties)
     }
 
     # [HashTable] Splat([String[]] $Properties) {
@@ -67,91 +56,60 @@ class Apps {
     #     return $splat
     # }
 
-    [void] Init() {
-        # All goes thru here
-        if (-Not $this.AppStatePath) {
-            $this.AppStatePath = "$($Env:dotfiles)\Apps\$($this.GetType())\$($this.GetType()).json"
-        }
+    [void] AppsExit() {
+        # Write-Host "AppsExit() with state: $($this.IsState.ToString())"
+        # All exits here
 
-        # $this.SaveAppState()
+        if ("NeedUpdate" -eq $this.IsState) {
+            $this.SaveAppState()
+        }
+        $this.IsState = $false
     }
 
     [IO.FileInfo] GetStateFilePath() {
-        $file = [IO.FileInfo]::new("$($this.AppStatePath)")
+        $file = [IO.FileInfo]::new("$($this.AppStateJson)")
         if (-Not $file.Exists) {
             $file.Create()
+            return $null
         }
 
         return $file.FullName
     }
 
-    [Hashtable] AppObject() {
-        $type = $this.GetType()
-        $appobject = [ordered]@{
-            $type.ToString() = [ordered]@{
-                Logo = $this.Logo
+    [void] SaveAppState() {
+        if ($this.AppStateJson) {
+            try {
+                $file = [IO.FileInfo]::new("$($this.AppStateJson)")
+                if (-Not $file.Exists) {
+                    $file.Create()
+                }
+                $this | ConvertTo-Json -Depth 20 | Set-Content -Path $file.FullName
+            } catch {
+                Write-Error "[Error] Failed to save app state: $_"
             }
         }
-
-        # POC
-        # $appobject2 = [ordered]@{
-        #     $type.ToString() = [ordered]@{
-        #         Logo = $this.Logo
-        #     }
-        # }
-        # $app3 = $appobject + $appobject2
-        # Works
-
-        return $appobject
     }
 
-    [Hashtable] AppsObject() {
-        # POC
-        $ObjArr = @()
-        $ObjArr += $this.AppObject()
-        $ObjArr = Sort-Object $ObjArr
-        $appsobject = [ordered]@{}
-        $appsobject += $ObjArr
-
-        # POC
-        # $appobject2 = [ordered]@{
-        #     $type.ToString() = [ordered]@{
-        #         Logo = $this.Logo
-        #     }
-        # }
-        # $app3 = $appobject + $appobject2
-        # Works
-
-        # POC
-        return $appsobject
-    }
-
-    [void] SaveAppState() {
-        try {
-            $this | ConvertTo-Json -Depth 20 | Set-Content -Path $this.GetStateFilePath()
-        } catch {
-            Write-Error "Failed to save app state file:"
-            Write-Error "$_"
-        }
-    }
-
-    [Hashtable] LoadAppState() {
+    [void] LoadAppState() {
         [Hashtable] $Hashtable = @{}
         try {
-            $FileContent = (Get-Content -Raw $this.GetStateFilePath())
-            Write-Host $FileContent
-            $Hashtable = ConvertFrom-Json -AsHashtable -DateKind Local -InputObject $FileContent
+            $file = [IO.FileInfo]::new("$($this.AppStateJson)")
+            if ($file.Exists) {
+                $Hashtable = Get-Content -Raw $file.FullName | `
+                        ConvertFrom-Json -AsHashtable -DateKind Local -InputObject $_
+            } else {
+                $file.Create()
+            }
         } catch {
-            Write-Error "Failed to get app state from file:"
-            Write-Error "$_"
+            Write-Error "[Error] Failed to get app state: $_"
         }
-        $this.Init([hashtable]$Hashtable)
-        return $Hashtable
+        $this.UpdateProperties([hashtable]$Hashtable)
     }
 
     # [void] Clear() {} # Logic to clean app's cache or other maintenance tasks
 
     [void] NewDotfilesSwitch([MyDotfilesAction]$DotfilesAction, [array]$DotArray = @()) {
+        # TODO: Rewrite so it works with new way
         Write-Debug "DotfilesAction: $DotfilesAction, DotArray: $DotArray, DotArray.Count: $($DotArray.Count)"
         if ($DotArray.Count -eq 0) {
             $DotArray = $this.Dotfiles
@@ -178,29 +136,30 @@ class Apps {
     }
 
     [bool] NewDeployDotfile($DotfileString) {
+        # TODO: Rewrite so it works with new way
         Write-Debug "DeployDotfile DotfileString: $DotfileString"
         $isDir = $false
         $isFile = $false
         $DotfileDest = $false
         $DotFileSource = $false
         $OldDotfileDest = $false
-        $leaf = Split-Path -Leaf $DotfileString
-        $sourceString = "$($this.DotfilesSourcePath)\$($leaf)"
-        if ([System.IO.File]::Exists($sourceString)) {
-            $isFile = $true
-            $DotfileDest = [IO.FileInfo]::new("$DotfileString")
-            $DotFileSource = [IO.FileInfo]::new("$sourceString")
-            $OldDotfileDest = [IO.FileInfo]::new("($($DotfileDest.FullName)).old")
-        }
-        if ([System.IO.Directory]::Exists($sourceString)) {
-            $isDir = $true
-            $DotfileDest = [IO.DirectoryInfo]::new("$DotfileString")
-            $DotFileSource = [IO.DirectoryInfo]::new("$sourceString")
-            $OldDotfileDest = [IO.DirectoryInfo]::new("($($DotfileDest.FullName)).old")
-        }
+        # $leaf = Split-Path -Leaf $DotfileString
+        # $sourceString = "$($this.DotfilesSourcePath)\$($leaf)"
+        # if ([System.IO.File]::Exists($sourceString)) {
+        #     $isFile = $true
+        #     $DotfileDest = [IO.FileInfo]::new("$DotfileString")
+        #     $DotFileSource = [IO.FileInfo]::new("$sourceString")
+        #     $OldDotfileDest = [IO.FileInfo]::new("($($DotfileDest.FullName)).old")
+        # }
+        # if ([System.IO.Directory]::Exists($sourceString)) {
+        #     $isDir = $true
+        #     $DotfileDest = [IO.DirectoryInfo]::new("$DotfileString")
+        #     $DotFileSource = [IO.DirectoryInfo]::new("$sourceString")
+        #     $OldDotfileDest = [IO.DirectoryInfo]::new("($($DotfileDest.FullName)).old")
+        # }
 
         if (($false -eq $isFile) -AND ($false -eq $isDir)) {
-            Write-Error -Message "Missing Dotfile Source: $($sourceString)"
+            # Write-Error -Message "Missing Dotfile Source: $($sourceString)"
             return $false
         }
 
@@ -237,31 +196,32 @@ class Apps {
     }
 
     [bool] DeployDotfile($DotfileString) {
+        # TODO: This can be remove when new Rewrite is done.
         Write-Debug "DeployDotfile DotfileString: $DotfileString"
-        $isDir = $false
+        # $isDir = $false
         $isFile = $false
         $DotfileDest = $false
         $DotFileSource = $false
         $OldDotfileDest = $false
-        $leaf = Split-Path -Leaf $DotfileString
-        $sourceString = "$($this.DotfilesSourcePath)\$($leaf)"
-        if ([System.IO.File]::Exists($sourceString)) {
-            $isFile = $true
-            $DotfileDest = [IO.FileInfo]::new("$DotfileString")
-            $DotFileSource = [IO.FileInfo]::new("$sourceString")
-            $OldDotfileDest = [IO.FileInfo]::new("($($DotfileDest.FullName)).old")
-        }
-        if ([System.IO.Directory]::Exists($sourceString)) {
-            $isDir = $true
-            $DotfileDest = [IO.DirectoryInfo]::new("$DotfileString")
-            $DotFileSource = [IO.DirectoryInfo]::new("$sourceString")
-            $OldDotfileDest = [IO.DirectoryInfo]::new("($($DotfileDest.FullName)).old")
-        }
+        # $leaf = Split-Path -Leaf $DotfileString
+        # $sourceString = "$($this.DotfilesSourcePath)\$($leaf)"
+        # if ([System.IO.File]::Exists($sourceString)) {
+        #     $isFile = $true
+        #     $DotfileDest = [IO.FileInfo]::new("$DotfileString")
+        #     $DotFileSource = [IO.FileInfo]::new("$sourceString")
+        #     $OldDotfileDest = [IO.FileInfo]::new("($($DotfileDest.FullName)).old")
+        # }
+        # if ([System.IO.Directory]::Exists($sourceString)) {
+        #     $isDir = $true
+        #     $DotfileDest = [IO.DirectoryInfo]::new("$DotfileString")
+        #     $DotFileSource = [IO.DirectoryInfo]::new("$sourceString")
+        #     $OldDotfileDest = [IO.DirectoryInfo]::new("($($DotfileDest.FullName)).old")
+        # }
 
-        if (($false -eq $isFile) -AND ($false -eq $isDir)) {
-            Write-Error -Message "Missing Dotfile Source: $($sourceString)"
-            return $false
-        }
+        # if (($false -eq $isFile) -AND ($false -eq $isDir)) {
+        #     Write-Error -Message "Missing Dotfile Source: $($sourceString)"
+        #     return $false
+        # }
 
         if ($isFile) {
             $DotFileDestFolder = $DotfileDest.Directory
@@ -297,6 +257,7 @@ class Apps {
     }
 
     [void] DeployDotfiles() {
+        # TODO: This can be remove when new Rewrite is done.
         Write-Host "Dont use DeployDotfiles. Use DotfilesSwitch()"
         $this.DotfilesSwitch([MyDotfilesAction]'deploy')
     }
@@ -312,7 +273,6 @@ class Apps {
             $DotArray = $this.Dotfiles
         }
 
-        Write-Debug "DotfilesAction: $DotfilesAction, DotArray: $DotArray, DotArray.Count: $($DotArray.Count)"
         switch ($DotArray) {
             { $DotfilesAction -eq [MyDotfilesAction]::deploy } {
                 Write-Debug "deploy PSItem: $PSItem"
@@ -343,6 +303,7 @@ class Apps {
     # [void] Invoke() {} # Logic to run the app.
 
     [bool] RemoveDotfile($Dotfile) {
+        # TODO: Check if this also need a rewrite to fit the new system.
         $Dotfile = [IO.FileInfo]::new("$Dotfile")
         if ($Dotfile -isnot [IO.FileInfo]) {
             Write-Error -Message "$($Dotfile.FullName) has $(($Dotfile.GetType()).Name) type"
@@ -367,7 +328,7 @@ class Apps {
     [void] RemoveDotfiles() {
         Write-Host "Dont use RemoveDotfiles. Use DotfilesSwitch()"
         $this.DotfilesSwitch([MyDotfilesAction]'remove')
-        $this.SaveAppState()
+        $this.AppsExit()
     }
 
     [void] Reset() {
@@ -376,11 +337,23 @@ class Apps {
         }
     }
 
-    # [void] SetEnvironmentVariables() {} # Logic to set app env variables
+    [void] SetEnvironmentVariables([hashtable] $EnvVars) {
+        $EnvVars | ForEach-Object {
+            $this.Name = $_.Keys
+            $this.Value = $_.Values
+            $this.realEnvValue = [Environment]::GetEnvironmentVariable("$($Name).ToString()")
+            # Get-Variable "$($Name).ToString()" -ValueOnly
+
+            if (($null -eq $($this.realEnvValue)) -or ($($this.Value) -ne $($this.realEnvValue))) {
+                [Environment]::SetEnvironmentVariable("$($this.Name.ToString())", $($this.Value), [EnvironmentVariableTarget]::User)
+            }
+        }
+    } # Logic to set app env variables
 
     [void] ShowDocs() {
         # Logic to show app documentation
         if ([uri]$this.DocsUrl) { Start-Process "$($this.Docs)" }
+        $this.AppsExit()
     }
 
     [void] ShowLogo() {

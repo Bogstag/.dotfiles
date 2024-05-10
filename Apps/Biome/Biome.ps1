@@ -1,7 +1,10 @@
-﻿class Biome : ScoopApps {
+﻿# New-Item -ItemType SymbolicLink -Path $Env:HOME\.config\Biome -Target $Env:DOME\.config\Biome
+$AppFolder = $PSScriptRoot
+$AppId = Split-Path $AppFolder -Leaf
 
-    Biome() {
-        $this.Logo = @"
+[AppRunner]::Apps."$AppId" = [ScoopApps]::new([ordered]@{
+        # Apps
+        Logo            = @"
           -=
          -**=              ......      ..
        .+****+.           +@@%%%%%#:  =%%.
@@ -13,62 +16,25 @@
 +*+*++************+**:        .               ...                         ...
 Formatter, linter, bundler for JavaScript, JSON, HTML, Markdown, and CSS.
 "@
-        $this.Name = "Biome"
-        $this.Id = "biome"
-        $this.MyPM = "Scoop"
-        $this.Store = "main"
-        $this.VerifyFile = "$Env:SCOOP\apps\biome\current\biome.exe"
-        $this.GithubOwnerRepo = "biomejs/biome"
-        $this.DocsUrl = "https://biomejs.dev/guides/getting-started/"
-        $this.Dotfiles = @(
+        Name            = "Biome" # Pretty Name
+        AppId           = $AppId
+        AppFolder       = $AppFolder
+        AppStateJson    = "$AppFolder\$AppId.json"
+        VerifyFile      = "$Env:SCOOP\apps\biome\current\biome.exe" # File that exist if installed, recommended is exe file.
+        GithubOwnerRepo = "biomejs/biome"
+        DocsUrl         = "https://biomejs.dev/guides/getting-started/"
+        ChangeLogUrl    = "https://api.github.com/repos/" + $this.GithubOwnerRepo + "/releases/latest"
+        Dotfiles        = @(
             "$Env:HOME\.config\biome"
         )
-        # New-Item -ItemType SymbolicLink -Path $Env:HOME\.config\Biome -Target $Env:DOME\.config\Biome
-        # $this.AppLastUpdate = $null
-        $this.AppFolder = "$PSScriptRoot"
-        $this.AppStatePath = "$Env:dotfiles\Apps\Biome\Biome.json"
-    }
-
-    # [void] Clear() {}
-
-    # [void] Enable() {}
-
-    # [uri] GetRepoUri([string]$Switch) {}
-
-    # [void] Install() {}
-
-    # [void] Invoke() {}
-
-    # [void] Reset() {}
-
-    [void] SetEnvironmentVariables() {
-        $Value1 = "$($this.VerifyFile)"
-        if (($null -eq $Env:BIOME_BINARY) -or ($Value1 -ne $Env:BIOME_BINARY)) {
-            [Environment]::SetEnvironmentVariable("BIOME_BINARY", "$Value1", [EnvironmentVariableTarget]::User)
+        EnvVars         = @{
+            "BIOME_BINARY"      = "$Env:SCOOP\apps\biome\current\biome.exe"
+            "BIOME_CONFIG_PATH" = "$Env:XDG_CONFIG_HOME\biome\biome.json"
         }
 
-        $Value2 = "$Env:XDG_CONFIG_HOME\biome\biome.json"
-        if (($null -eq $Env:BIOME_CONFIG_PATH) -or ($Value2 -ne $Env:BIOME_CONFIG_PATH)) {
-            [Environment]::SetEnvironmentVariable("BIOME_CONFIG_PATH", "$Value2", [EnvironmentVariableTarget]::User)
-        }
+        # PacketManager
+        ScoopId         = $AppId
+        Store           = "main"
     }
-
-    # [void] ShowDocs() {}
-
-    # [void] ShowLogo() {}
-
-    # [void] ShowReleases() {}
-
-    # [void] ShowRepo() {}
-
-    # [void] Uninstall() {}
-
-    # [void] Update() {
-    #     $this.Version = [Management.Automation.SemanticVersion]::new((biome --version).TrimStart("Version: "))
-    # }
-
-    # [void] UpdateSystemState() {
-    #     [State].UpdateAppData($this.GetType(), $this)
-    # }
-}
-[AppRunner]::InitApp("Biome")
+)
+Remove-Variable -Name @("AppFolder", "AppId")

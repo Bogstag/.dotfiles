@@ -3,12 +3,13 @@
 # $State = New-Object State
 # $State = [State]::new()
 # TODO: Use this? https://learn.microsoft.com/en-us/dotnet/api/microsoft.powershell.commands.measureobjectcommand?view=powershellsdk-7.5.0
+
 class State {
     [string] $SystemStateJsonFile = "$($Env:dotfiles)\MySystemState-$($Env:COMPUTERNAME).json"
     [Hashtable] $SystemData = @{}
     [psobject] $Measurements = (New-Object -TypeName PSObject)
     [psobject] $Measurement = (New-Object -TypeName PSObject)
-    [string] $CurrentMeasurementGroup
+    [string] $CurrentMeasurementGroup = ""
     [object] $LastGroupMeasurement
 
     State() {
@@ -69,16 +70,12 @@ class State {
     }
 
     [void] EndCollectingMeasurements([string]$GroupName = $this.CurrentMeasurementGroup) {
-        $this.CurrentMeasurementGroup = $null
+        $this.CurrentMeasurementGroup = ""
         $this.LastGroupMeasurement = $this.Measurements.$($GroupName).values | Measure-Object -Property totalmilliseconds -Maximum -Minimum -Average -Sum
     }
 
     [Object[]] MyStartMeasurement([string] $MeasureThis) {
-        if ($null -eq $this.CurrentMeasurementGroup) {
-            $this.CurrentMeasurementGroup = "Unknown"
-        }
         Write-Host "  ⏱️ $($MeasureThis.PadRight(20)) => " -NoNewline -ForegroundColor Green
-
 
         return @{$MeasureThis = [Diagnostics.Stopwatch]::StartNew() }
     }
@@ -86,10 +83,9 @@ class State {
     [void] MyStopMeasurement([object[]]$Stopwatch) {
         $Stopwatch.Values.Stop()
         [TimeSpan] $this.Measurement = $Stopwatch.Values.Elapsed
-        $this.Measurements.$($this.CurrentMeasurementGroup).Add($Stopwatch.Keys, $this.Measurement)
-        Write-Host "$($Stopwatch.Values.Elapsed.Milliseconds.ToString().PadLeft(4))ms" -ForegroundColor Green
-        if ("Unknown" -eq $this.CurrentMeasurementGroup) {
-            $this.CurrentMeasurementGroup = $null
+        if ($this.CurrentMeasurementGroup -ge 1) {
+            $this.Measurements.$($this.CurrentMeasurementGroup).Add($Stopwatch.Keys, $this.Measurement)
         }
+        Write-Host "$($Stopwatch.Values.Elapsed.Milliseconds.ToString().PadLeft(4))ms" -ForegroundColor Green
     }
 }

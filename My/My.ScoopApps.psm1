@@ -1,37 +1,68 @@
 # using module My
+
 using module ./My.Apps.psm1
 
+[NoRunspaceAffinity()]
 class ScoopApps : Apps {
+    [string] $ScoopId
+    [string] $PacketManager
+    [string] $Store # AKA Buckets
+    [scriptblock] $AppInstall # If apps need additional install steps
 
     ScoopApps() {
+        # Write-Host "ScoopApps()"
         $this.ScoopAppsInit(@{})
     }
-
+    # : base([hashtable]$Properties)
     ScoopApps([hashtable]$Properties) {
+        # Write-Host "ScoopApps([hashtable]$Properties)"
+        $this.IsState = "Init"
         $this.ScoopAppsInit($Properties)
     }
 
     ScoopAppsInit([hashtable]$Properties) {
-        $this.MyPM = "Scoop"
+        # Write-Host "ScoopAppsInit([hashtable]$Properties)"
+        $this.IsState = "Init"
+        if (-Not $this.PacketManager) {
+            $this.PacketManager = "Scoop"
+            $this.IsState = "NeedUpdate"
+        }
 
         if (@{} -eq $Properties) {
-            $this.Init()
+            $this.AppsExit()
         } else {
-            $this.SplatProperties($Properties)
+            $this.UpdateProperties($Properties)
         }
+    }
+
+    [void] UpdateProperties([hashtable]$Properties) {
+        # Write-Host "UpdateProperties([hashtable]$Properties)"
+        foreach ($Property in $Properties.Keys) {
+            $this.$Property = $Properties.$Property
+        }
+
+        if ("Init" -ne $this.IsState) {
+            $this.IsState = "NeedUpdate"
+        }
+        $this.AppsExit()
     }
 
     [void] Install() {
         # Logic to install app
-        $this.InstallBucket()
+        $this.InstallStore()
         $this.InstallPackage()
+        $this.SetEnvironmentVariables($this.EnvVars)
         $this.DotfilesSwitch('deploy')
         # TODO: Add env var
 
-        $this.SaveAppState()
+        if ($this.AppInstall) {
+            Invoke-Command -ScriptBlock $this.AppInstall
+        }
+
+        $this.AppsExit()
     }
 
-    [void] InstallBucket() {
+    [void] InstallStore() {
         if (-Not (Test-Path "$Env:SCOOP\buckets\$($this.Store)" -PathType Container)) {
             scoop bucket add -Name "$($this.Store)"
         }
@@ -46,14 +77,14 @@ class ScoopApps : Apps {
     [void] Reset() {
         # Logic to reset app
         scoop reset "$($this.Store)/$($this.Id)"
-        $this.SaveAppState()
+        $this.AppsExit()
     }
 
     [void] Uninstall() {
         scoop uninstall "$($this.Store)/$($this.Id)"
         $this.DotfilesSwitch('remove')
         # TODO: Remove env var
-        $this.SaveAppState()
+        $this.AppsExit()
     }
 
     [void] Update([string] $Version) {

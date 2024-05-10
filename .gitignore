@@ -10,3 +10,4 @@ AppState-*.json
 /DOME/Documents/PowerShell/Modules
 /DOME/Documents/PowerShell/Scripts
 Config/*installed packages.json
+My/core-7.5.0-preview.2-windows.json

@@ -9,7 +9,7 @@
 @{
 
     # (AKA ModuleToProcess) Script module or binary module file associated with this manifest.
-    RootModule           = './My.psm1'
+    RootModule           = '.\My.psm1'
 
     # Version number of this module.
     ModuleVersion        = '0.0.3'
@@ -67,11 +67,11 @@
 
     # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
     NestedModules        = @(
-        './My.AppRunner.psm1',
-        './My.Apps.psm1',
-        './My.State.psm1',
-        './My.NoneApps.psm1',
-        './My.ScoopApps.psm1'
+        '.\My.AppRunner.psm1',
+        '.\My.Apps.psm1',
+        '.\My.State.psm1',
+        '.\My.NoneApps.psm1',
+        '.\My.ScoopApps.psm1'
     )
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
@@ -95,11 +95,12 @@
 
     # List of all modules packaged with this module
     ModuleList           = @(
-        'AppRunner',
-        'State',
-        'Apps',
-        'ScoopApps',
-        'NoneApps'
+        '.\My.psm1'
+        '.\My.AppRunner.psm1',
+        '.\My.State.psm1',
+        '.\My.Apps.psm1',
+        '.\My.ScoopApps.psm1',
+        '.\My.NoneApps.psm1'
     )
 
     # List of all files packaged with this module

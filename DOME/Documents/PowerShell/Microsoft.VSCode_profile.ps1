@@ -1,3 +1,5 @@
+using module My
+
 $fileName = Split-Path -Leaf $PSCommandPath
 Write-Host ""
 Write-Host " $fileName" -ForegroundColor DarkGreen

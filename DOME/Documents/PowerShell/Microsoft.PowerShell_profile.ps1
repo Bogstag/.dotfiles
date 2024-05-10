@@ -14,7 +14,6 @@ $State.MyStopMeasurement($timer)
 . $Env:dotfiles\PowerShell\Set-Secrets.ps1
 . $Env:dotfiles\PowerShell\Request-ExtendedProfile.ps1
 
-
 # Log measurements
 if ($State.CurrentMeasurementGroup -eq "Profile") {
     $State.EndCollectingMeasurements("Profile")
@@ -31,6 +30,7 @@ $logEntry = @{
     Unit      = $State.LastGroupMeasurement.Property
 }
 $logFilePath = "$Env:dotfiles\ProfileLoadTime-$Env:COMPUTERNAME.csv"
+
 try {
     # Check if the file exists and has content
     if (-Not (Test-Path $logFilePath)) {
@@ -44,6 +44,7 @@ try {
 Remove-Variable logEntry
 Remove-Variable logFilePath
 
+Start-Transcript -Append | Out-Null
 
 # $State.SaveSystemState()
 # $SaveSystemStateJob = Start-ThreadJob -ScriptBlock {

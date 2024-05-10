@@ -1,0 +1,20 @@
+{
+  "Logo": null,
+  "Name": null,
+  "Id": null,
+  "PacketManager": null,
+  "Store": null,
+  "VerifyFile": null,
+  "GithubOwnerRepo": null,
+  "RepoUrl": null,
+  "DocsUrl": null,
+  "ChangeLogUrl": null,
+  "DotfilesSourcePath": null,
+  "Dotfiles": null,
+  "Version": null,
+  "AppLastUpdate": "0001-01-01T00:00:00",
+  "CacheFolder": null,
+  "AppFolder": null,
+  "AppStateJson": "C:\\Users\\bogge\\.dotfiles\\Apps\\Git\\Git.json",
+  "NeedToSaveState": true
+}

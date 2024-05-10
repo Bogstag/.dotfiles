@@ -24,7 +24,6 @@ Get-ChildItem -Path "$PSScriptRoot/Tests/*.ps1" | ForEach-Object {
 
 # Define the types to export with type accelerators.
 $ExportableTypes = @(
-    [MyPM],
     [MyDotfilesAction],
     [State],
     [Apps],

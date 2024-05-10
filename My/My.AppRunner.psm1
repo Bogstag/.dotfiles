@@ -1,6 +1,8 @@
 using module ./My.State.psm1
-# $ErrorActionPreference = "Continue"
+$ErrorActionPreference = "Stop"
 # $DebugPreference = 'Continue'
+
+[NoRunspaceAffinity()]
 class AppRunner {
 
     static [Hashtable] $Apps = @{}
@@ -44,32 +46,34 @@ class AppRunner {
         return [AppRunner]::Apps.ForEach({ $_.Name -eq $Name })
     }
 
-    static [Object] getByPackageManager([string] $PackageManager) {
-        return [AppRunner]::Apps.Where({ $_.MyPM -eq $PackageManager })
-    }
-
     static [void] LoadApps() {
+        # Write-Host "LoadApps"
         [AppRunner]::AppFolderRoot = [IO.DirectoryInfo]::new("$Env:dotfiles\Apps")
         [AppRunner]::AppFolders = [AppRunner]::AppFolderRoot.GetDirectories()
 
+        # Write-Host "AppScriptFile"
         [AppRunner]::AppScriptFiles = ([AppRunner]::AppFolders.GetFiles()).Where({ (($_.Extension -eq ".ps1") -And ($_.BaseName -eq $_.Directory.BaseName)) })
         foreach ($AppScriptFile in [AppRunner]::AppScriptFiles) {
-            # Write-Host "Pretending to dot sourcing $($AppScriptFile.FullName)"
+            # Write-Host "Pretending to dot sourcing $($AppScriptFile.FullName) if $($AppScriptFile.BaseName)"
+            # if ($AppScriptFile.BaseName -in @("AdvancedRenamer", "Biome", "CascadiaCode", "Git", "Gitleaks", "Nmap", "OneCommander", "PowerShellPreview", "PowerShellUniversal", "PSReadLine", "Ruff", "Scoop", "ScoopUnmanaged", "sfsu", "Starship", "TerminalIcons")) {
             . $AppScriptFile.FullName
+            # }
         }
 
+        # Write-Host "AppJsonFiles"
         [AppRunner]::AppJsonFiles = ([AppRunner]::AppFolders.GetFiles()).Where({ (($_.Extension -eq ".json") -And ($_.BaseName -eq $_.Directory.BaseName)) })
-        [AppRunner]::AppJsonFiles | ForEach-Object { [AppRunner]::LoadAppStateFromJsonFile($_) }
-        # foreach ($AppJsonFile in [AppRunner]::AppJsonFiles) {
-        #     # Write-Host "Pretending to load state from json $($AppJsonFile.FullName)"
-        #     [AppRunner]::LoadAppStateFromJsonFile($AppJsonFile)
-        # }
+        # [AppRunner]::AppJsonFiles | ForEach-Object { [AppRunner]::LoadAppStateFromJsonFile($_.FullName) }
+
+        foreach ($AppJsonFile in [AppRunner]::AppJsonFiles) {
+            # Write-Host "Pretending to load state from json $($AppJsonFile.FullName)"
+            [AppRunner]::LoadAppStateFromJsonFile($AppJsonFile)
+        }
 
         # $Config = @{"$([AppRunner]::AppFolders.BaseName)" = @{
         #         "Name"         = [AppRunner]::AppFolders.BaseName
         #         "AppFolder"    = [AppRunner]::AppFolders.FullName
         #         "PSScriptPath" = [AppRunner]::AppScriptFiles.FullName
-        #         "AppStatePath" = [AppRunner]::AppJsonFiles.FullName
+        #         "AppStateJson" = [AppRunner]::AppJsonFiles.FullName
         #     }
         # }
     }
@@ -79,7 +83,7 @@ class AppRunner {
         # Write-Debug -Message "Init TypeString: $TypeString"
         # [AppRunner]::Apps = New-Object -TypeName $TypeString
         # Write-Debug -Message "Load Json TypeString: $TypeString"
-        # [AppRunner]::LoadAppStateFromAppStatePath("$($TypeString)")
+        # [AppRunner]::LoadAppStateFromAppStateJson("$($TypeString)")
     }
 
     static [void] AllAppState([string]$Action) {
@@ -101,7 +105,7 @@ class AppRunner {
 
     static [void] SaveAppState([String] $TypeString) {
         $json = [AppRunner]::Apps."$($TypeString)" | ConvertTo-Json -Depth 20
-        $jsonFile = [AppRunner]::Apps."$($TypeString)".AppStatePath
+        $jsonFile = [AppRunner]::Apps."$($TypeString)".AppStateJson
         Write-Host $jsonFile
         Set-Content -Path $jsonFile -Value $json
     }
@@ -109,7 +113,8 @@ class AppRunner {
     static [void] LoadAppStateFromJsonFile([IO.FileInfo]$JsonFile) {
         if ($JsonFile.Exists) {
             try {
-                [AppRunner]::Apps."$($JsonFile.Directory.BaseName)" = [AppRunner]::LoadJsonFile($JsonFile)
+                # TODO: This dont work, they dont have add
+                # [AppRunner]::Apps."$($JsonFile.Directory.BaseName)".Add([AppRunner]::LoadJsonFile($JsonFile))
             } catch {
                 Write-Error "Failed to parse the system state JSON file. ($($JsonFile)) $_"
             }
@@ -119,9 +124,9 @@ class AppRunner {
         }
     }
 
-    static [void] LoadAppStateFromAppStatePath([String] $TypeString) {
-        Write-Host "$([AppRunner]::Apps."$($TypeString)".AppStatePath)"
-        $JsonFile = [IO.FileInfo]::new("$([AppRunner]::Apps."$($TypeString)".AppStatePath)")
+    static [void] LoadAppStateFromAppStateJson([String] $TypeString) {
+        Write-Host "$([AppRunner]::Apps."$($TypeString)".AppStateJson)"
+        $JsonFile = [IO.FileInfo]::new("$([AppRunner]::Apps."$($TypeString)".AppStateJson)")
         if ($JsonFile.Exists) {
             $App = [AppRunner]::Apps."$($TypeString)"
             Write-Host "App: $App"

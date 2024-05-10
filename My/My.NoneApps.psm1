@@ -1,5 +1,6 @@
 using module ./My.Apps.psm1
 
+[NoRunspaceAffinity()]
 class NoneApps : Apps {
 
     # ScoopApps() : base([ordered]@{}) {
@@ -15,14 +16,14 @@ class NoneApps : Apps {
 
     [void] NoneAppsInit([hashtable]$Properties) {
         Write-Debug -Message "NoneAppsInit Properties: $($Properties)"
-        $this.MyPM = "None"
+        $this.PacketManager = "None"
         $this.Store = $null
         if (@{} -eq $Properties) {
             Write-Debug -Message "NoneAppsInit Init"
-            $this.Init()
+            $this.AppsExit()
         } else {
-            Write-Debug -Message "NoneAppsInit SplatProperties"
-            $this.SplatProperties($Properties)
+            Write-Debug -Message "NoneAppsInit UpdateProperties"
+            $this.UpdateProperties($Properties)
         }
     }
 
